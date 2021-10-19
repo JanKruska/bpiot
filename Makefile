@@ -1,20 +1,17 @@
-	
+#Settings
+bibtex_use = 2
 LATEXMK ?= latexmk
-LATEXMKFLAGS = -use-make -xelatex -file-line-error
+LATEXMKFLAGS = -use-make -xelatex -file-line-error -bibtex
 
+#Set targets
 SOURCES := $(wildcard *.tex)
 FILES := $(SOURCES:.tex=.pdf)
-
-TOPTARGETS := all clean
 
 all:$(FILES)
 
 %.pdf: %.tex
 	$(LATEXMK) $(LATEXMKFLAGS) $<
 
-.PHONY: $(TOPTARGETS) $(SUBDIRS)
-
-.PHONY: clean
 clean:
-	$(LATEXMK) -C
+	$(LATEXMK) $(LATEXMKFLAGS) -C
 
