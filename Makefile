@@ -1,5 +1,4 @@
 #Settings
-bibtex_use = 2
 LATEXMK ?= latexmk
 LATEXMKFLAGS = -use-make -xelatex -file-line-error -bibtex
 
