@@ -274,3 +274,6 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
+
+#Sciebo/Owncloud log files
+.sync_journal*
