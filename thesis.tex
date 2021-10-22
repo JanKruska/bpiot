@@ -1,3 +1,4 @@
+% !TeX spellcheck = en_GB
 % This is samplepaper.tex, a sample chapter demonstrating the
 % LLNCS macro package for Springer Computer Science proceedings;
 % Version 2.20 of 2017/10/04
@@ -15,13 +16,14 @@
 
 \begin{document}
 %
-\title{Thesis paper in Seminar Business Processes and the Internet of Things on Conformance Checking Using Activity and Trace Embeddings.}
+\title{Thesis paper}
+\subtitle{Seminar Business Processes and the Internet of Things \\ Conformance Checking Using Activity and Trace Embeddings.}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
 %
-\author{Jan Kruska}
+\author{Jan Kruska \and Supervisor: István Koren}
 %
 %\authorrunning{Pegoraro et al.}
 % First names are abbreviated in the running head.
@@ -54,6 +56,7 @@ The following list shall give a short overview of both the intended general stru
 		\item What is NLP (briefly), what are embeddings generally and word embeddings specifically, what are word2vec and doc2vec and how do they approach the NLP problems.
 		\item What parallels are there between NLP and conformance checking
 		\item If there are these parallels, how could such NLP mechanism be adapted (theoretically not practically) for conformance checking, what could the advantages be of such an approach, what could be disadvantages and/or problems that will need addressing.
+		\item Whats the Internet of Things and why would one wish to perform process analysis there
 	\end{enumerate}
 	\item Method
 	\begin{enumerate}
@@ -74,11 +77,16 @@ The following list shall give a short overview of both the intended general stru
 
 \section{Aims}
 The main focus of the seminar paper will be a look at \cite{PBWe20}. The seminar paper should give an overview of the backgrounds that are omitted for brevity in the paper.
-Aside from that 
+After that a look into the proposed method will follow, including explanations on why the authors chose the design that they did.
+Then an overview of the authors' results should follow, especially focussing on their methods of validation and categorization, since measuring the quality of the proposed approach is much more difficult, when compared to more straightforward algorithms like Token-based Replay or Alignments.
 Since the authors provide accompanying source code to their paper it is also possible to try and reproduce their results.
 As of now it is unclear if that will be possible within a reasonable time frame, as an actual implementation is outside of the scope of this seminar.
+Currently the hope is that the code is compatible and simple enough that the results can be reproduced decently well.
+In the case that this works an overview of how this was done should be provided, as well as highlighting possible differences that were not reproducable.
+If this is not the case then this will be replaced by a brief explanation on what problems were encountered during the attempt.
 Furthermore the aim of the seminar is to create a connection between business process intelligence and the Internet of Things. From this perspective there are two main interests to be derived: Firstly is it possible to apply their proposed method on limited hardware, as this is generally the case in the Internet of Things.  %especially regarding processing speeds
-Secondly and probably more importantly the method in the paper is described in terms of an offline analysis, where process models and a full event log are available. In the Internet of Things however continuos processes are prevalent, and in general we would like to be able to detect deviations (i.e. non-conformance) already while the process is still running.
+Secondly and probably more importantly the method in the paper is described in terms of an offline analysis, where process models and a full event log are available. In the Internet of Things however continuous processes are prevalent, and in general we would like to be able to detect deviations (i.e. non-conformance) already while the process is still running.
+Again an actual implementation or experimentation of these two aspects, i.e. approaching them from a practical perspective, is outside of the scope of this seminar paper, however it is intended to explore these possibilities from a theoretical perspective and maybe get some insights into how these could be approached from the practical perspective and what consideration would need to be made in that case.
 %
 % ---- Bibliography ----
 %
