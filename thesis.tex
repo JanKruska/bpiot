@@ -23,14 +23,14 @@
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
 %
-\author{Jan Kruska \and Supervisor: István Koren}
+\author{Jan Kruska \\ Supervisor: Dr. István Koren}
 %
-%\authorrunning{Pegoraro et al.}
+\authorrunning{Jan Kruska}
 % First names are abbreviated in the running head.
 % If there are more than two authors, 'et al.' is used.
 %
-%\institute{Chair of Process and Data Science\\Department of Computer Science, RWTH Aachen, Aachen, Germany
-%	\email{\{pegoraro,wvdaalst\}@pads.rwth-aachen.de}\\
+\institute{Chair of Process and Data Science\\Department of Computer Science, RWTH Aachen, Aachen, Germany}
+%	\email{jan.kruska@rwth-aachen.de}\\
 %	\url{http://www.pads.rwth-aachen.de/}}
 %
 \maketitle              % typeset the header of the contribution
@@ -48,7 +48,7 @@ The following list shall give a short overview of both the intended general stru
 	\item Abstract
 	\item Introduction
 	\begin{enumerate}
-		What is the motivation of the paper
+		\item What is the motivation of the paper
 	\end{enumerate}
 	\item Background
 	\begin{enumerate}
@@ -56,7 +56,7 @@ The following list shall give a short overview of both the intended general stru
 		\item What is NLP (briefly), what are embeddings generally and word embeddings specifically, what are word2vec and doc2vec and how do they approach the NLP problems.
 		\item What parallels are there between NLP and conformance checking
 		\item If there are these parallels, how could such NLP mechanism be adapted (theoretically not practically) for conformance checking, what could the advantages be of such an approach, what could be disadvantages and/or problems that will need addressing.
-		\item Whats the Internet of Things and why would one wish to perform process analysis there
+		\item What is the Internet of Things and why would one wish to perform process analysis there
 	\end{enumerate}
 	\item Method
 	\begin{enumerate}
@@ -65,13 +65,13 @@ The following list shall give a short overview of both the intended general stru
 	\item Results
 	\begin{enumerate}
 		\item What are the results given in the paper
-		\item What metrics were used to evaluate the performance of the approach presented in the paper, are they appropriate, are there other possible metrics, if so why was this one choses, what advantages or disadvantages do different metrics have.
+		\item What metrics were used to evaluate the performance of the approach presented in the paper, are they appropriate, are there other possible metrics, if so why was this one chosen, what advantages or disadvantages do different metrics have.
 		\item What are the results when using their code and reproducing the results (ideally the same)
 	\end{enumerate}
 	\item Outlook
 	\begin{enumerate}
 		\item What future work do the authors suggest
-		\item What problems were encountered when trying to reproduce the results from the paper. Could they be reproduced completely, just in part or not at all. If so are there suggestions on how could these problems be mitigated.
+		\item What problems were encountered when trying to reproduce the results from the paper. Could they be reproduced completely, just in part or not at all? If so, are there suggestions on how could these problems be mitigated.
 	\end{enumerate}
 \end{enumerate}
 
@@ -79,14 +79,19 @@ The following list shall give a short overview of both the intended general stru
 The main focus of the seminar paper will be a look at \cite{PBWe20}. The seminar paper should give an overview of the backgrounds that are omitted for brevity in the paper.
 After that a look into the proposed method will follow, including explanations on why the authors chose the design that they did.
 Then an overview of the authors' results should follow, especially focussing on their methods of validation and categorization, since measuring the quality of the proposed approach is much more difficult, when compared to more straightforward algorithms like Token-based Replay or Alignments.
-Since the authors provide accompanying source code to their paper it is also possible to try and reproduce their results.
-As of now it is unclear if that will be possible within a reasonable time frame, as an actual implementation is outside of the scope of this seminar.
-Currently the hope is that the code is compatible and simple enough that the results can be reproduced decently well.
-In the case that this works an overview of how this was done should be provided, as well as highlighting possible differences that were not reproducable.
+Since the authors provide accompanying source code to their paper, it is also possible to try to reproduce their results.
+As of now it is unclear if that will be possible within a reasonable time frame, as an actual implementation is outside the scope of this seminar.
+Currently, the hope is that the code is compatible and simple enough that the results can be reproduced decently well.
+In the case that this works an overview of how this was done should be provided, as well as highlighting possible differences that were not reproducible.
 If this is not the case then this will be replaced by a brief explanation on what problems were encountered during the attempt.
-Furthermore the aim of the seminar is to create a connection between business process intelligence and the Internet of Things. From this perspective there are two main interests to be derived: Firstly is it possible to apply their proposed method on limited hardware, as this is generally the case in the Internet of Things.  %especially regarding processing speeds
+Furthermore, the aim of the seminar is to create a connection between business process intelligence and the Internet of Things. From this perspective there are two main interests to be derived: Firstly is it possible to apply their proposed method on limited hardware, as this is generally the case in the Internet of Things.  %especially regarding processing speeds
 Secondly and probably more importantly the method in the paper is described in terms of an offline analysis, where process models and a full event log are available. In the Internet of Things however continuous processes are prevalent, and in general we would like to be able to detect deviations (i.e. non-conformance) already while the process is still running.
-Again an actual implementation or experimentation of these two aspects, i.e. approaching them from a practical perspective, is outside of the scope of this seminar paper, however it is intended to explore these possibilities from a theoretical perspective and maybe get some insights into how these could be approached from the practical perspective and what consideration would need to be made in that case.
+Again an actual implementation or experimentation of these two aspects, i.e. approaching them from a practical perspective, is outside the scope of this seminar paper, however it is intended to explore these possibilities from a theoretical perspective and maybe get some insights into how these could be approached from the practical perspective and what consideration would need to be made in that case.
+\section{Scope}
+It was already mentioned above, but it should be noted again that the scope of this paper is limited, and a clear consideration of what is possible within that scope is integral.
+As such it is very much desired to include certain practical considerations, but the available amount of effort for these will be very limited.
+It is currently also very difficult to estimate the amount effort needed to, for example, reproduce the results from the paper.
+This means, that such content should not be considered part of the expected result.
 %
 % ---- Bibliography ----
 %
