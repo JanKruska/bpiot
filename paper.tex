@@ -1,0 +1,124 @@
+% !TeX spellcheck = en_GB
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{template/llncs}
+%
+\usepackage{graphicx}
+\usepackage{todonotes}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\begin{document}
+%
+\title{Seminar Paper}
+\subtitle{Seminar Business Processes and the Internet of Things \\ Conformance Checking Using Activity and Trace Embeddings.}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{Jan Kruska \\ Supervisor: Dr. István Koren}
+%
+\authorrunning{Jan Kruska}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{Chair of Process and Data Science\\Department of Computer Science, RWTH Aachen, Aachen, Germany}
+%	\email{jan.kruska@rwth-aachen.de}\\
+%	\url{http://www.pads.rwth-aachen.de/}}
+%
+\maketitle              % typeset the header of the contribution
+%
+%
+%
+%
+%\section{Planned structure}
+%The following list shall give a short overview of the intended general structure of the seminar paper. For each section the main questions that should be answered by it are listed.
+%\begin{enumerate}
+%	\item Abstract
+%	\item Introduction
+%	\begin{enumerate}
+%		\item What is the motivation of the paper
+%	\end{enumerate}
+%	\item Background
+%	\begin{enumerate}
+%		\item What is conformance checking, how is it useful and why would you do it, which methods are there, what are advantages and disadvantages of said methods.
+%		\item What is NLP (briefly), what are embeddings generally and word embeddings specifically, what are word2vec and doc2vec and how do they approach the NLP problems.
+%		\item What parallels are there between NLP and conformance checking
+%		\item If there are these parallels, how could such NLP mechanism be adapted (theoretically not practically) for conformance checking, what could the advantages be of such an approach, what could be disadvantages and/or problems that will need addressing.
+%		\item What is the Internet of Things and why would one wish to perform process analysis there
+%	\end{enumerate}
+%	\item Method
+%	\begin{enumerate}
+%		\item How were word2vec and doc2vec adapted to conformance checking in the paper (I.e. practical adaption)
+%	\end{enumerate}
+%	\item Results
+%	\begin{enumerate}
+%		\item What are the results given in the paper
+%		\item What metrics were used to evaluate the performance of the approach presented in the paper, are they appropriate, are there other possible metrics, if so why was this one chosen, what advantages or disadvantages do different metrics have.
+%		\item What are the results when using their code and reproducing the results (ideally the same)
+%	\end{enumerate}
+%	\item Outlook
+%	\begin{enumerate}
+%		\item What future work do the authors suggest
+%		\item What problems were encountered when trying to reproduce the results from the paper. Could they be reproduced completely, just in part or not at all? If so, are there suggestions on how could these problems be mitigated.
+%	\end{enumerate}
+%\end{enumerate}
+
+\begin{abstract}
+	In the last decade there has been growing interest, both scientific and non-scientific, in the field of process mining.
+	While the main focus has been on business processes, the methods developed in the field of process mining are in now way limited to that area.
+	One other area which lends itself to process mining is the growing Internet of Things.
+	While there are many conceivable applications,  there has only been limited research interest in this synergy.
+	The aim of this seminar paper is to recapitulate the findings of the focus paper \cite{PBWe20}, while also emphasizing the benefits and difficulties of applying the described methodology in the Internet of Things.
+\end{abstract}
+
+\section{Introduction}
+
+Due to growing compute capabilities, as well as further digitalization allowed for more process data to be gathered and analysed.
+The increase in compute and storage capabilities, as well as the growing digitalization of many parts of our lives has created the distinct field of data science, as an amalgamation of Statistics, technical knowledge and domain knowledge.
+
+One benefactor of this development has been the subfield of process science, which is concerned with the analysis of processes.
+The combination of process science and data science gave rise to techniques generally grouped under the term process mining\footnote{Please note that due to the relative young age of the field, the fact that it lies at the intersection of two different fields and the fact that there is a marketing interest for these topics the terminology is not always settled and different authors and/or groups may differ in usage. The terminology used here is oriented around the definitions in \cite{Aals16}, as it seems to be the most polished overview of the field at the moment.}.
+Process mining is concerned with the automatic and algorithmic processing of event data. In its easiest form an event is a piece of data, that consists of a timestamp, an identifier to group events belonging to the same execution and a body containing further arbitrary values.
+In most cases there is also an identifier for the event type, with the purpose of identifying similar events in different executions of the process, e.g. to be able to group all "Send invoice" events as the same type.
+
+Historically most research in the topic of process mining has been on business processes. 
+There are a few reasons for that. 
+Namely, that there was already a well established field of non-algorithmic process science for business processes, which could act as a stepping stone.
+Secondly some of these processes were already highly digitized, many companies already had well established ERP systems from which data could be gathered with reasonable ease.
+Thirdly there was, and is, a large financial interest in optimizing such processes.
+And lastly business processes often struck the balance between too simple and too complicated, in that they exhibited enough variability to be interesting to analyse but were still simple enough as to enable the use of the early process mining algorithms.
+So it should be stated that while process mining is of great use for classical business processes, these are not the only areas for which it could be useful.
+
+One such area of interest is the Internet of Things.
+In recent years a vast infrastructure of small networked devices typically with some sensors attached has developed. 
+This is especially interesting in the case for automation in manufacturing for which the term Internet of Production has been coined.
+Both these "Internet"'s\footnote{Note that there will not be a very clear distinction between these two terms in this paper. The object of interest here is a highly distributed network of interacting devices, that generate a large amount of event data about their surroundings. Which specific environment they are in is less important here.} 
+constitute a highly digitized network in which avast amount of data, including event data, is being generated and measured.
+Especially in the case of manufacturing there is a large monetary interest in optimizing production pipelines.
+And lastly in the case of the Internet of Things there are complex hidden processes to be discovered, which can challenge newer and more advanced process mining algorithms in a way that other areas might not.
+\section{Background}
+
+\section{Method}
+
+\section{Results}
+
+\section{Discussion}
+
+%
+% ---- Bibliography ----
+%
+% BibTeX users should specify bibliography style 'splncs04'.
+% References will then be sorted and formatted in the correct style.
+%
+\bibliographystyle{template/splncs04}
+\bibliography{literature/bibliography}
+%
+\end{document}
