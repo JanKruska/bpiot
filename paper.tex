@@ -105,6 +105,19 @@ constitute a highly digitized network in which avast amount of data, including e
 Especially in the case of manufacturing there is a large monetary interest in optimizing production pipelines.
 And lastly in the case of the Internet of Things there are complex hidden processes to be discovered, which can challenge newer and more advanced process mining algorithms in a way that other areas might not.
 \section{Background}
+\subsection{Conformance Checking}
+Conformance checking covers a range of different methods that aim to quantify how well an event log (or even just a single trace) and a process model fit together.
+Our intuitive expectation would be that a model that allows for exactly those traces contained in the event log would conform perfectly, whereas a model that allows for none of the traces seen in the log would have very low conformance.
+The aim of conformance checking is the formalization of this imprecise intuitive understanding of fitting together and the development of methods and algorithms that can quantify precisely that.
+
+The uses of such an approach can generally be divided into two relatively distinct subcategories, depending on whether the event log or the process model are seen as normative.
+In the case where the process model is considered normative, conformance checking allows for the detection of deviations, i.e. observed traces that are not possible according to the model.
+From such information a number of useful analyses can follow, e.g. where do deviations happen, which resources are involved in deviations, how exactly do these traces deviate from the model.
+Both positive and negative conclusions are possible from such situations.
+E.g. such an analysis may reveal that people often skip a step in the process, which actually improves the overall performance of the process, in which case such a step could be made optional.
+An example of negative conclusions may be the detections of deviations that do not follow proper legal or procedural requirements of the process, such as requiring two different persons to review an important document before signing off on it. In such a case knowledge of these deviations is required to ensure proper execution of the process.
+
+\subsection{Natural Language Processing}
 
 \section{Method}
 
