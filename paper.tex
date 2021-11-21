@@ -7,6 +7,7 @@
 %
 \usepackage{graphicx}
 \usepackage{todonotes}
+\usepackage{textalpha}
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 %
@@ -123,13 +124,13 @@ The easiest conformance checking method, both conceptually and algorithmically i
 The intuition behind token based replay is to replay an observed trace on a process model, specifically a petri net, and to determine where problems occur.
 
 This is done by keeping track of four numbers: \emph{\underline{p}roduced}, \emph{\underline{c}onsumed}, \emph{\underline{m}issing} and \emph{\underline{r}emaining} tokens during replay.
-According to the semantics of petri nets, whenever an action is fired it consumes one token from all input places and produces one token in each output place.
-However since we are dealing with possibly non-conformant trace, it is possible that a trace contains actions, that are not enabled in the model at that point in time.
+According to the semantics of petri nets, whenever a transition is fired it consumes one token from all input places and produces one token in each output place.
+However since we are dealing with possibly non-conformant trace, it is possible that a trace contains activities, that are not enabled in the model at that point in time.
 In this case a missing token is added to all input places, that did not contain a token, and the $m$ counter is incremented by the according amount.
-Conversely it might also happen, that a trace can be replayed, but that there are stray tokens left in the petri net after the replay. 
+Conversely, it might also happen, that a trace can be replayed, but that there are stray tokens left in the petri net after the replay. 
 At the end of the replay the sum of all leftover tokens makes up the $r$ counter.
-Both missing and remaining tokens signal deviation from the process model, but both of these numbers are dependant on the length of traces.
-The longer a trace is the more actions will be taken, the more tokens will be produced, and the more chances there are for tokens to be missing or remaining.
+Both missing and remaining tokens signal deviation from the process model, but both of these numbers are dependent on the length of traces.
+The longer a trace is the more activities will be taken, the more tokens will be produced, and the more chances there are for tokens to be missing or remaining.
 Importantly a trace where half the produced tokens were never consumed, i.e. remained, should intuitively have a lower fitness than one where only a quarter of produced tokens remained.
 Of course the same relationship holds for the other two counters $m$ and $c$.
 Then one very naturally arrives at a trace fitness defined as 
@@ -143,7 +144,22 @@ Often one does not just want to determine the fitness of one trace but a complet
 \end{equation}
 Note that log-fitness is not mathematically equivalent to the mean trace fitness.
 
+Token based methods are generally easy to implement and efficient algorithms are known, however they are not without problems.
+The first is the phenomenon known as "token flooding". Since token based methods create missing tokens to enable observed transitions in the log and remaining tokens are not removed, as more missing tokens are added during the simulation of a trace the  amount of stray tokens in the net also grows.
+This overabundance of tokens in the net can then lead to situations were many more transitions are enabled than should be, and later deviations are not detected by token based replay, since they are masked by earlier deviations.
+Also, token based diagnostics are  by their nature place-based diagnostics, they can determine whether a place was missing a token for the execution of a trace, but they cannot determine why said place was missing a token. 
+Yet in conformance checking it is often the latter rather than the former question for which answers are desired. 
+
 \subsubsection{Alignments}
+
+The second popular method for conformance checking are alignment based methods.
+The goal here is to construct an execution on the model that is as "close" as possible to the observed execution of events in the trace/log.
+If a trace is conformant with the model, this is trivially easy, the "closest" execution possible in the model is exactly the observed trace.
+In the conformant case all moves are so called, synchronous moves, where both the log and the model performed the same event at each step.
+However, if a trace is non-conformant, which is of course the case that is of interest, then a one-to-one mapping between model and trace is not possible.
+To describe that so-called non-synchronous moves are introduced, these describe the case that one of  the model or log perform an activity that does not happen in the other one.
+This can be either a move-on-model-only, where the model takes some transition, which was not observed in the log, or its dual, the move-on-log-only where an event is recorded in the log that is not possible according to the model.
+The weighted sum of misalignments can then be used as a cost metric for an alignment. 
 
 \subsection{Natural Language Processing}
 
