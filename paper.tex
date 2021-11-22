@@ -128,12 +128,12 @@ According to the semantics of petri nets, whenever a transition is fired it cons
 However since we are dealing with possibly non-conformant trace, it is possible that a trace contains activities, that are not enabled in the model at that point in time.
 In this case a missing token is added to all input places, that did not contain a token, and the $m$ counter is incremented by the according amount.
 Conversely, it might also happen, that a trace can be replayed, but that there are stray tokens left in the petri net after the replay. 
-At the end of the replay the sum of all leftover tokens makes up the $r$ counter.
+At the end of the replay the sum of all leftover tokens makes up the $r$ counter. \todo{Some explanation models could be included if the space is there for them}
 Both missing and remaining tokens signal deviation from the process model, but both of these numbers are dependent on the length of traces.
 The longer a trace is the more activities will be taken, the more tokens will be produced, and the more chances there are for tokens to be missing or remaining.
 Importantly a trace where half the produced tokens were never consumed, i.e. remained, should intuitively have a lower fitness than one where only a quarter of produced tokens remained.
 Of course the same relationship holds for the other two counters $m$ and $c$.
-Then one very naturally arrives at a trace fitness defined as 
+Then one very naturally arrives at a trace fitness defined as:
 \begin{equation}
 fitness(σ,N) = \frac{1}{2}(1-\frac{m_{N,σ}}{c_{N,σ}})+\frac{1}{2}(1-\frac{r_{N,σ}}{p_{N,σ}})
 \end{equation}
@@ -160,8 +160,25 @@ However, if a trace is non-conformant, which is of course the case that is of in
 To describe that so-called non-synchronous moves are introduced, these describe the case that one of  the model or log perform an activity that does not happen in the other one.
 This can be either a move-on-model-only, where the model takes some transition, which was not observed in the log, or its dual, the move-on-log-only where an event is recorded in the log that is not possible according to the model.
 The weighted sum of misalignments can then be used as a cost metric for an alignment. 
+The goal is then to construct an optimal alignment between a trace and the model.
+It should be obvious that there are infinitely many such alignments, however we can construct a trace-agnostic alignment, which consists of $n$ moves-on-log-only followed by the shortest path through the model as moves-on-model-only.
+This means there is an effective upper limit on the length of alignments that need to be considered, which in turn means that the problem is decidable. 
+However, the search space can quickly grow infeasibly large, so heuristics need to be employed to determine optimal alignments in a reasonable time frame.
+
+\todo{formula}
+\todo{Possibly some examples}
+
+Alignments overcome many of the problems encountered in token based approaches: 
+They do not suffer from problems like token flooding, and they give transitions based diagnostics, which in the case of process mining is far more useful since transitions encode recorded or recordable activities. 
+As such in alignments it is much easier to tell if a certain activity was skipped in a trace without performing further refinements of the diagnostics.
+These benefits do not come without drawbacks though, the main caveat of alignment based methods is that it boils down to a complex search in the alignment space, which is far more demanding than a replay based method.
+As such much research interest has been devoted to the development of heuristics that exploit certain  structures in event logs and/or process models to boost the performance of this search.
 
 \subsection{Natural Language Processing}
+
+As laid out in the previous section, both classical branches of conformance checking exhibit major drawbacks.
+Besides approaches aiming to ameliorate certain disadvantages of such methods, there has also been a growing interest in applying novel techniques from other fields to the problem of conformance checking.
+One such proposal is the application of techniques from the area of natural language processing for conformance checking as discussed in \cite{PBWe20}.
 
 \section{Method}
 
