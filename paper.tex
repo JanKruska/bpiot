@@ -109,14 +109,31 @@ And lastly in the case of the Internet of Things there are complex hidden proces
 \subsection{Conformance Checking}
 Conformance checking covers a range of different methods that aim to quantify how well an event log (or even just a single trace) and a process model fit together.
 Our intuitive expectation would be that a model that allows for exactly those traces contained in the event log would conform perfectly, whereas a model that allows for none of the traces seen in the log would have very low conformance.
-The aim of conformance checking is the formalization of this imprecise intuitive understanding of fitting together and the development of methods and algorithms that can quantify precisely that.
+The aim of conformance checking is the formalization of this imprecise intuitive understanding of fitting together and the development of methods and algorithms that can accurately quantify precisely this intuition.
 
+\subsubsection{Uses}
 The uses of such an approach can generally be divided into two relatively distinct subcategories, depending on whether the event log or the process model are seen as normative.
-In the case where the process model is considered normative, conformance checking allows for the detection of deviations, i.e. observed traces that are not possible according to the model.
-From such information a number of useful analyses can follow, e.g. where do deviations happen, which resources are involved in deviations, how exactly do these traces deviate from the model.
-Both positive and negative conclusions are possible from such situations.
-E.g. such an analysis may reveal that people often skip a step in the process, which actually improves the overall performance of the process, in which case such a step could be made optional.
+If the process model is considered normative, conformance checking allows for the detection of deviations, i.e. observed traces that are not possible according to the model.
+From such information a number of useful analyses can follow, e.g. where do deviations happen, which resources are involved in deviations, and how exactly these traces deviate from the model.
+It should be pointed out that the word "deviation" is negatively connotated in English, however for the purpose of process intelligence it should be viewed as a neutral category. 
+For example an analysis may reveal that people often skip a step in the process, which actually improves the overall performance of the process, based on which refinements to the process model could be made.
 An example of negative conclusions may be the detections of deviations that do not follow proper legal or procedural requirements of the process, such as requiring two different persons to review an important document before signing off on it. In such a case knowledge of these deviations is required to ensure proper execution of the process.
+
+In the second case the log is seen as normative and the model considered either imperfect or unknown.
+The most important representative application of this perspective is process discovery, or more specifically the evaluation of discovery algorithms.
+In the case of process discovery a process model has to be constructed from an event log.
+Obviously not all process models are able to describe a process equally good.
+So when developing or using a process discovery algorithm the question how well the discovered process models describe the log often arises.
+
+\subsubsection{Quality criteria}
+%Generally conformance is not a single dimensional criterion, instead it exists in a multi-dimensional space where the different axes represent different understandings of conformance.
+As such it is not really appropriate to talk about one conformance metric, but instead the four major axes should be considered.
+%1. Precision (false negatives): The first of these metrics is precision. This measures how many of the observed traces are actually possible according to the model.
+%2. Recall (false positives): Sometimes also referred to as sensitivity, this metric measures how many false positives there are. In the case of process models, this is the fraction of traces allowed by the model that are actually observed in the log.
+%3. Simplicity:
+%4. Generalization: Generalization is the models ability to be applicable to possible future traces of a given process. 
+%It would clearly be possible to create a model with perfect precision and recall, by simply encoding the traces themselves in the model. However that would not be a model that generalizes well since it captures none of the dynamism of the underlying process. 
+This is the most difficult criterion, since it is arguing about unknown possible future behaviour
 
 \subsubsection{Token based Replay}
 
@@ -181,6 +198,11 @@ Besides approaches aiming to ameliorate certain disadvantages of such methods, t
 One such proposal is the application of techniques from the area of natural language processing for conformance checking as discussed in \cite{PBWe20}.
 
 \section{Method}
+
+A lot of conformance checking algorithms, notably the classical ones outlined above aim to measure conformance between a log and a model.
+While this is the fundamental question to be answered this comparison between two different objects greatly complicates the task.
+Instead framing the problem in terms of log-to-log comparisons can make the problem much easier to deal with, and allows for a much broader array of techniques, since a multitude of approaches for comparison of similar objects exists.
+To realize this change of perspective a log is generated from the model, which is then compared to the original log. 
 
 \section{Results}
 
