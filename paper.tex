@@ -126,14 +126,16 @@ Obviously not all process models are able to describe a process equally good.
 So when developing or using a process discovery algorithm the question how well the discovered process models describe the log often arises.
 
 \subsubsection{Quality criteria}
-%Generally conformance is not a single dimensional criterion, instead it exists in a multi-dimensional space where the different axes represent different understandings of conformance.
+It is important to note that model quality is not a single dimensional criterion, instead it exists in a multi-dimensional space where the different axes represent different quality criteria.
 As such it is not really appropriate to talk about one conformance metric, but instead the four major axes should be considered.
-%1. Precision (false negatives): The first of these metrics is precision. This measures how many of the observed traces are actually possible according to the model.
-%2. Recall (false positives): Sometimes also referred to as sensitivity, this metric measures how many false positives there are. In the case of process models, this is the fraction of traces allowed by the model that are actually observed in the log.
-%3. Simplicity:
-%4. Generalization: Generalization is the models ability to be applicable to possible future traces of a given process. 
-%It would clearly be possible to create a model with perfect precision and recall, by simply encoding the traces themselves in the model. However that would not be a model that generalizes well since it captures none of the dynamism of the underlying process. 
+1. Precision (false negatives): The first of these metrics is precision. This measures how many of the observed traces are actually possible according to the model.
+2. Recall (false positives): Sometimes also referred to as sensitivity, this metric measures how many false positives there are. In the case of process models, this is the fraction of traces allowed by the model that are actually observed in the log.
+3. Simplicity: How "simple" a model is, generally a smaller model that describes a process equally well is preferred for reasons such as performance and comprehensibility .
+4. Generalization: Generalization is the models ability to be applicable to possible future traces of a given process. 
+It would clearly be possible to create a model with perfect precision and recall, by simply encoding the traces themselves in the model. However that would not be a model that generalizes well since it captures none of the dynamism of the underlying process. 
 This is the most difficult criterion, since it is arguing about unknown possible future behaviour
+
+Of these four quality criteria conformance checking is mainly concerned precision and recall, but depending on the algorithms possibly some statements about generalization could be made as well. 
 
 \subsubsection{Token based Replay}
 
@@ -202,7 +204,12 @@ One such proposal is the application of techniques from the area of natural lang
 A lot of conformance checking algorithms, notably the classical ones outlined above aim to measure conformance between a log and a model.
 While this is the fundamental question to be answered this comparison between two different objects greatly complicates the task.
 Instead framing the problem in terms of log-to-log comparisons can make the problem much easier to deal with, and allows for a much broader array of techniques, since a multitude of approaches for comparison of similar objects exists.
-To realize this change of perspective a log is generated from the model, which is then compared to the original log. 
+Such a reformulation of the problem can be achieved since all (reasonably defined) models are able to generate sample traces, and can therefore produce a log.
+This has the additional advantage that it is model-independent, i.e. no limitations except for the ability to generate traces are put on the type of model.
+
+First an activity embeddings for the log were trained, which then allows for the comparison of two traces by comparing their individual activities in the embedding space.
+Given some similarity metric and the real log as well as the model log a dissimilarity matrix can be built up.
+From here on we will assume that each row corresponds to a trace from the model log and each column corresponds to a trace from the real log, i.e. $a_{ij}$ is the dissimilarity of the $i$-th trace from the model log with the $j$-th trace of the real log.
 
 \section{Results}
 
