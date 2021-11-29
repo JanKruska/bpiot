@@ -210,8 +210,26 @@ This has the additional advantage that it is model-independent, i.e. no limitati
 First an activity embeddings for the log were trained, which then allows for the comparison of two traces by comparing their individual activities in the embedding space.
 Given some similarity metric and the real log as well as the model log a dissimilarity matrix can be built up.
 From here on we will assume that each row corresponds to a trace from the model log and each column corresponds to a trace from the real log, i.e. $a_{ij}$ is the dissimilarity of the $i$-th trace from the model log with the $j$-th trace of the real log.
+As such each column contains the dissimilarity of a trace in the real log with all traces from the model log, with the minimum of a column being the closest match in the model log.
+A trace that can be closely replayed by the model, i.e. one that has a close match to a trace produced from the model, is a well fitting one.
+As such the column minimum corresponds to a fitness metric of the trace and thus the mean of all column minima is a fitness metric between log and log.
+Conversely each row contains all similarities between a trace in the model log and all traces in the real log.
+A precise model should not allow for more traces than observed in the real log, as such each model trace should have as close a match as possible in the real log for the model to be precise.
+As such the row minimum corresponds to a precision metric for the trace in the model log and thus the mean of all row minima is a precision metric between log and log.
+
+\subsection{Distance functions}
+\subsubsection{Word Mover's Distance}
 
 \section{Results}
+
+\subsection{Experimental setup}
+
+To evaluate the suitability of the method three sets of experiments were performed. 
+The first set of experiments focussed on the scalability of the approach, the second aimed to assess the the effect of applying noise to a log and comparing that to the noiseless log.
+The third and last set of experiments was designed to compare the performance of the proposed methods (WMD,ICT \& trace2vec) to existing established conformance metrics, namely alignments, behavioural fitness \cite{GMVB09} and ETC precision \cite{MuCa10}.
+This was achieved by generating 1000 traces from a randomly generated process tree, which form the real log.
+Then a discovery algorithm was applied to this log to discover a model, here Alpha Miner, Inductive Miner infrequent (IMi) with noise levels 0 and 1 and the ILP Miner were selected as discovery algorithms.
+Then fitness and precision between the discovered model and the real log were calculated using the previously mentioned algorithms aswell as the method described in the paper.
 
 \section{Discussion}
 
