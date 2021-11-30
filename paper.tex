@@ -17,7 +17,7 @@
 
 \begin{document}
 %
-\title{Conformance Checking Using Embeddings and the Applicability of Such Methods in the Internet of Things}
+\title{Conformance Checking Using Embeddings and their Applicability in the Internet of Things}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
@@ -95,15 +95,26 @@ Namely, that there was already a well established field of non-algorithmic proce
 Secondly some of these processes were already highly digitized, many companies already had well established ERP systems from which data could be gathered with reasonable ease.
 Thirdly there was, and is, a large financial interest in optimizing such processes.
 And lastly business processes often struck the balance between too simple and too complicated, in that they exhibited enough variability to be interesting to analyse but were still simple enough as to enable the use of the early process mining algorithms.
-So it should be stated that while process mining is of great use for classical business processes, these are not the only areas for which it could be useful.
+So it should be stated that while process mining is of great use for classical business processes, these are not the only areas for which it could potentially be useful.
 
 One such area of interest is the Internet of Things.
-In recent years a vast infrastructure of small networked devices typically with some sensors attached has developed. 
-This is especially interesting in the case for automation in manufacturing for which the term Internet of Production has been coined.
-Both these "Internet"'s\footnote{Note that there will not be a very clear distinction between these two terms in this paper. The object of interest here is a highly distributed network of interacting devices, that generate a large amount of event data about their surroundings. Which specific environment they are in is less important here.} 
-constitute a highly digitized network in which avast amount of data, including event data, is being generated and measured.
-Especially in the case of manufacturing there is a large monetary interest in optimizing production pipelines.
-And lastly in the case of the Internet of Things there are complex hidden processes to be discovered, which can challenge newer and more advanced process mining algorithms in a way that other areas might not.
+In the last two decades more and more devices and specifically controller for devices have moved from implementions in hardware to implementations in software.
+Additionally as the cost for networking components has shrunk more and more of these devices have some networking capabilities, e.g. in the form of IP, bluetooth or RFID.
+This vast infrastructure of small networked devices is fertile ground for process analysis.
+These controllers generally have some attached sensors to monitor and control the devices they are attached to and in combination with these produce an equally vast amount of events.
+This is especially interesting in the case of automation in manufacturing for which the term Internet of Production has been coined.
+Here fully digitized networked control systems and the information pooling and sharing thos bring with it could greatly enhance the production capabilities of not just single production lines but entire automated factories.
+Both these "Internet"'s\footnote{Note that there will not be a very clear distinction between these two terms in this paper. The object of interest here is a highly distributed networks of interacting devices, that generate a large amount of event data about their surroundings. Which specific environment they are in, is  of lesser importance here.} 
+constitute a highly digitized network in which vast amounts of data, including event data, are being generated and measured.
+Especially in the case of manufacturing there is a large financial interest in optimizing production pipelines.
+
+However, the Internet of Things is also very attractive from the process analysis research perspective.
+During the birth of process mining as a discipline a big focus laid on classical business processes, such as purchase-to-pay and order-to-cash.
+Yet as the field matures the capabilities of algorithms and accordingly the difficulty of interesting problems grows.
+As such there is research demand for different -- to test whether algorithms perform equally well in other scenarios --, larger -- to improve scalability of algorithms -- and more complex -- to test and improve the capacity to deal with more interwoven processes -- problems.
+At the same time only areas with a high level of digitalization can realistically be considered here since it is of paramount priority to be able to properly obtain the event data of any process in question.
+The Internet of Things fulfils all these categories, it is digital by design, so relatively few efforts have to be made to obtain large amount of well-enough structured event data and the scale and complexity of the problem can scale up very well with growing network sizes. 
+
 \section{Background}
 \subsection{Conformance Checking}
 Conformance checking covers a range of different methods that aim to quantify how well an event log (or even just a single trace) and a process model fit together.
@@ -200,7 +211,7 @@ One such proposal is the application of techniques from the area of natural lang
 
 \subsection{Embeddings}
 Embeddings are a popular machine learning approach that has been used for a variety of tasks with the most successful applications being in the fields of natural language processing and computer vision.
-The fundamental idea of embeddings is to train some form of embedding function that embeds complex objects, such as words or documents in the case of NLP or pictures and video sequences in the case of computer vision in a vectors space\footnote{To be more precise: a Hilbert space, since well-defined notions of distances and angles are necessary.}.
+The fundamental idea of embeddings is to train some form of embedding function that embeds complex objects, such as words or documents in the case of NLP or pictures and video sequences in the case of computer vision in a vectors space\footnote{To be more precise: a Hilbert space, since well-defined notions of distances and angles are necessary and for that a scalar product  is needed.}.
 Such an embedding function then enables a proper mathematical treatment of these non-vector objects as vectors, which allows for the application of a broad range of algorithms.
 Most importantly it makes it possible to define notions of distance and/or (dis-)similarity needed for machine learning and data analysis tasks.
 
