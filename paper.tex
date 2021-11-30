@@ -153,12 +153,12 @@ Importantly a trace where half the produced tokens were never consumed, i.e. rem
 Of course the same relationship holds for the other two counters $m$ and $c$.
 Then one very naturally arrives at a trace fitness defined as:
 \begin{equation}
-fitness(σ,N) = \frac{1}{2}(1-\frac{m_{N,σ}}{c_{N,σ}})+\frac{1}{2}(1-\frac{r_{N,σ}}{p_{N,σ}})
+fitness(\sigma,N) = \frac{1}{2}(1-\frac{m_{N,\sigma}}{c_{N,\sigma}})+\frac{1}{2}(1-\frac{r_{N,\sigma}}{p_{N,\sigma}})
 \end{equation}
-, where $x_{N,σ}$ is the counter when replaying trace $σ$ on petri net $N$.
+, where $x_{N,\sigma}$ is the counter when replaying trace $\sigma$ on petri net $N$.
 Often one does not just want to determine the fitness of one trace but a complete log, then this definition can be extended to 
 \begin{equation}
-	fitness(L,N) = \frac{1}{2}(1-\frac{\sum_{σ\in L}m_{N,σ}}{\sum_{σ\in L}c_{N,σ}})+\frac{1}{2}(1-\frac{\sum_{σ\in L}r_{N,σ}}{\sum_{σ\in L}p_{N,σ}})
+	fitness(L,N) = \frac{1}{2}(1-\frac{\sum_{\sigma\in L}m_{N,\sigma}}{\sum_{\sigma\in L}c_{N,\sigma}})+\frac{1}{2}(1-\frac{\sum_{\sigma\in L}r_{N,\sigma}}{\sum_{\sigma\in L}p_{N,\sigma}})
 \end{equation}
 Note that log-fitness is not mathematically equivalent to the mean trace fitness.
 
@@ -198,6 +198,14 @@ As laid out in the previous section, both classical branches of conformance chec
 Besides approaches aiming to ameliorate certain disadvantages of such methods, there has also been a growing interest in applying novel techniques from other fields to the problem of conformance checking.
 One such proposal is the application of techniques from the area of natural language processing for conformance checking as discussed in \cite{PBWe20}.
 
+\subsection{Embeddings}
+Embeddings are a popular machine learning approach that has been used for a variety of tasks with the most successful applications being in the fields of natural language processing and computer vision.
+The fundamental idea of embeddings is to train some form of embedding function that embeds complex objects, such as words or documents in the case of NLP or pictures and video sequences in the case of computer vision in a vectors space\footnote{To be more precise: a Hilbert space, since well-defined notions of distances and angles are necessary.}.
+Such an embedding function then enables a proper mathematical treatment of these non-vector objects as vectors, which allows for the application of a broad range of algorithms.
+Most importantly it makes it possible to define notions of distance and/or (dis-)similarity needed for machine learning and data analysis tasks.
+
+\subsection{word2vec}
+
 \section{Method}
 
 A lot of conformance checking algorithms, notably the classical ones outlined above aim to measure conformance between a log and a model.
@@ -218,6 +226,12 @@ As such the row minimum corresponds to a precision metric for the trace in the m
 
 \subsection{Distance functions}
 \subsubsection{Word Mover's Distance}
+
+\subsubsection{Trace embeddings}
+In contrast to the two previous approaches, which used activity embeddings, it is also possible to train trace embeddings.
+The relationship between \emph{act2vec} and \emph{trace2vec} is analogous to the one between \emph{word2vec} and \emph{doc2vec}.
+This introduces additional instability on the trace level, since there will generally many more traces than activities, but allows for the direct application of distance metrics in the vector space when comparing two traces.
+This is much less computationally expensive as the previous two approaches which were complex distance metric between two sets of embeddings.
 
 \section{Results}
 
