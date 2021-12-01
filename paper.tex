@@ -125,6 +125,9 @@ Furthermore it is also possible to use techniques from the Internet of Things to
 Naturally there are challenges to be overcome if one aims to integrate business process modelling into the Internet of Things.
 The first two major difference are attributable to the structure of the Internet of Things.
 Firstly the Internet of Things is made up numerous small devices all with limited compute capabilities.
+This limits the complexity of algorithms that can be performed on each of the devices and means that either a separate system with the role of performing analyses needs to be introduced or distributed algorithms need to be developed.
+Overall it should be noted that asynchronous decentralized networks are common for the Internet of Things, which needs to be taken into account when applying BPM.
+Secondly the the Internet of Things has both the potential and demand for greater number of online analyses, i.e. in contrast to classical business processes it is much more important to evaluate a process during the execution, to give feedback and to possibly even influence a process during its execution.
 
 \section{Background}
 \subsection{Conformance Checking}
@@ -230,13 +233,35 @@ Most importantly it makes it possible to define notions of distance and/or (dis-
 
 \section{Method}
 
-A lot of conformance checking algorithms, notably the classical ones outlined above aim to measure conformance between a log and a model.
-While this is the fundamental question to be answered this comparison between two different objects greatly complicates the task.
-Instead framing the problem in terms of log-to-log comparisons can make the problem much easier to deal with, and allows for a much broader array of techniques, since a multitude of approaches for comparison of similar objects exists.
-Such a reformulation of the problem can be achieved since all (reasonably defined) models are able to generate sample traces, and can therefore produce a log.
-This has the additional advantage that it is model-independent, i.e. no limitations except for the ability to generate traces are put on the type of model.
+A lot of conformance checking algorithms, notably the classical ones outlined above, aim to measure conformance between a log and a model.
+While this is the fundamental question to be answered this comparison between two different types of objects greatly complicates the task.
+However by re-framing the problem on can greatly simplify it.
+Instead formulating the problem in terms comparing a model and a log one can formulate it as a comparison problem of a real log to a model log.
+Such a reformulation of the problem is possible since all (reasonably defined) models are able to generate sample traces, and can therefore produce a model log.
+Then the whole problem is reframed as log-to-log comparisons, i.e. determining similarities between objects of the same type, for which a broad range of techniques already exist.
+This has the additional advantage that it is model-independent, since no limitations apart from the ability to generate traces are put on the type of model.
 
-First an activity embeddings for the log were trained, which then allows for the comparison of two traces by comparing their individual activities in the embedding space.
+Given two logs, a model and a real one, it is first necessary to train the \emph{act2vec}\cite{KBWe18} (and also \emph{trace2vec}) embeddings.
+
+\subsection{act2vec}
+The first two methods utilize \emph{act2vec} to train activity embeddings.
+These activity embeddings then allows for the comparison of two traces by comparing their individual activities in the embedding space.
+Then every trace constitutes a set of different activities that can be expressed in the embedding space.
+Every trace then describes a probability distribution over the activities contained in it, so given an appropriate distance metric for probability distributions such as the Earth Movers Distance it is possible to determine the distance (or conversely similarity) of two traces.
+
+\subsubsection{Word Mover's Distance}
+
+\todo{Use pseudocode from paper?}
+\todo{Describe both WMD and ICT in separate sections, or just mention that ICT gives a relaxed formulation of WMD that can be easier to compute}
+
+\subsection{trace2vec}
+In contrast to the two previous approaches, which used activity embeddings, it is also possible to train trace embeddings.
+The relationship between \emph{act2vec} and \emph{trace2vec} is analogous to the one between \emph{word2vec} and \emph{doc2vec}.
+When using this method every trace is embedded into a vector space and any distance metric that is deemed appropriate can be chosen.
+In the paper the cosine similarity \todo{formula?} was chosen for its simplicity and the fact that it is bounded in the interval $[-1,1]$.
+This is much less computationally expensive as the previous two approaches which were complex distance metric between two sets of embeddings.
+
+\subsection{Definition of Fitness and precision}
 Given some similarity metric and the real log as well as the model log a dissimilarity matrix can be built up.
 From here on we will assume that each row corresponds to a trace from the model log and each column corresponds to a trace from the real log, i.e. $a_{ij}$ is the dissimilarity of the $i$-th trace from the model log with the $j$-th trace of the real log.
 As such each column contains the dissimilarity of a trace in the real log with all traces from the model log, with the minimum of a column being the closest match in the model log.
@@ -245,15 +270,6 @@ As such the column minimum corresponds to a fitness metric of the trace and thus
 Conversely, each row contains all similarities between a trace in the model log and all traces in the real log.
 A precise model should not allow for more traces than observed in the real log, as such each model trace should have as close a match as possible in the real log for the model to be precise.
 As such the row minimum corresponds to a precision metric for the trace in the model log and thus the mean of all row minima is a precision metric between log and log.
-
-\subsection{Distance functions}
-\subsubsection{Word Mover's Distance}
-
-\subsubsection{Trace embeddings}
-In contrast to the two previous approaches, which used activity embeddings, it is also possible to train trace embeddings.
-The relationship between \emph{act2vec} and \emph{trace2vec} is analogous to the one between \emph{word2vec} and \emph{doc2vec}.
-This introduces additional instability on the trace level, since there will generally many more traces than activities, but allows for the direct application of distance metrics in the vector space when comparing two traces.
-This is much less computationally expensive as the previous two approaches which were complex distance metric between two sets of embeddings.
 
 \section{Results}
 
