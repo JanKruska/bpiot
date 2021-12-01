@@ -7,7 +7,7 @@
 %
 \usepackage{graphicx}
 \usepackage{todonotes}
-\usepackage{textalpha}
+\usepackage[autostyle]{csquotes}  
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 %
@@ -97,23 +97,34 @@ Thirdly there was, and is, a large financial interest in optimizing such process
 And lastly business processes often struck the balance between too simple and too complicated, in that they exhibited enough variability to be interesting to analyse but were still simple enough as to enable the use of the early process mining algorithms.
 So it should be stated that while process mining is of great use for classical business processes, these are not the only areas for which it could potentially be useful.
 
-One such area of interest is the Internet of Things.
-In the last two decades more and more devices and specifically controller for devices have moved from implementions in hardware to implementations in software.
-Additionally as the cost for networking components has shrunk more and more of these devices have some networking capabilities, e.g. in the form of IP, bluetooth or RFID.
-This vast infrastructure of small networked devices is fertile ground for process analysis.
+In the last two decades the cost for networking components has decreases significantly and a growing number of microcontrollers, embedded systems and electronic devices now have some form of networking ability.
+This increasing networked structure that enables easy information sharing between the members of the network has become known under a few names, most prominently sa the "Internet of Things".
+Unfortunately due to shifting developments in the last two decades and marketing efforts associated with the Internet of Things it is hard to pin down the exact meaning of the term. 
+The International Telecommunication Union gives the following succinct definition of the Internet of Things in their recommendation \cite{ITUT12} regarding just that:
+\blockquote{[The Internet of Things is] A  global  infrastructure  for  the  information  society,  enabling  advanced  services  by  interconnecting  (physical  and  virtual)  things  based  on  existing  and  evolving  interoperable information and communication technologies.}
+
+It should be noted that this definition is very broad and extends beyond the notion of the "Smart Home" that has become somewhat of a representative of the Internet of Things.
+The definition neither limits the scale (locally, nationally or even globally) nor the range of use cases.
+The rest of the paper will follow this definition since the object of interest here are fully digitized networked control systems and the information pooling and sharing those bring with it.
+
+
+This vast infrastructure of small networked devices could prove to be fertile ground for process analysis.
 These controllers generally have some attached sensors to monitor and control the devices they are attached to and in combination with these produce an equally vast amount of events.
-This is especially interesting in the case of automation in manufacturing for which the term Internet of Production has been coined.
-Here fully digitized networked control systems and the information pooling and sharing thos bring with it could greatly enhance the production capabilities of not just single production lines but entire automated factories.
-Both these "Internet"'s\footnote{Note that there will not be a very clear distinction between these two terms in this paper. The object of interest here is a highly distributed networks of interacting devices, that generate a large amount of event data about their surroundings. Which specific environment they are in, is  of lesser importance here.} 
-constitute a highly digitized network in which vast amounts of data, including event data, are being generated and measured.
-Especially in the case of manufacturing there is a large financial interest in optimizing production pipelines.
+This is especially interesting in the case of automation in manufacturing\cite{JKM*20} for which the term Internet of Production has been coined, here the hope is that networked information sharing between controllers on a production line or factory floor could greatly enhance the production capabilities of not just single production lines but entire automated factories.
+Especially in the case of manufacturing there is a large financial interest in optimizing production efficiency for various reasons such as increasing speed, increasing productivity or reducing downtime.
 
 However, the Internet of Things is also very attractive from the process analysis research perspective.
 During the birth of process mining as a discipline a big focus laid on classical business processes, such as purchase-to-pay and order-to-cash.
 Yet as the field matures the capabilities of algorithms and accordingly the difficulty of interesting problems grows.
-As such there is research demand for different -- to test whether algorithms perform equally well in other scenarios --, larger -- to improve scalability of algorithms -- and more complex -- to test and improve the capacity to deal with more interwoven processes -- problems.
+As such there is research demand \cite{JKM*20} for different -- to test whether algorithms perform equally well in other scenarios --, larger -- to improve scalability of algorithms -- and more complex -- to test and improve the capacity to deal with more interwoven processes -- problems.
 At the same time only areas with a high level of digitalization can realistically be considered here since it is of paramount priority to be able to properly obtain the event data of any process in question.
+This has been a problem in the past when considering any process for which event data has to be manually entered, since in all these cases there will be discrepancies between digitally recorded process and the real world execution.
 The Internet of Things fulfils all these categories, it is digital by design, so relatively few efforts have to be made to obtain large amount of well-enough structured event data and the scale and complexity of the problem can scale up very well with growing network sizes. 
+Furthermore it is also possible to use techniques from the Internet of Things to further digitize classical processes and reduce dependencies on manual event recording.
+
+Naturally there are challenges to be overcome if one aims to integrate business process modelling into the Internet of Things.
+The first two major difference are attributable to the structure of the Internet of Things.
+Firstly the Internet of Things is made up numerous small devices all with limited compute capabilities.
 
 \section{Background}
 \subsection{Conformance Checking}
