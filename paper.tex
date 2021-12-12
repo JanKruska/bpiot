@@ -9,6 +9,7 @@
 \usepackage{todonotes}
 \usepackage[autostyle]{csquotes}  
 \usepackage{hyperref}
+\usepackage{cleveref}
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 %
@@ -210,8 +211,9 @@ Such a reformulation of the problem is possible since all (reasonably defined) m
 Then the whole problem is reframed as log-to-log comparisons, i.e. determining similarities between objects of the same type, for which a broad range of techniques already exist.
 This has the additional advantage that it is model-independent, since no limitations apart from the ability to generate traces are put on the type of model.
 
-Given two logs, a model and a real one, it is first necessary to train the \emph{act2vec}\cite{KBWe18} (and also \emph{trace2vec}) embeddings.
-
+\color{blue}
+Given two logs, one real and one produced by replaying the model, it is first necessary to train the \emph{act2vec}\cite{KBWe18} embedding.
+\color{black}
 \subsection{act2vec}
 The first two methods utilize \emph{act2vec} to train activity embeddings.
 These activity embeddings then allows for the comparison of two traces by comparing their individual activities in the embedding space.
@@ -257,6 +259,37 @@ This was achieved by generating 1000 traces from a randomly generated process tr
 Then a discovery algorithm was applied to this log to discover a model, here Alpha Miner, Inductive Miner infrequent (IMi) with noise levels 0 and 1 and the ILP Miner were selected as discovery algorithms.
 Then fitness and precision between the discovered model and the real log were calculated using the previously mentioned algorithms as well as the method described in the paper.
 
+\color{blue}
+\subsection{Scalability experiment}
+\begin{figure}
+	\includegraphics[width=1\textwidth]{figures/scaling}
+	\caption{Runtimes for all three methods for varying sizes of logs and dictionaries. Data can be found in \cite{MuCa10} Table 2}
+	\label{fig:scalability}
+\end{figure}
+The first performed experiment aimed to asses the performance  of the three proposed methods.
+The experiments were run on an Intel Core i7-9850h, a mid-range consumer CPU.
+Experiments were run for all three methods for different sized logs and different sized dictionaries, in this case dictionary size is determined by the number of different activities in the log.
+All experiments were performed in python, however the Word Mover's distance was calculated using pyemd, a python wrapper to calculate the WMD/Emd with numpy efficiency.
+As such when comparing ICT and WMD times the efficiency difference between python and C should be taken into account.
+
+The resulting times are shown in \cref{fig:scalability}.
+Over all log sizes a similar pattern is observable, with WMD and ICT behaving somewhat similar and \emph{trace2vec} consistently outperforming the other two methods in all experiments.
+For small dictionary sizes  (~10) WMD does outperform ICT, however that is likely due to the aforementioned efficiency differences between the implementations.
+It is doubly notable that despite these efficiency differences ICT already starts to outperform WMD for dictionary sizes of 20, with the gap growing even larger for dictionaries of size 30, ICT is finished after roughly half the time WMD takes.
+These experiments seem to suggest that ICT scales much better with larger dictionary sizes.
+Especially when considering that the current implementation is still unoptimized ICT could very well serve as a more efficient alternative to WMD, especially when working with complex logs.
+It should also be noted that the relative run time difference between both methods seems so slightly scale in the ICT's favor, starting out at $\frac{45}{75}=0.6$ for a log of size 500 and improving to $\frac{3824}{7032}\approx 0.54$ for logs of size 5000.
+
+Lastly the \emph{trace2vec} methods substantially outperforms both the other methods, since only the cosine similarity, a simple mathematical formula needs to evaluated at run time.
+This comes with the additional overhead of training trace embeddings, however according to the authors training that "does not take a long time" but they don't include statistics in that regard.
+The \emph{trace2vec} method has the additional benefit of not being dependent on the activities during run time, since traces are directly compared in the trace embedding space, which means that the size of the dictionary is irrelevant for this approach, making it even more attractive for processes with large numbers of activities than the ICT.
+\todo{Include log size scaling plot? Do I have the space for that? It is not really that interesting as far as I can tell}
+
+\subsection{Noise experiment}
+
+\subsection{Discovery experiment}
+
+\color{black}
 \section{Discussion}
 
 Peeperkorn et al. obtained promising first results for a novel bedding based approach towards conformance checking.
