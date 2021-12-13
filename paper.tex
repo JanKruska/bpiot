@@ -203,17 +203,38 @@ Most importantly it makes it possible to define notions of distance and/or (dis-
 
 \section{Method}
 
-A lot of conformance checking algorithms, notably the classical ones outlined above, aim to measure conformance between a log and a model.
+Many conformance checking algorithms, notably the classical ones outlined above, aim to measure conformance between a log and a model.
 While this is the fundamental question to be answered, this comparison between two different types of objects greatly complicates the task.
 However, by re-framing the problem on can greatly simplify it.
 Instead of formulating the problem in terms of model-to-log comparison, one can formulate it as a comparison problem of a real log to a model log.
 Such a reformulation of the problem is possible since all (reasonably defined) models are able to generate sample traces, and can therefore produce a model log.
 Then the whole problem is reframed as log-to-log comparisons, i.e. determining similarities between objects of the same type, for which a broad range of techniques already exist.
 This has the additional advantage that it is model-independent, since no limitations apart from the ability to generate traces are put on the type of model.
+\begin{figure}
+	\includegraphics[width=1\textwidth]{figures/structure}
+	\caption{General structure of the approach}
+	\label{fig:structure}
+\end{figure}
 
 \color{blue}
-Given two logs, one real and one produced by replaying the model, it is first necessary to train the \emph{act2vec}\cite{KBWe18} embedding.
+Three different techniques were outlined in the paper, all following a similar structure outlined in \cref{fig:structure}.
+First a model log is produced from the model by using an appropriate replay semantics for the model.
+Then, given these two logs, one real and one produced by replaying the model, it is possible to train the \emph{act2vec}\cite{KBWe18} embedding.
+Based on these embeddings a dissimilarity function needs to be defined to compare different traces, however the \emph{act2vec} embedding only yields distance measurements between activities and not between traces.
+Here the differences between the three techniques come into play.
+The first two, the Word Mover's Distance and Iterative Constrained Transfers, can directly utilize the distances between activities to determine a distance between two collections of activities.
+The last one, \emph{trace2vec}, further needs to train a trace embedding based on activity embeddings, and can then perform direct comparisons in the trace embedding space.
+All three methods however lead to a reasonable dissimilarity metric between traces.
+Using one of these metrics a dissimilarity matrix can be built up describing the pairwise dissimilarities between the real log and the model log.
 \color{black}
+From here on we will assume that each row corresponds to a trace from the model log and each column corresponds to a trace from the real log, i.e. $a_{ij}$ is the dissimilarity of the $i$-th trace from the model log with the $j$-th trace of the real log.
+As such each column contains the dissimilarity of a trace in the real log with all traces from the model log, with the minimum of a column being the closest match in the model log.
+A trace that can be closely replayed by the model, i.e. one that has a close match to a trace produced from the model, is a well fitting one.
+As such the column minimum corresponds to a fitness metric of the trace and thus the mean of all column minima is a fitness metric between log and log.
+Conversely, each row contains all similarities between a trace in the model log and all traces in the real log.
+A precise model should not allow for more traces than observed in the real log, as such each model trace should have as close a match as possible in the real log for the model to be precise.
+As such the row minimum corresponds to a precision metric for the trace in the model log and thus the mean of all row minima is a precision metric between log and log.
+
 \subsection{act2vec}
 The first two methods utilize \emph{act2vec} to train activity embeddings.
 These activity embeddings then allows for the comparison of two traces by comparing their individual activities in the embedding space.
@@ -229,31 +250,36 @@ Every trace then describes a probability distribution over the activities contai
 In contrast to the two previous approaches, which used activity embeddings, it is also possible to train trace embeddings.
 The relationship between \emph{act2vec} and \emph{trace2vec} is analogous to the one between \emph{word2vec} and \emph{doc2vec}.
 When using this method every trace is embedded into a vector space and any distance metric that is deemed appropriate can be chosen.
-In the paper the cosine similarity \todo{formula?} was chosen for its simplicity and the fact that it is bounded in the interval $[-1,1]$.
+In the paper the cosine similarity \cref{eq:cosine} was chosen for its simplicity and the fact that it is bounded in the interval $[-1,1]$.
+\begin{equation}
+	\cos(x,  y) = \frac { x \cdot  y}{|| x|| \cdot || y||}
+	\label{eq:cosine}
+\end{equation}
 This is much less computationally expensive as the previous two approaches which were complex distance metric between two sets of embeddings.
 
 \subsection{Definition of Fitness and precision}
-Given some similarity metric and the real log as well as the model log a dissimilarity matrix can be built up.
-From here on we will assume that each row corresponds to a trace from the model log and each column corresponds to a trace from the real log, i.e. $a_{ij}$ is the dissimilarity of the $i$-th trace from the model log with the $j$-th trace of the real log.
-As such each column contains the dissimilarity of a trace in the real log with all traces from the model log, with the minimum of a column being the closest match in the model log.
-A trace that can be closely replayed by the model, i.e. one that has a close match to a trace produced from the model, is a well fitting one.
-As such the column minimum corresponds to a fitness metric of the trace and thus the mean of all column minima is a fitness metric between log and log.
-Conversely, each row contains all similarities between a trace in the model log and all traces in the real log.
-A precise model should not allow for more traces than observed in the real log, as such each model trace should have as close a match as possible in the real log for the model to be precise.
-As such the row minimum corresponds to a precision metric for the trace in the model log and thus the mean of all row minima is a precision metric between log and log.
+
 
 \section{Results}
 
 \subsection{Experimental setup}
 
 To evaluate the suitability of the method three sets of experiments were performed. 
+\color{blue}
+All experiments utilized (the same) randomly generated process trees, that were constructed using the algorithms in the \emph{pm4py} library.
+Three size configurations described by minimum number, the mode and the maximum number of visible activities were chosen: 5-10-15, 10-20-30 and 15-30-45.
+Furthermore, four operator configurations were chosen described by the probability for randomly choosing each available operator.
+These were in no particular order: Sequence: $0.75$, Parallel $0.25$, secondly Sequence: $0.75$, Choice $0.25$, thirdly 1. Sequence: $0.5$, Parallel $0.25$, Choice $0.25$ and lastly $0.25$ for all (Sequence, Parallel, Choice and Loop) operators.
+Both of these configuration were combined to generate a grid of $12$ process trees, with the hope that these cover a sufficient range of different behaviour.
+\color{black}
+
 The first set of experiments focussed on the scalability of the approach, especially since more traditional approaches do not scale well. This aspect is doubly important when talking about the Internet of Things, where computing resources are generally far more constrained, while still producing large amounts of event data.
 
 The second set of experiments aimed to determine whether the method responded as expected when providing noisy logs.
 These experiments were designed to verify the soundness of approach.
 This was done by generating logs from random process trees generated by pm4py, applying random noise on these logs and determining the conformance between the noiseless and noisy logs.
 The expectation is that any reasonable conformance metric should deteriorate the more noise is added to the log.
-\todo{Explain more how process trees were generated}
+
 The third and last set of experiments was designed to compare the performance of the proposed methods (WMD,ICT \& trace2vec) to existing established conformance metrics, namely alignments, behavioural fitness \cite{GMVB09} and ETC precision \cite{MuCa10}.
 This was achieved by generating 1000 traces from a randomly generated process tree, which form the real log.
 Then a discovery algorithm was applied to this log to discover a model, here Alpha Miner, Inductive Miner infrequent (IMi) with noise levels 0 and 1 and the ILP Miner were selected as discovery algorithms.
