@@ -222,7 +222,7 @@ First a model log is produced from the model by using an appropriate replay sema
 Then, given these two logs, one real and one produced by replaying the model, it is possible to train the \emph{act2vec}\cite{KBWe18} embedding.
 Based on these embeddings a dissimilarity function needs to be defined to compare different traces, however the \emph{act2vec} embedding only yields distance measurements between activities and not between traces.
 Here the differences between the three techniques come into play.
-The first two, the Word Mover's Distance and Iterative Constrained Transfers, can directly utilize the distances between activities to determine a distance between two collections of activities.
+The first two, the Word Mover's Distance \cite{KSKW15} and Iterative Constrained Transfers, can directly utilize the distances between activities to determine a distance between two collections of activities.
 The last one, \emph{trace2vec}, further needs to train a trace embedding based on activity embeddings, and can then perform direct comparisons in the trace embedding space.
 All three methods however lead to a reasonable dissimilarity metric between traces.
 Using one of these metrics a dissimilarity matrix can be built up describing the pairwise dissimilarities between the real log and the model log.
@@ -243,9 +243,41 @@ Every trace then describes a probability distribution over the activities contai
 
 \subsubsection{Word Mover's Distance}
 
-\todo{Use pseudocode from paper?}
-\todo{Describe both WMD and ICT in separate sections, or just mention that ICT gives a relaxed formulation of WMD that can be easier to compute}
+\color{blue}
+The Word Mover's Distance \cite{KSKW15} is a variant of the Earth Mover's Distance \cite{RTGu98} adapted for natural language processing.
+This family of metrics has proved itself to be quite robust as well as accurate in the past.
+The Earth Mover's distance measures the distance between two probability distributions.
+The informal interpretation of this is that there are two distributions, represented by piles of earth.
+The distance between two distributions can be interpreted as the amount of work that needs to be done to transform one into the other.
+Clearly the work and thus the distance between two distributions depends on both the amount of earth on each of the piles and on the distance between piles.
+Formally the EMD defines a distance metric for probability distributions over some vector space with a notion of distance.
 
+This can be formulated as linear program by formulating it as a min-cost-max-flow problem with two additional contraints. An outflow one stating, that from each source-pile no more can leave than actually present and an inflow constraint stating that now more can flow into each sink-pile no more can flow than being required.
+
+In the case of embeddings and natural language processing this metric has also become known as the Word Mover's Distance.
+Here the word embeddings represent the piles, i.e. the distance between two word embeddings represents the "work" needed to transform one into the other, whereas collections of words, or more specifically their embeddings, such as sentences or even documents represent the probability distributions.
+
+It should also be noted that the WMD does not take word order into account, which is reasonable for e.g. semantic classification of documents, but seems much more important in the case of business processes, where it at leat intuitively seems to be important to avoid classifying $\langle a,b,c\rangle$ as being zero distance from a trace like $\langle c,b,a \rangle$.
+\todo{Use pseudocode from paper?}
+
+\subsubsection{Iterative Constrained Transfers}
+The EMD and variants of it are very attractive since they are both very general and exhibit good accuracy for both search and classification.
+A major drawback of such methods however is the cubic complexity in the size of the input distributions, which makes it infeasible for larger problems.
+In the case of conformance checking the size of the input distribution is determined by the number of activities in the log, for which good scalability is desired.
+There are a number of techniques that aim to reduce the complexity of EMD-based approaches, that obtain an approximation of the EMD by relaxing some of the constraints.  
+One example of such methods is the Relaxed Word Mover's distance which drops the second (inflow) constraint, thus greatly simplifying the solution.
+While this makes it easier to calculate the solution, the RWMD only gives an lower bound on the WMD.
+Another such methods is the Iterative Constrained Transfers \cite{AtMi18} algorithm that has linear complexity in the size of the input distribution.
+Instead of just dropping the inflow constraint it is instead replaced by an edge capacity constraint.
+The main benefit of this is that it avoid the formulation as a linear program and is instead solvable using a much less powerful, but much quicker, direct algorithm.
+
+Furthermore there is also an approximation to the ICT called Approximate Computation of ICT (ACT), by limiting the number of iterations in said direct algorithm.
+ICT and ACT agree in the limit, however if the number of occuring activities is relatively low, even small numbers of iterations lead to sufficient results.
+Only if there are some activities that occur significantly more often than other it is necessary to perform more iterations.
+
+The ICT and ACT again provide a lower bound to the WMD, since it is not guaranteed that the inflow constraint is met, however the ICT/ACT lower bound is higher than the RWMD lower bound due to the additional constraint that was introduced.
+\todo{Pseudocode?}
+\color{black}
 \subsection{trace2vec}
 In contrast to the two previous approaches, which used activity embeddings, it is also possible to train trace embeddings.
 The relationship between \emph{act2vec} and \emph{trace2vec} is analogous to the one between \emph{word2vec} and \emph{doc2vec}.
