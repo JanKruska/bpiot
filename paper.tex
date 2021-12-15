@@ -103,7 +103,7 @@ This limits the complexity of algorithms that can be performed on each of the de
 Overall it should be noted that asynchronous decentralized networks are common for the Internet of Things, which needs to be taken into account when applying BPM.
 Secondly, the Internet of Things has both the potential and demand for greater number of online analyses, i.e. in contrast to classical business processes it is much more important to evaluate a process during the execution, to give feedback, and to possibly even influence a process during its execution.
 
-\color{green}
+\color{red}
 The following paper is structured as follows.
 First some background and important concepts for the rest of the paper are introduced n \cref{sec:background}.
 This includes a deeper look the conformance checking problem, which is given in \cref{sub:conformance}, including a description of the two established families of techniques.
@@ -116,7 +116,7 @@ After the techniques have been outlined a discussion of the results from their e
 
 \section{Background}
 \label{sec:background}
-\color{green}
+\color{red}
 Naturally there are numerous sub problems to be solved in business process management.
 Often each problem can be viewed as a building block in a bigger system, and good solutions to one problem can enable more insightful further analyses in dependent problems.
 For example the first step in many business process management use cases will be the discovery of a process model.
@@ -282,7 +282,7 @@ Every trace then describes a probability distribution over the activities contai
 			\State subject to:
 			\State $\sum_{j=1}^{n}T_{ij}=p_i \forall i \in \{1,...,n\}$ \Comment{Outflow}
 			\State $\sum_{i=1}^{n}T_{ij}=q_j \forall j \in \{1,...,n\}$ \Comment{Inflow}
-			\Return distance
+			\State \Return distance
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
@@ -320,10 +320,10 @@ It should also be noted that the WMD does not take word order into account, whic
 				\State $l \gets l+1$
 			\EndWhile
 			\If{$p_i \neq 0$} \Comment{Move any remaining weight in $p_i$ to $q_{s(k)}$}
-				$t \gets t + p_ic(i,s(k))$ \Comment{Move rest to $q_{s(k)}$}
+				\State $t \gets t + p_ic(i,s(k))$ \Comment{Move rest to $q_{s(k)}$}
 			\EndIf
 		\EndFor
-		\Return $t$
+		\State \Return $t$
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
