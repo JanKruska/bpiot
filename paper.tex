@@ -9,7 +9,7 @@
 \usepackage{todonotes}
 \usepackage[autostyle]{csquotes}  
 \usepackage{hyperref}
-\usepackage{cleveref}
+\usepackage[capitalise]{cleveref}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{algorithm}
@@ -22,22 +22,22 @@
 % \renewcommand\UrlFont{\color{blue}\rmfamily}
 
 \begin{document}
-%
-\title{Conformance Checking Using Embeddings and their Applicability in the Internet of Things}
-%
-\titlerunning{Conformance Checking Using Embeddings in the IoT}
-% If the paper title is too long for the running head, you can set
-% an abbreviated paper title here
-%
-\author{Jan Kruska}
-%
-\authorrunning{Jan Kruska}
-% First names are abbreviated in the running head.
-% If there are more than two authors, 'et al.' is used.
-%
-\institute{Chair of Process and Data Science\\Department of Computer Science, RWTH Aachen, Aachen, Germany}
-%	\email{jan.kruska@rwth-aachen.de}\\
-%	\url{http://www.pads.rwth-aachen.de/}}
+	%
+	\title{Conformance Checking Using Embeddings and their Applicability in the Internet of Things}
+	%
+	\titlerunning{Conformance Checking Using Embeddings in the IoT}
+	% If the paper title is too long for the running head, you can set
+	% an abbreviated paper title here
+	%
+	\author{Jan Kruska}
+	%
+	\authorrunning{Jan Kruska}
+	% First names are abbreviated in the running head.
+	% If there are more than two authors, 'et al.' is used.
+	%
+	\institute{Chair of Process and Data Science\\Department of Computer Science, RWTH Aachen, Aachen, Germany}
+	%	\email{jan.kruska@rwth-aachen.de}\\
+	%	\url{http://www.pads.rwth-aachen.de/}}
 %
 \maketitle              % typeset the header of the contribution
 %
@@ -75,16 +75,15 @@ In the last two decades, the cost for networking components has decreased signif
 This increasing networked structure that enables easy information sharing between the members of the network has become known under a few names, most prominently as the "Internet of Things".
 Unfortunately due to shifting developments in the last two decades and marketing efforts associated with the Internet of Things, it is hard to pin down the exact meaning of the term. 
 The International Telecommunication Union gives the following succinct definition of the Internet of Things in their recommendation \cite{ITUT12} on the topic:
-\blockquote{[The Internet of Things is] A  global  infrastructure  for  the  information  society,  enabling  advanced  services  by  interconnecting  (physical  and  virtual)  things  based  on  existing  and  evolving  inter-operable information and communication technologies.}
+\blockquote{[The Internet of Things is] A  global  infrastructure  for  the  information  society,  enabling  advanced  services  by  interconnecting  (physical  and  virtual)  things  based  on  existing  and  evolving  interoperable information and communication technologies.}
 
 It should be noted that this definition is very broad and extends beyond the notion of the "Smart Home" that has become somewhat of a representative of the Internet of Things.
 The definition neither limits the scale (locally, nationally, or even globally) nor the range of use cases.
-The rest of the paper will follow this definition since the object of interest here are fully digitized networked control systems and the information pooling and sharing those bring with it.
+The rest of the paper will follow this definition since the objects of interest here are fully digitized networked control systems and the information pooling and sharing those bring with it.
 
-
-This vast infrastructure of small networked devices could prove to be fertile ground for process analysis.
+This vast infrastructure of small networked devices could prove to be fertile ground for process analysis \cite{JKM*20}.
 These controllers generally have some attached sensors to monitor and control the devices they are attached to and in combination with these produce an equally vast amount of events.
-This is especially interesting in the case of automation in manufacturing\cite{JKM*20} for which the term Internet of Production has been coined, here the hope is that networked information sharing between controllers on a production line or factory floor could greatly enhance the production capabilities of not just single production lines but entire automated factories.
+This is especially interesting in the case of automation in manufacturing, where networked information sharing between controllers on a production line or factory floor has the potential to greatly enhance the production capabilities of not just single production lines but entire automated factories.
 Especially in the case of manufacturing, there is a large financial interest in optimizing production efficiency for various reasons such as increasing speed, increasing productivity or reducing downtime.
 
 However, the Internet of Things is also very attractive from the process analysis research perspective.
@@ -92,7 +91,7 @@ During the birth of process mining as a discipline a big focus laid on classical
 Yet as the field matures the capabilities of algorithms and accordingly the difficulty of interesting problems grows.
 As such there is research demand \cite{JKM*20} for different -- to test whether algorithms perform equally well in other scenarios --, larger -- to improve the scalability of algorithms -- and more complex -- to test and improve the capacity to deal with more interwoven processes -- problems.
 At the same time, only areas with a high level of digitalization can realistically be considered here since it is of paramount priority to be able to properly obtain the event data of any process in question.
-This has been a problem in the past when considering any process for which event data has to be manually entered, since in all these cases there will be discrepancies between digitally recorded processes and their real-world execution.
+This has been a problem in the past when considering any process for which event data has to be manually entered since in all these cases there will be discrepancies between digitally recorded processes and their real-world execution.
 The Internet of Things fulfills all these categories, it is digital by design, so relatively few efforts have to be made to obtain a large amount of well-enough structured event data and the scale and complexity of the problem can scale up very well with growing network sizes. 
 Furthermore, it is also possible to use techniques from the Internet of Things to further digitize classical processes and reduce dependencies on manual event recording.
 
@@ -101,15 +100,15 @@ The first two major differences are attributable to the structure of the Interne
 Firstly the Internet of Things is made up of numerous small devices all with limited compute capabilities.
 This limits the complexity of algorithms that can be performed on each of the devices and means that either a separate system with the role of performing analyses needs to be introduced or distributed algorithms need to be developed.
 Overall it should be noted that asynchronous decentralized networks are common for the Internet of Things, which needs to be taken into account when applying BPM.
-Secondly, the Internet of Things has both the potential and demand for greater number of online analyses, i.e. in contrast to classical business processes it is much more important to evaluate a process during the execution, to give feedback, and to possibly even influence a process during its execution.
+Secondly, the Internet of Things has both the potential and demand for a greater number of online analyses, i.e. in contrast to classical business processes it is much more important to evaluate a process during the execution, to give feedback, and to possibly even influence a process during its execution.
 
 \color{red}
 The following paper is structured as follows.
-First some background and important concepts for the rest of the paper are introduced n \cref{sec:background}.
-This includes a deeper look the conformance checking problem, which is given in \cref{sub:conformance}, including a description of the two established families of techniques.
-Furthermore the important limitations of these two approaches are highlighted.
-Then a brief overview over the required NLP techniques is given in \cref{sub:nlp}.
-Provided with the basic knowledge concerning both conformance checking and NLP, the novel embedding based conformance checking approaches from \cite{PBWe20} are described in \cref{sec:method}.
+First, some background and important concepts for the rest of the paper are introduced n \cref{sec:background}.
+This includes a deeper look at the conformance checking problem, which is given in \cref{sub:conformance}, including a description of the two established families of techniques.
+Furthermore, the important limitations of these two approaches are highlighted.
+Then a brief overview of the required NLP techniques is given in \cref{sub:nlp}.
+Provided with the basic knowledge concerning both conformance checking and NLP, the novel embedding-based conformance checking approaches from \cite{PBWe20} are described in \cref{sec:method}.
 After the techniques have been outlined a discussion of the results from their experiments follows in \cref{sec:results}.
 \cref{sec:discussion} concludes the paper with a consideration of limitations in their approach and possible future work, as well as a discussion of the applicability of these techniques in the Internet of Things.
 \color{black}
@@ -117,14 +116,14 @@ After the techniques have been outlined a discussion of the results from their e
 \section{Background}
 \label{sec:background}
 \color{red}
-Naturally there are numerous sub problems to be solved in business process management.
-Often each problem can be viewed as a building block in a bigger system, and good solutions to one problem can enable more insightful further analyses in dependent problems.
-For example the first step in many business process management use cases will be the discovery of a process model.
+Naturally, there are numerous subproblems to be solved in business process management.
+Often each problem can be viewed as a building block in a bigger system, and good solutions to one problem can enable more insightful further analyses in subsequent problems.
+For example, the first step in many business process management use cases will be the discovery of a process model.
 Once a process model has been obtained through some means further analyses can follow.
-One of these fields is conformance checking, which as a technique, closely follows discovery, since it's main goal is to quantify how well a model conforms to a log.
-There are currently two dominant branches of conformance checking, replay based algorithms and trace alignment algorithms.
-Peeperkorn et al. present a novel conformance checking technique that follows and alternate route \cite{PBWe20} to address the conformance checking problem, through techniques adapted from natural language processing.
-However, before this technique can be discussed in depth it is paramount to understand some of the basic ideas underlying both conformance checking and natural language processing. 
+One of these fields is conformance checking, which as a technique, closely follows discovery, since its main goal is to quantify how well a model conforms to a log.
+There are currently two dominant branches of conformance checking, replay-based algorithms, and trace alignment algorithms.
+Peeperkorn et al. present a novel conformance checking technique that follows an alternate route \cite{PBWe20} to address the conformance checking problem, through techniques adapted from natural language processing.
+However, before this technique can be discussed in-depth it is paramount to understand some of the basic ideas underlying both conformance checking and natural language processing. 
 \color{black}
 
 \subsection{Conformance Checking}
@@ -149,18 +148,20 @@ So when developing or using a process discovery algorithm the question of how we
 \subsubsection{Quality criteria}
 It is important to note that model quality is not a single-dimensional criterion, instead, it exists in a multi-dimensional space where the different axes represent different quality criteria.
 As such it is not really appropriate to talk about one conformance metric, but instead, the four major axes should be considered.
-1. Fitness (few false negatives): The first of these metrics is fitness. This quality criterion is closely related to the statistical measure of recall. In the case of business process management fitness measures how many of the observed traces are actually possible executions of the model.
-2. Precision (few false positives): Closely related to the statistical measure of precision, this metric measures how many false positives there are in relation to true positives. In the case of process models, this is the fraction of traces allowed by the model that are actually observed in the log.
-3. Simplicity: How "simple" a model is, generally a smaller model that describes a process equally well is preferred for reasons such as performance and comprehensibility .
-4. Generalization: Generalization is the model's ability to be applicable to possible future traces of a given process. 
-It would clearly be possible to create a model with perfect precision and recall, by simply encoding the traces themselves in the model. However, that would not be a model that generalizes well since it captures none of the dynamism of the underlying process. 
-This is the most difficult criterion, since it is arguing about unknown possible future behavior.
+\begin{enumerate}
+	\item Fitness (few false negatives): The first of these metrics is fitness. This quality criterion is closely related to the statistical measure of recall. In the case of business process management fitness measures how many of the observed traces are actually possible executions of the model.
+	\item Precision (few false positives): Closely related to the statistical measure of precision, this metric measures how many false positives there are in relation to true positives. In the case of process models, this is the fraction of traces allowed by the model that are actually observed in the log.
+	\item Simplicity: How "simple" a model is, generally a smaller model that describes a process equally well is preferred for reasons such as performance and comprehensibility.
+	\item Generalization: Generalization is the model's ability to be applicable to possible future traces of a given process. 
+	It would clearly be possible to create a model with perfect precision and recall, by simply encoding the traces themselves in the model. However, that would not be a model that generalizes well since it captures none of the dynamism of the underlying process. 
+	This is the most difficult criterion since it is arguing about unknown possible future behavior.
+\end{enumerate}
 
 Of these four quality criteria conformance checking is mainly concerned with precision and recall, but depending on the algorithms possibly some statements about generalization could be made as well. 
 
 \subsubsection{Token-based Replay}
 
-The easiest conformance checking method, both conceptually and algorithmically is probably Token-based replay.
+The easiest conformance checking method both conceptually and algorithmically is probably Token-based replay.
 The intuition behind token-based replay is to replay an observed trace on a process model, specifically a Petri net, and to determine where problems occur.
 
 This is done by keeping track of four numbers: \emph{\underline{p}roduced}, \emph{\underline{c}onsumed}, \emph{\underline{m}issing} and \emph{\underline{r}emaining} tokens during replay.
@@ -278,11 +279,11 @@ Every trace then describes a probability distribution over the activities contai
 		\State $p_i,q_i := $ normalized count of activity $i$ in $p$ or $q$ respectively
 		\State $c(i,j) :=$ Distance between embeddings of activity $i$ and $j$
 		\Function{$F_{WMD}$}{$p,q,c$}
-			\State distance $\gets$ $\min \sum_{i,j=1}^n T_{ij}c(i,j)$
-			\State subject to:
-			\State $\sum_{j=1}^{n}T_{ij}=p_i \forall i \in \{1,...,n\}$ \Comment{Outflow}
-			\State $\sum_{i=1}^{n}T_{ij}=q_j \forall j \in \{1,...,n\}$ \Comment{Inflow}
-			\State \Return distance
+		\State distance $\gets$ $\min \sum_{i,j=1}^n T_{ij}c(i,j)$
+		\State subject to:
+		\State $\sum_{j=1}^{n}T_{ij}=p_i \forall i \in \{1,...,n\}$ \Comment{Outflow}
+		\State $\sum_{i=1}^{n}T_{ij}=q_j \forall j \in \{1,...,n\}$ \Comment{Inflow}
+		\State \Return distance
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
@@ -312,16 +313,16 @@ It should also be noted that the WMD does not take word order into account, whic
 		\State $h_p,h_q :=$ amount of different activities in trace $p$ and trace $q$ 
 		\Function{$F_{ICT}$}{$p,q,c,k$}
 		\For{$i=1...h_p$}
-			\State $s \gets \arg \min_k(c(i,[1,...,h_q]))$ \Comment{Find $k$ activities with the smallest cost}
-			\While{$l < k$}
-				\State $r \gets \min(p_i,q_{s(l)}))$ \Comment{Edge constraint, move as much as possible but no more than allowed}
-				\State $p_i \gets p_i - r$ \Comment{Move weight}
-				\State $t \gets t + rc(i,j)$ \Comment{Update cost}
-				\State $l \gets l+1$
-			\EndWhile
-			\If{$p_i \neq 0$} \Comment{Move any remaining weight in $p_i$ to $q_{s(k)}$}
-				\State $t \gets t + p_ic(i,s(k))$ \Comment{Move rest to $q_{s(k)}$}
-			\EndIf
+		\State $s \gets \arg \min_k(c(i,[1,...,h_q]))$ \Comment{Find $k$ activities with the smallest cost}
+		\While{$l < k$}
+		\State $r \gets \min(p_i,q_{s(l)}))$ \Comment{Edge constraint, move as much as possible but no more than allowed}
+		\State $p_i \gets p_i - r$ \Comment{Move weight}
+		\State $t \gets t + rc(i,j)$ \Comment{Update cost}
+		\State $l \gets l+1$
+		\EndWhile
+		\If{$p_i \neq 0$} \Comment{Move any remaining weight in $p_i$ to $q_{s(k)}$}
+		\State $t \gets t + p_ic(i,s(k))$ \Comment{Move rest to $q_{s(k)}$}
+		\EndIf
 		\EndFor
 		\State \Return $t$
 		\EndFunction
@@ -355,9 +356,6 @@ In the paper, the cosine similarity \cref{eq:cosine} was chosen for its simplici
 \end{equation}
 This is much less computationally expensive than the previous two approaches which were complex distance metrics between two sets of embeddings.
 
-\subsection{Definition of Fitness and precision}
-
-
 \section{Results}
 \label{sec:results}
 \subsection{Experimental setup}
@@ -385,9 +383,9 @@ Furthermore, the second experiment only utilized the replacement noise function 
 \color{black}
 The expectation is that any reasonable conformance metric should deteriorate the more noise is added to the log.
 
-The third and last set of experiments was designed to compare the performance of the proposed methods (WMD,ICT \& trace2vec) to existing established conformance metrics, namely alignments, behavioural fitness \cite{GMVB09} and ETC precision \cite{MuCa10}.
+The third and last set of experiments was designed to compare the performance of the proposed methods (WMD,ICT \& trace2vec) to existing established conformance metrics, namely alignments, behavioral fitness \cite{GMVB09} and ETC precision \cite{MuCa10}.
 This was achieved by generating 1000 traces from a randomly generated process tree, which form the real log.
-Then a discovery algorithm was applied to this log to discover a model, here Alpha Miner, Inductive Miner infrequent (IMi) with noise levels 0 and 1 and the ILP Miner were selected as discovery algorithms.
+Then a discovery algorithm was applied to this log to discover a model, here Alpha Miner, Inductive Miner infrequent (IMi) with noise levels 0 and 1, and the ILP Miner were selected as discovery algorithms.
 Then fitness and precision between the discovered model and the real log were calculated using the previously mentioned algorithms as well as the method described in the paper.
 
 \color{blue}
@@ -461,7 +459,7 @@ It is unclear whether that is due to the unoptimized nature of the methods, it c
 Yet when models deteriorate there is a tendency for all measurements to move together.
 At the current point, only a qualitative analysis for imperfect models is possible since the values determined by WMD, ICT and \emph{trace2vec} are not proper metrics since they do not fall into the $0,1$ range.
 As such it is hard to interpret what a non-optimal value actually means, and as such the data does not allow for a quantitative comparison  at this point.
-The results that were obtained however suggest that these methods could be a useful alternative to established techniques, and that further research into them is warranted.
+The results that were obtained however suggest that these methods could be a useful alternative to established techniques and that further research into them is warranted.
 
 It is of course also important to point out that the validation techniques should not be seen as perfect normative techniques, since both of these also significantly disagree for some models. 
 
@@ -490,13 +488,13 @@ At least from an intuitive understanding of conformance checking order of activi
 The authors themselves suggest considering the use of $n$-grams instead of 1-grams, since their application seems more feasible in business processes as compared to classical NLP.
 
 Lastly, the paper should be understood as a first stepping stone for the use of NLP-related algorithms for the task of conformance checking.
-The use of embeddings is often a first step in such approaches, but it is entirely possible that more advanced NLP algorithms may give even better results.
+The use of embeddings is often the first step in such approaches, but it is entirely possible that more advanced NLP algorithms may give even better results.
 As such further research into the applicability of a variety of other methods could be fruitful.
 The authors especially mention $n$-grams, Embeddings from Language Models, Global Vectors for Word Representation, and recurrent neural networks.
 
 \color{green}
 \subsection{Internet of Things}
-An important question that was not yet properly addressed is whether this method offers benefits in the sue case of the internet of things and how well it would be adaptable to such an environment.
+An important question that was not yet properly addressed is whether this method offers benefits in the use case of the internet of things and how well it would be adaptable to such an environment.
 \color{black}
 %
 % ---- Bibliography ----
