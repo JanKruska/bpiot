@@ -395,6 +395,7 @@ Then fitness and precision between the discovered model and the real log were ca
 	\caption{Runtimes for all three methods for varying sizes of logs and dictionaries. Data can be found in \cite{MuCa10} Table 2}
 	\label{fig:scalability}
 \end{figure}
+\todo{maybe talk about scaling}
 The first performed experiment aimed to assess the performance  of the three proposed methods.
 The experiments were run on an Intel Core i7-9850h, a mid-range consumer CPU.
 Experiments were run for all three methods for different sized logs and different sized dictionaries, in this case, dictionary size is determined by the number of different activities in the log.
@@ -492,9 +493,17 @@ The use of embeddings is often the first step in such approaches, but it is enti
 As such further research into the applicability of a variety of other methods could be fruitful.
 The authors especially mention $n$-grams, Embeddings from Language Models, Global Vectors for Word Representation, and recurrent neural networks.
 
-\color{green}
+\color{red}
 \subsection{Internet of Things}
 An important question that was not yet properly addressed is whether this method offers benefits in the use case of the internet of things and how well it would be adaptable to such an environment.
+The first important thing to note in that regard is performance.
+Sadly the authors did not include a performance measure for the baseline methods but it should be noted that there was one case where alignments did not produce a result in a reasonable time frame. 
+However, it is well known that alignments are a rather inefficient technique due to the inherent non-determinism and complex search structures needed to find an optimal alignment.
+As such it should be pointed out that any performance efficient technique that rivals alignments in expressive power, is desired in normal process mining, while being doubly important in any environment where computing power is much more limited and where data needs to be processed in real time.
+Furthermore, embeddings provide a way to move computations out of the conformance calculation into preliminary calculations, namely determining the embedding function.
+While the embeddings were trained separately and independently for each tree in the focus paper, a good embedding function for a process's activities and/or traces could theoretically be shared in an Internet of Things.
+This is attractive since it further decreases the amount of work needed to evaluate a dissimilarity, and, as can be seen at the \emph{trace2vec} case, generally exhibits much better scaling properties.
+Separating the conformance checking algorithm into a (more) efficient and well scaling evaluation part and a less efficient but shareable training part, could make such algorithms much more desirable in use-cases with many activities, long traces and/or high performance requirements.
 \color{black}
 %
 % ---- Bibliography ----
