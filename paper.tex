@@ -495,6 +495,13 @@ The authors especially mention $n$-grams, Embeddings from Language Models, Globa
 
 \color{red}
 \subsection{Internet of Things}
+When analyzing such an approach in the context of the Internet of Things, there are three main facets that need to be considered.
+Due to the fact that the Internet of Things itself, as well as it's architectures, are very heterogeneous it will always be possible to find networks where one of the following limitations or requirements does not hold to some extent, however generally speaking the following should be the main considerations when trying to adapt a process management technique to the Internet of Things.
+First the Internet of Things is made up of many less powerful machines that generate a lot of data, and while it is of course possible to integrate more powerful computers into the internet of things, high performance, especially on limited hardware, is a major goal.
+The second consideration should be that the Internet of Things is very "online", in the sense that Events are constantly produced and thus analysis, such as conformance checking, during process execution is a high desired property of any technique. 
+Lastly the Internet of Things is distributed, and as such certain features such as perfect connectivity, knowledge of all members of the network and others are much more relaxed.
+
+\subsubsection{Performance}
 An important question that was not yet properly addressed is whether this method offers benefits in the use case of the internet of things and how well it would be adaptable to such an environment.
 The first important thing to note in that regard is performance.
 Sadly the authors did not include a performance measure for the baseline methods but it should be noted that there was one case where alignments did not produce a result in a reasonable time frame. 
@@ -503,7 +510,20 @@ As such it should be pointed out that any performance efficient technique that r
 Furthermore, embeddings provide a way to move computations out of the conformance calculation into preliminary calculations, namely determining the embedding function.
 While the embeddings were trained separately and independently for each tree in the focus paper, a good embedding function for a process's activities and/or traces could theoretically be shared in an Internet of Things.
 This is attractive since it further decreases the amount of work needed to evaluate a dissimilarity, and, as can be seen at the \emph{trace2vec} case, generally exhibits much better scaling properties.
-Separating the conformance checking algorithm into a (more) efficient and well scaling evaluation part and a less efficient but shareable training part, could make such algorithms much more desirable in use-cases with many activities, long traces and/or high performance requirements.
+Separating the conformance checking algorithm into a (more) efficient and well scaling evaluation part and a less efficient but shareable training part, could make such algorithms much more desirable in use-cases with many activities, long traces and/or high performance requirements, such as real time evaluation.
+\subsubsection{Online/Streaming algorithms}
+An online conformance checking technique based on alignments is presented in \cite{ZBK*19}.
+Online conformance checking generally has two problems. Not underestimating the conformance of running traces, as running traces are missing events necessary for completion, while not overestimating the conformance of terminated traces, without explicit knowledge of termination.
+
+A naïve way to perform conformance checking analysis of the prefixes using the techniques outline above, is to simply add all prefixes of traces in the model log  to the model log.
+While this approach would give decent estimations for any incomplete traces such an approach runs into several problems.
+The first is that the explosion of the model log greatly increases the number of (dis)similarities that need to be calculated, which degrades performance.
+Secondly, as for all online conformance checking algorithms that don't assume explicit knowledge of termination, this will greatly overestimate the conformance of many non-fitting traces, especially since the fitness of a trace is a minimum of all distances between itself and model traces, it is very sensitive to the sudden inclusion of a lot of new model traces.
+Precision would be less affected by such a change since the percentage of incomplete traces in the real log is assumed to be relatively small.
+
+Overall it should be noted that online conformance checking is a difficult problem, but that there are certainly possibilities for solutions using the proposed techniques, especially considering their novelty there has been less research how they could be adapted in an online setting, and how such adaptions perform in reality.
+
+\subsubsection{Distributed}
 \color{black}
 %
 % ---- Bibliography ----
