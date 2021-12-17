@@ -516,12 +516,25 @@ An online conformance checking technique based on alignments is presented in \ci
 Online conformance checking generally has two problems. Not underestimating the conformance of running traces, as running traces are missing events necessary for completion, while not overestimating the conformance of terminated traces, without explicit knowledge of termination.
 
 A naïve way to perform conformance checking analysis of the prefixes using the techniques outline above, is to simply add all prefixes of traces in the model log  to the model log.
+This approach essentially replicates the prefix-conformance technique presented in \cite{ZBK*19} for any model-log to real-log technique.
+The basic approach there was to relax one of the restrictions, namely that the end marking of an alignment had to be a final marking, to consider all traces who's end marking can reach the final marking, i.e. that there exists some remainder execution that completes the trace.
+Given a large enough sampling this is equivalent to enumerating all prefixes of the replay.
 While this approach would give decent estimations for any incomplete traces such an approach runs into several problems.
 The first is that the explosion of the model log greatly increases the number of (dis)similarities that need to be calculated, which degrades performance.
 Secondly, as for all online conformance checking algorithms that don't assume explicit knowledge of termination, this will greatly overestimate the conformance of many non-fitting traces, especially since the fitness of a trace is a minimum of all distances between itself and model traces, it is very sensitive to the sudden inclusion of a lot of new model traces.
 Precision would be less affected by such a change since the percentage of incomplete traces in the real log is assumed to be relatively small.
 
+However more complicated techniques are also imaginable.
+Both WMD and ICT seem rather problematic approaches, when it comes to online conformance checking as both require normalization over activities, so even a prefect prefix like $\langle a,b\rangle$ of $\langle a,b,c\rangle$ would be encoded as $(0.5,0.5,0)$ and $(0.33,0.33,0.33)$ respectively.
+This means that through the modeling approach prefix relationships are already substantially degraded.
+It is possible that there are subset-like variants of the WMD, however I am not aware of any.
+
+The \emph{trace2vec} method could be more interesting, since it gives a framework to directly compare traces.
+If we look at any trace we would assume that the longer a prefix we take and determine the embedding of the more similar it is to the trace itself, i.e. it convergence in some sense to the embedding of the complete trace.
+An improvement on the naïve method above could be to just check all prefixes of the $k$ nearest neighbors to any trace.
+
 Overall it should be noted that online conformance checking is a difficult problem, but that there are certainly possibilities for solutions using the proposed techniques, especially considering their novelty there has been less research how they could be adapted in an online setting, and how such adaptions perform in reality.
+There are definitely parallels like word prediction systems for example, where such an approach could prove fruitful in both an online or offline setting.
 
 \subsubsection{Distributed}
 \color{black}
