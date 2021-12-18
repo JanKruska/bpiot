@@ -14,6 +14,8 @@
 \usepackage{subcaption}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+
+\MakeOuterQuote{"}
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 %
@@ -227,9 +229,7 @@ The fundamental idea of embeddings is to train some form of embedding function t
 Such an embedding function then enables a proper mathematical treatment of these non-vector objects as vectors, which allows for the application of a broad range of algorithms.
 Most importantly it makes it possible to define notions of distance and/or (dis-)similarity needed for machine learning and data analysis tasks.
 
-\subsection{word2vec}
-
-\section{Method}
+\section{Embedding Based Conformance Checking}
 \label{sec:method}
 Many conformance checking algorithms, notably the classical ones outlined above, aim to measure conformance between a log and a model.
 While this is the fundamental question to be answered, this comparison between two different types of objects greatly complicates the task.
@@ -247,7 +247,7 @@ This has the additional advantage that it is model-independent since no limitati
 \color{blue}
 Three different techniques were outlined in the paper, all following a similar structure outlined in \cref{fig:structure}.
 First, a model log is produced from the model by using appropriate replay semantics for the model.
-Then, given these two logs, one real and one produced by replaying the model, it is possible to train the \emph{act2vec}\cite{KBWe18} embedding.
+Then, given these two logs, one real and one produced by replaying the model, it is possible to train the \emph{act2vec} \cite{KBWe18} embedding.
 Based on these embeddings a dissimilarity function needs to be defined to compare different traces, however, the \emph{act2vec} embedding only yields distance measurements between activities and not between traces.
 Here the differences between the three techniques come into play.
 The first two, the Word Mover's Distance \cite{KSKW15} and Iterative Constrained Transfers, can directly utilize the distances between activities to determine a distance between two collections of activities.
@@ -256,18 +256,17 @@ All three methods however lead to a reasonable dissimilarity metric between trac
 Using one of these metrics a dissimilarity matrix can be built up describing the pairwise dissimilarities between the real log and the model log.
 \color{black}
 From here on we will assume that each row corresponds to a trace from the model log and each column corresponds to a trace from the real log, i.e. $a_{ij}$ is the dissimilarity of the $i$-th trace from the model log with the $j$-th trace of the real log.
-As such each column contains the dissimilarity of a trace in the real log with all traces from the model log, with the minimum of a column being the closest match in the model log.
+As such, each column contains the dissimilarity of a trace in the real log with all traces from the model log, with the minimum of a column being the closest match in the model log.
 A trace that can be closely replayed by the model, i.e. one that has a close match to a trace produced from the model, is a well-fitting one.
 As such the column minimum corresponds to a fitness metric of the trace and thus the mean of all column minima is a fitness metric between log and log.
 Conversely, each row contains all similarities between a trace in the model log and all traces in the real log.
-A precise model should not allow for more traces than observed in the real log, as such each model trace should have as close a match as possible in the real log for the model to be precise.
-As such the row minimum corresponds to a precision metric for the trace in the model log and thus the mean of all row minima is a precision metric between log and log.
+A precise model should not allow for more traces than observed in the real log, so each model trace should have as close a match as possible in the real log for the model to be precise.
+As such the row minimum corresponds to a precision metric for the trace in the model log and thus the mean of all row minima is a precision metric between the logs.
 
 \subsection{act2vec}
 The first two methods utilize \emph{act2vec} to train activity embeddings.
 These activity embeddings then allow for the comparison of two traces by comparing their individual activities in the embedding space.
-Then every trace constitutes a set of different activities that can be expressed in the embedding space.
-Every trace then describes a probability distribution over the activities contained in it, so given an appropriate distance metric for probability distributions such as the Earth Movers Distance, it is possible to determine the distance (or conversely similarity) of two traces.
+Every trace then constitutes a distribution over the embeddings of the activities contained in it, so given an appropriate distance metric for probability distributions such as the Earth Mover's Distance, it is possible to determine the distance (or conversely similarity) between two traces.
 
 \subsubsection{Word Mover's Distance}
 
@@ -288,20 +287,21 @@ Every trace then describes a probability distribution over the activities contai
 	\end{algorithmic}
 \end{algorithm}
 The Word Mover's Distance \cite{KSKW15} is a variant of the Earth Mover's Distance \cite{RTGu98} adapted for natural language processing.
-This family of metrics has proved itself to be quite robust as well as accurate in the past.
+This family of metrics has proved to be quite robust as well as accurate for a lot of embedding based NLP tasks.
+For this reason it was chosen as an initial candidate for the distance function of an embedding based conformance checking technique.
 The Earth Mover's distance measures the distance between two probability distributions.
 The informal interpretation of this is that there are two distributions, represented by piles of earth.
 The distance between two distributions can be interpreted as the amount of work that needs to be done to transform one into the other.
 Clearly, the work and thus the distance between two distributions depends on both the amount of earth on each of the piles and on the distance between piles.
 Formally the EMD defines a distance metric for probability distributions over some vector space with a notion of distance.
 
-This can be formulated as a linear program by formulating it as a min-cost-max-flow problem with two additional constraints. An outflow one stating, that from each source-pile no more can leave than actually present and an inflow constraint stating that now more can flow into each sink-pile no more can flow than being required.
+This can be formulated as a linear program by formulating it as a min-cost-max-flow problem with two additional constraints. 
+%The outflow constraint stating, that from each source-vertex no more can leave than actually present and an inflow constraint stating that now more can flow into each sink-pile no more can flow than being required.
 
 In the case of embeddings and natural language processing this metric has also become known as the Word Mover's Distance.
 Here the word embeddings represent the piles, i.e. the distance between two-word embeddings represents the "work" needed to transform one into the other, whereas collections of words, or more specifically their embeddings, such as sentences or even documents represent the probability distributions.
 
-It should also be noted that the WMD does not take word order into account, which is reasonable for e.g. semantic classification of documents, but seems much more important in the case of business processes, where it at least intuitively seems to be important to avoid classifying $\langle a,b,c\rangle$ as being zero distance from a trace like $\langle c,b,a \rangle$.
-\todo{Use pseudocode from paper?}
+It should also be noted that the WMD does not take word order into account, which is reasonable for e.g. semantic classification of documents, but seems much more important in the case of business processes, where it seems intuitively important to avoid classifying $\langle a,b,c\rangle$ as being zero distance from a trace like $\langle c,b,a \rangle$.
 
 \subsubsection{Iterative Constrained Transfers}
 \begin{algorithm}
@@ -348,7 +348,7 @@ The ICT and ACT again provide a lower bound to the WMD, since it is not guarante
 \subsection{trace2vec}
 In contrast to the two previous approaches, which used activity embeddings, it is also possible to train trace embeddings.
 The relationship between \emph{act2vec} and \emph{trace2vec} is analogous to the one between \emph{word2vec} and \emph{doc2vec}.
-When using this method every trace is embedded into a vector space and any distance metric that is deemed appropriate can be chosen.
+When using this method, every trace is embedded into a vector space and any distance metric that is deemed appropriate can be chosen.
 In the paper, the cosine similarity \cref{eq:cosine} was chosen for its simplicity and the fact that it is bounded in the interval $[-1,1]$.
 \begin{equation}
 	\cos(x,  y) = \frac { x \cdot  y}{|| x|| \cdot || y||}
@@ -356,40 +356,44 @@ In the paper, the cosine similarity \cref{eq:cosine} was chosen for its simplici
 \end{equation}
 This is much less computationally expensive than the previous two approaches which were complex distance metrics between two sets of embeddings.
 
-\section{Results}
+\section{Experiments}
 \label{sec:results}
-\subsection{Experimental setup}
+To assess the performance of the three proposed embedding based techniques the authors designed and performed three experiments.
+These aimed to test and compare the scalability of the methods, whether noise deteriorates the results in an expected manner, and lastly to compare these techniques to established well researched conformance checking techniques.
 
-To evaluate the suitability of the method three sets of experiments were performed. 
+\subsection{Experimental Setup}
+
+%To evaluate the suitability of the method three sets of experiments were performed. 
 \color{blue}
 All experiments utilized (the same) randomly generated process trees, that were constructed using the algorithms in the \emph{pm4py} library.
-Three size configurations described by minimum number, the mode,l, and the maximum number of visible activities were chosen: 5-10-15, 10-20-30, and 15-30-45.
+Three size configurations described by minimum number, the model, and the maximum number of visible activities were chosen: 5-10-15, 10-20-30, and 15-30-45.
 Furthermore, four operator configurations were chosen described by the probability for randomly choosing each available operator.
 These were in no particular order: Sequence: $0.75$, Parallel $0.25$, secondly Sequence: $0.75$, Choice $0.25$, thirdly 1. Sequence: $0.5$, Parallel $0.25$, Choice $0.25$ and lastly $0.25$ for all (Sequence, Parallel, Choice and Loop) operators.
 Both of these configurations were combined to generate a grid of $12$ process trees, with the hope that these cover a sufficient range of different behavior.
 \color{black}
 
-The first set of experiments focussed on the scalability of the approach, especially since more traditional approaches do not scale well. This aspect is doubly important when talking about the Internet of Things, where computing resources are generally far more constrained, while still producing large amounts of event data.
+The first set of experiments focused on the scalability of the approach, especially since more traditional approaches do not scale well. This aspect is doubly important when talking about the Internet of Things, where the granularity of events is much easier controllable, which makes it possible to produce large amounts of event data with comparatively little effort.
+Due to this scalability is an important factor for the IoT, since it is desired to process these large amounts of data.
 
 The second set of experiments aimed to determine whether the method responded as expected when providing noisy logs.
 These experiments were designed to verify the soundness of the approach.
 This was done by generating logs from random process trees generated by pm4py, applying random noise on these logs, and determining the conformance between the noiseless and noisy logs.
 \color{blue}
 Three different types of noise were used: replacing a random activity with another, swapping two random activities, and removing a random activity.
-Then  two noise experiments were performed.
+Then,  two noise experiments were performed.
 In the first experiment, the percentage of traces that noise was applied to was varied between $10\%$ and $50\%$, but each noise type was applied at most once to each trace.
 In the second experiment instead, the percentage of traces to which noise was applied was kept constant at $40\%$, but the number of activities to which noise was applied was varied.
 Furthermore, the second experiment only utilized the replacement noise function  omitting the other two.
 \color{black}
 The expectation is that any reasonable conformance metric should deteriorate the more noise is added to the log.
 
-The third and last set of experiments was designed to compare the performance of the proposed methods (WMD,ICT \& trace2vec) to existing established conformance metrics, namely alignments, behavioral fitness \cite{GMVB09} and ETC precision \cite{MuCa10}.
-This was achieved by generating 1000 traces from a randomly generated process tree, which form the real log.
-Then a discovery algorithm was applied to this log to discover a model, here Alpha Miner, Inductive Miner infrequent (IMi) with noise levels 0 and 1, and the ILP Miner were selected as discovery algorithms.
+The third and last set of experiments was designed to compare the performance of the proposed methods (WMD, ICT \& trace2vec) to existing established conformance metrics, namely alignments, behavioral fitness \cite{GMVB09} and ETC precision \cite{MuCa10}.
+This was achieved by generating 1000 traces from a randomly generated process tree, to obtain an event log.
+Then, a discovery algorithm was applied to this log to discover a model. Here, Alpha Miner, Inductive Miner infrequent (IMi) with noise levels 0 and 1, and the ILP Miner were selected as discovery algorithms.
 Then fitness and precision between the discovered model and the real log were calculated using the previously mentioned algorithms as well as the method described in the paper.
 
 \color{blue}
-\subsection{Scalability experiment}
+\subsection{Scalability Experiment}
 \begin{figure}
 	\includegraphics[width=1\textwidth]{figures/scaling}
 	\caption{Runtimes for all three methods for varying sizes of logs and dictionaries. Data can be found in \cite{MuCa10} Table 2}
@@ -398,22 +402,23 @@ Then fitness and precision between the discovered model and the real log were ca
 \todo{maybe talk about scaling}
 The first performed experiment aimed to assess the performance  of the three proposed methods.
 The experiments were run on an Intel Core i7-9850h, a mid-range consumer CPU.
-Experiments were run for all three methods for different sized logs and different sized dictionaries, in this case, dictionary size is determined by the number of different activities in the log.
-All experiments were performed in python, however, the Word Mover's distance was calculated using pyemd, a python wrapper to calculate the WMD/Emd with NumPy efficiency.
-As such when comparing ICT and WMD times the efficiency difference between python and C should be taken into account.
+Experiments were run for all three methods for different sized logs and different sized dictionaries, for embedding based conformance checking algorithms dictionary size is determined by the number of different activities in the log.
+All experiments were performed in Python, however, the Word Mover's distance was calculated using pyemd, a Python wrapper to calculate the WMD/EMD with NumPy efficiency.
+As such, when comparing ICT and WMD times, the efficiency difference between Python and C should be taken into account.
 
 The resulting times are shown in \cref{fig:scalability}.
-Overall log sizes a similar pattern is observable, with WMD and ICT behaving somewhat similar and \emph{trace2vec} consistently outperforming the other two methods in all experiments.
-For small dictionary sizes  (~10) WMD does outperform ICT, however, that is likely due to the aforementioned efficiency differences between the implementations.
-It is doubly notable that despite these efficiency differences ICT already starts to outperform WMD for dictionary sizes of 20, with the gap growing even larger for dictionaries of size 30, ICT is finished after roughly half the time WMD takes.
+Over all log sizes a similar pattern is observable, with WMD and ICT behaving similar and \emph{trace2vec} consistently outperforming the other two methods in all experiments.
+For small dictionary sizes  (10) WMD does outperform ICT, however, that is likely due to the aforementioned efficiency differences between the implementations.
+It is notable that despite these efficiency differences ICT already starts to outperform WMD for dictionary sizes of 20.
+For dictionaries of size 30 this gap grows even larger.
+Here ICT is finished after roughly half the time needed by the WMD approach.
 These experiments seem to suggest that ICT scales much better with larger dictionary sizes.
 Especially when considering that the current implementation is still unoptimized ICT could very well serve as a more efficient alternative to WMD, especially when working with complex logs.
-It should also be noted that the relative run time difference between both methods seems so slightly scale in the ICT's favor, starting out at $\frac{45}{75}=0.6$ for a log of size 500 and improving to $\frac{3824}{7032}\approx 0.54$ for logs of size 5000.
+It should also be noted that the relative run time difference between both methods slightly scale in the ICT's favor, starting out at $\frac{45}{75}=0.6$ for a log of size 500 and improving to $\frac{3824}{7032}\approx 0.54$ for logs of size 5000.
 
 Lastly, the \emph{trace2vec} method substantially outperforms both the other methods, since only the cosine similarity, a simple mathematical formula needs to be evaluated at run time.
-This comes with the additional overhead of training trace embeddings, however according to the authors training that "does not take a long time" but they don't include statistics in that regard.
+This comes with the additional overhead of training trace embeddings, however, according to the authors training that "does not take a long time" but they don't include statistics in that regard.
 The \emph{trace2vec} method has the additional benefit of not being dependent on the activities during run time, since traces are directly compared in the trace embedding space, which means that the size of the dictionary is irrelevant for this approach, making it even more attractive for processes with large numbers of activities than the ICT.
-\todo{Include log size scaling plot? Do I have the space for that? It is not really that interesting as far as I can tell}
 
 \subsection{Noise experiment}
 \begin{figure}
@@ -433,19 +438,21 @@ The \emph{trace2vec} method has the additional benefit of not being dependent on
 	\end{subfigure}
 \end{figure}
 The second experiment aimed to determine how the algorithms behaved when different amounts of noise were introduced on the logs.
-The expectation is that higher levels of noise further deteriorate fitness and precision, however since the used methods are somewhat involved and since it can be hard to exactly tell what a system is doing for a lot of learning-based methods, whether the algorithms are well-behaved or not should be verified.
+The expectation is that higher levels of noise further deteriorate fitness and precision. 
+However since the defined similarity notion is not very intuitive it is important to verify, whether the algorithms are well-behaved, i.e. if their results match up with the intuitive expectation we have for conformance.
+%However since the used methods are somewhat involved and since it can be hard to exactly tell what a system is doing for a lot of learning-based methods, whether the algorithms are well-behaved or not should be verified.
 
-The first noise experiment in which the number of traces to which noise was applied was varied seems to confirm the expectation.
-In all the trees the distance smoothly increased with larger amounts of noise added, there were neither cases where the dissimilarity would go down again with more noise nor any significant unexpected patterns like stark jumps or plateauing around certain points.
+The first noise experiment in which the number of noisy traces was varied seems to confirm the expectation.
+In all the trees, the distance smoothly increased with larger amounts of noise added, there were neither cases where the dissimilarity would go down again with more noise nor any significant unexpected patterns like jumps or plateauing around certain points.
 The average of all the values from the first noise experiment is shown in \cref{fig:noise-first}.
 Here it is also clearly visible that the dissimilarity gain seems to slow down the more noise is added, however, that is perfectly expected. 
 
-The second noise experiment also seems to back up the soundness of the approach, where again the dissimilarity increased the more activities were replaced.
+The second noise experiment also seems to back up the soundness of the approach, where again the dissimilarity increased, the more activities were replaced.
 The results from the second noise experiment can be seen in \cref{fig:noise-second}.
 
 It should be noted that for both experiments the absolute values for WMD and ICT are not comparable to \emph{trace2vec}, since these are on different scales.
 
-\subsection{Discovery experiment}
+\subsection{Discovery Experiment}
 
 
 The purpose of the last experiment was the comparison of the three proposed techniques to establish conformance checking algorithms.
@@ -459,7 +466,7 @@ It is unclear whether that is due to the unoptimized nature of the methods, it c
 
 Yet when models deteriorate there is a tendency for all measurements to move together.
 At the current point, only a qualitative analysis for imperfect models is possible since the values determined by WMD, ICT and \emph{trace2vec} are not proper metrics since they do not fall into the $0,1$ range.
-As such it is hard to interpret what a non-optimal value actually means, and as such the data does not allow for a quantitative comparison  at this point.
+As such it is hard to interpret what a non-optimal value actually means, and therefore the data does not allow for a quantitative comparison  at this point.
 The results that were obtained however suggest that these methods could be a useful alternative to established techniques and that further research into them is warranted.
 
 It is of course also important to point out that the validation techniques should not be seen as perfect normative techniques, since both of these also significantly disagree for some models. 
@@ -470,7 +477,7 @@ It is of course also important to point out that the validation techniques shoul
 \subsection{Future Work}
 Peeperkorn et al. obtained promising first results for a novel embedding-based approach towards conformance checking.
 Yet as the focus was mainly on the introduction and development of a prototype for such an approach there are some natural limitations.
-Arguably the biggest limitation is the logs used for the experimental validation.
+Arguably the biggest limitation were the logs used for the experimental validation.
 All used logs were completely synthetic, generated from random process trees.
 It is unclear how well the 12 trees used for this resemble real processes and whether these tree configurations are sufficiently representative for the variation exhibited in real life trees\footnote{12 tree configurations were used, 3 sizes and 4 different probability distributions for operations, how strong these vary should be investigated}.
 As such it should be a priority to test the proposed methods on real logs, possibly popular benchmark cases, and also to systematically broaden the parameters for random process tree generation to cover more different classes.
@@ -488,10 +495,10 @@ This is due to the fact that for a lot of NLP problems order is of lesser import
 At least from an intuitive understanding of conformance checking order of activities is integrally important, and it should at least be investigated if there are significant differences between ordered and orderless approaches with regard to conformance checking.
 The authors themselves suggest considering the use of $n$-grams instead of 1-grams, since their application seems more feasible in business processes as compared to classical NLP.
 
-Lastly, the paper should be understood as a first stepping stone for the use of NLP-related algorithms for the task of conformance checking.
-The use of embeddings is often the first step in such approaches, but it is entirely possible that more advanced NLP algorithms may give even better results.
+Lastly, the paper should be understood as a successful first use of NLP-related algorithms for the task of conformance checking.
+The use of embeddings is often the easiest method in such approaches, but it is entirely possible that more advanced NLP algorithms may give even better results.
 As such further research into the applicability of a variety of other methods could be fruitful.
-The authors especially mention $n$-grams, Embeddings from Language Models, Global Vectors for Word Representation, and recurrent neural networks.
+The authors especially mention $n$-grams, Embeddings from Language Models, Global Vectors for Word Representation, and Recurrent Neural Networks.
 
 \color{red}
 \subsection{Internet of Things}
