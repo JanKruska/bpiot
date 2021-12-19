@@ -460,11 +460,30 @@ The results from the second noise experiment can be seen in \cref{fig:noise-seco
 It should be noted that for both experiments the absolute values for WMD and ICT are not comparable to \emph{trace2vec}, since these are on different scales.
 
 \subsection{Discovery Experiment}
-
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/fitness}
+		\caption{Fitness}
+		\label{fig:fitness}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/precision}
+		\caption{Precision}
+		\label{fig:precision}
+	\end{subfigure}
+\caption{Fitness and Precision for different tree, discovery technique pairings for the three proposed techniques as well as the two verification techniques. 
+	Note that values are shown for WMD,ICT and \emph{trace2vec} are mirrored along x, since they are not proper metrics and larger values means worse fitness/precision. 
+	This way all results move in the same direction for better/worse values.
+Raw data can be found in \cite{PBWe20} Table 5.}
+\label{fig:discovery}
+\end{figure}
 
 The purpose of the last experiment was the comparison of the three proposed techniques to establish conformance checking algorithms.
-The results of this experiment can be found in \cite{PBWe20} Table 5.
-\todo{Include their data? Manually as table or maybe as plot. If so what kind plot would you suggest}
+The results of this experiment can be found in \cref{fig:discovery}.
 The results from the discovery experiment seem to suggest that all three methods are able to capture a notion of conformance.
 Especially when the model is of high quality both the proposed and validation conformance checking techniques often agree on a perfect score.
 However, it should be noted that there are quite a few instances where all three proposed methods assign perfect fitness or precision despite the others producing imperfect scores.
