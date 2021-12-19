@@ -25,7 +25,7 @@
 
 \begin{document}
 	%
-	\title{Conformance Checking Using Embeddings and their Applicability in the Internet of Things}
+	\title{Conformance Checking Using Embeddings and it's Applicability in the Internet of Things}
 	%
 	\titlerunning{Conformance Checking Using Embeddings in the IoT}
 	% If the paper title is too long for the running head, you can set
@@ -57,19 +57,20 @@
 
 \section{Introduction}
 
-Due to growing compute capabilities, as well as further digitalization allowed for more process data to be gathered and analyzed.
-The increase in compute and storage capabilities, as well as the growing digitalization of many parts of our lives, has created the distinct field of data science, as an amalgamation of Statistics, technical knowledge, and domain knowledge.
+Growing compute capabilities, as well as further digitalization now allow for the gathering and analysis of vast amounts of data.
+The increase in compute and storage capabilities, as well as the growing digitalization of many parts of our lives, has created the distinct field of data science, as an amalgamation of statistics, technical knowledge, and domain knowledge.
 
 One benefactor of this development has been the subfield of process science, which is concerned with the analysis of processes.
-The combination of process science and data science gave rise to techniques generally grouped under the term process mining\footnote{Please note that due to the relatively young age of the field, the fact that it lies at the intersection of two different fields and the fact that there is a marketing interest for these topics the terminology is not always settled and different authors and/or groups may differ in usage. The terminology used here is oriented around the definitions in \cite{Aals16}, as it seems to be the most polished overview of the field at the moment.}.
+The combination of process science and data science gave rise to techniques generally grouped under the term process mining
+%\footnote{Please note that due to the relatively young age of the field, the fact that it lies at the intersection of two different fields and the fact that there is a marketing interest for these topics the terminology is not always settled and different authors and/or groups may differ in usage. The terminology used here is oriented around the definitions in \cite{Aals16}, as it seems to be the most polished overview of the field at the moment.}.
 Process mining is concerned with the automatic and algorithmic processing of event data. In its easiest form, an event is a piece of data, that consists of a timestamp, an identifier to group events belonging to the same execution, and a body containing further arbitrary values.
 In most cases, there is also an identifier for the event type, with the purpose of identifying similar events in different executions of the process, e.g. to be able to group all "Send invoice" events as the same type.
 
-Historically most research in the topic of process mining has been on business processes. 
+Historically, most research in the topic of process mining has been on business processes. 
 There are a few reasons for that. 
 Namely, that there was already a well-established field of non-algorithmic process science for business processes, which could act as a stepping stone.
 Secondly, some of these processes were already highly digitized, many companies already had well-established ERP systems from which data could be gathered with reasonable ease.
-Thirdly there was, and is, a large financial interest in optimizing such processes.
+Thirdly, there was, and is, a large financial interest in optimizing such processes.
 And lastly, business processes often struck the balance between too simple and too complicated, in that they exhibited enough variability to be interesting to analyze but were still simple enough as to enable the use of the early process mining algorithms.
 So it should be stated that while process mining is of great use for classical business processes, these are not the only areas for which it could potentially be useful.
 
@@ -79,7 +80,7 @@ Unfortunately due to shifting developments in the last two decades and marketing
 The International Telecommunication Union gives the following succinct definition of the Internet of Things in their recommendation \cite{ITUT12} on the topic:
 \blockquote{[The Internet of Things is] A  global  infrastructure  for  the  information  society,  enabling  advanced  services  by  interconnecting  (physical  and  virtual)  things  based  on  existing  and  evolving  interoperable information and communication technologies.}
 
-It should be noted that this definition is very broad and extends beyond the notion of the "Smart Home" that has become somewhat of a representative of the Internet of Things.
+It should be noted, that this definition is very broad and extends beyond the notion of the "Smart Home" that has become somewhat of a representative of the Internet of Things.
 The definition neither limits the scale (locally, nationally, or even globally) nor the range of use cases.
 The rest of the paper will follow this definition since the objects of interest here are fully digitized networked control systems and the information pooling and sharing those bring with it.
 
@@ -97,7 +98,7 @@ This has been a problem in the past when considering any process for which event
 The Internet of Things fulfills all these categories, it is digital by design, so relatively few efforts have to be made to obtain a large amount of well-enough structured event data and the scale and complexity of the problem can scale up very well with growing network sizes. 
 Furthermore, it is also possible to use techniques from the Internet of Things to further digitize classical processes and reduce dependencies on manual event recording.
 
-Naturally, there are challenges to be overcome if one aims to integrate business process modeling into the Internet of Things.
+Naturally, there are challenges to overcome if one aims to integrate business process modeling into the Internet of Things.
 The first two major differences are attributable to the structure of the Internet of Things.
 Firstly the Internet of Things is made up of numerous small devices all with limited compute capabilities.
 This limits the complexity of algorithms that can be performed on each of the devices and means that either a separate system with the role of performing analyses needs to be introduced or distributed algorithms need to be developed.
@@ -171,7 +172,7 @@ According to the semantics of Petri nets, whenever a transition is fired it cons
 However since we are dealing with possibly non-conformant trace, it is possible that a trace contains activities, that are not enabled in the model at that point in time.
 In this case, a missing token is added to all input places, that did not contain a token, and the $m$ counter is incremented by the according amount.
 Conversely, it might also happen, that a trace can be replayed, but that there are stray tokens left in the Petri net after the replay. 
-At the end of the replay, the sum of all leftover tokens makes up the $r$ counter. \todo{Some explanation models could be included if the space is there for them}
+At the end of the replay, the sum of all leftover tokens makes up the $r$ counter.
 Both missing and remaining tokens signal deviation from the process model, but both of these numbers are dependent on the length of traces.
 The longer a trace is the more activities will be taken, the more tokens will be produced, and the more chances there are for tokens to be missing or remaining.
 Importantly a trace where half the produced tokens were never consumed, i.e. remained, should intuitively have lower fitness than one where only a quarter of produced tokens remained.
@@ -209,7 +210,6 @@ This means there is an effective upper limit on the length of alignments that ne
 However, the search space can quickly grow infeasibly large, so heuristics need to be employed to determine optimal alignments in a reasonable time frame.
 
 \todo{formula}
-\todo{Possibly some examples}
 
 Alignments overcome many of the problems encountered in token-based approaches: 
 They do not suffer from problems like token flooding, and they give transition-based diagnostics, which in the case of process mining is far more useful since transitions encode recorded or recordable activities. 
@@ -224,7 +224,7 @@ Besides approaches aiming to ameliorate certain disadvantages of such methods, t
 One such proposal is the application of techniques from the area of natural language processing for conformance checking as discussed in \cite{PBWe20}.
 
 \subsection{Embeddings}
-Embeddings are a popular machine learning approach that has been used for a variety of tasks with the most successful applications being in the fields of natural language processing and computer vision.
+Embedding based methods are popular machine learning approaches that have been used for a variety of tasks with the most successful applications being in the fields of natural language processing and computer vision.
 The fundamental idea of embeddings is to train some form of embedding function that embeds complex objects, such as words or documents in the case of NLP or pictures and video sequences in the case of computer vision in a vectors space\footnote{To be more precise: a Hilbert space, since well-defined notions of distances and angles, are necessary and for that, a scalar product  is needed.}.
 Such an embedding function then enables a proper mathematical treatment of these non-vector objects as vectors, which allows for the application of a broad range of algorithms.
 Most importantly it makes it possible to define notions of distance and/or (dis-)similarity needed for machine learning and data analysis tasks.
@@ -233,7 +233,7 @@ Most importantly it makes it possible to define notions of distance and/or (dis-
 \label{sec:method}
 Many conformance checking algorithms, notably the classical ones outlined above, aim to measure conformance between a log and a model.
 While this is the fundamental question to be answered, this comparison between two different types of objects greatly complicates the task.
-However, by re-framing the problem one can greatly simplify it.
+However, by re-framing the problem it  can be greatly simplified.
 Instead of formulating the problem in terms of model-to-log comparison, one can formulate it as a comparison problem of a real log to a model log.
 Such a reformulation of the problem is possible since all (reasonably defined) models are able to generate sample traces, and can therefore produce a model log.
 Then the whole problem is re-framed as log-to-log comparisons, i.e. determining similarities between objects of the same type, for which a broad range of techniques already exist.
@@ -343,7 +343,6 @@ ICT and ACT agree in the limit, however, if the number of occurring activities i
 Only if there are some activities that occur significantly more often than others it is necessary to perform more iterations.
 
 The ICT and ACT again provide a lower bound to the WMD, since it is not guaranteed that the inflow constraint is met, however, the ICT/ACT lower bound is higher than the RWMD lower bound due to the additional constraint that was introduced.
-\todo{Pseudocode?}
 \color{black}
 \subsection{trace2vec}
 In contrast to the two previous approaches, which used activity embeddings, it is also possible to train trace embeddings.
@@ -396,17 +395,16 @@ Then fitness and precision between the discovered model and the real log were ca
 \subsection{Scalability Experiment}
 \begin{figure}
 	\includegraphics[width=1\textwidth]{figures/scaling}
-	\caption{Runtimes for all three methods for varying sizes of logs and dictionaries. Data can be found in \cite{MuCa10} Table 2}
+	\caption{Runtimes for all three methods for varying sizes of logs and dictionaries. Data can be found in \cite{MuCa10} Table 2.}
 	\label{fig:scalability}
 \end{figure}
-\todo{maybe talk about scaling}
 The first performed experiment aimed to assess the performance  of the three proposed methods.
 The experiments were run on an Intel Core i7-9850h, a mid-range consumer CPU.
 Experiments were run for all three methods for different sized logs and different sized dictionaries, for embedding based conformance checking algorithms dictionary size is determined by the number of different activities in the log.
 All experiments were performed in Python, however, the Word Mover's distance was calculated using pyemd, a Python wrapper to calculate the WMD/EMD with NumPy efficiency.
 As such, when comparing ICT and WMD times, the efficiency difference between Python and C should be taken into account.
 
-The resulting times are shown in \cref{fig:scalability}.
+The resulting times are shown in \cref{fig:scalability}\footnote{Note that when two logs of size $n$ are compared, $n^2$ comparisons are needed. This is the reason why the needed time scales quadratically with log size}.
 Over all log sizes a similar pattern is observable, with WMD and ICT behaving similar and \emph{trace2vec} consistently outperforming the other two methods in all experiments.
 For small dictionary sizes  (10) WMD does outperform ICT, however, that is likely due to the aforementioned efficiency differences between the implementations.
 It is notable that despite these efficiency differences ICT already starts to outperform WMD for dictionary sizes of 20.
