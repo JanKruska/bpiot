@@ -148,19 +148,19 @@ In the case of process discovery, a process model has to be constructed from an 
 Obviously, not all process models are able to describe a process equally well.
 So when developing or using a process discovery algorithm the question of how well the discovered process models describe the log often arises.
 
-\subsubsection{Quality criteria}
-It is important to note that model quality is not a single-dimensional criterion, instead, it exists in a multi-dimensional space where the different axes represent different quality criteria.
-As such it is not really appropriate to talk about one conformance metric, but instead, the four major axes should be considered.
-\begin{enumerate}
-	\item Fitness (few false negatives): The first of these metrics is fitness. This quality criterion is closely related to the statistical measure of recall. In the case of business process management fitness measures how many of the observed traces are actually possible executions of the model.
-	\item Precision (few false positives): Closely related to the statistical measure of precision, this metric measures how many false positives there are in relation to true positives. In the case of process models, this is the fraction of traces allowed by the model that are actually observed in the log.
-	\item Simplicity: How "simple" a model is, generally a smaller model that describes a process equally well is preferred for reasons such as performance and comprehensibility.
-	\item Generalization: Generalization is the model's ability to be applicable to possible future traces of a given process. 
-	It would clearly be possible to create a model with perfect precision and recall, by simply encoding the traces themselves in the model. However, that would not be a model that generalizes well since it captures none of the dynamism of the underlying process. 
-	This is the most difficult criterion since it is arguing about unknown possible future behavior.
-\end{enumerate}
-
-Of these four quality criteria conformance checking is mainly concerned with precision and recall, but depending on the algorithms possibly some statements about generalization could be made as well. 
+%\subsubsection{Quality criteria}
+%It is important to note that model quality is not a single-dimensional criterion, instead, it exists in a multi-dimensional space where the different axes represent different quality criteria.
+%As such it is not really appropriate to talk about one conformance metric, but instead, the four major axes should be considered.
+%\begin{enumerate}
+%	\item Fitness (few false negatives): The first of these metrics is fitness. This quality criterion is closely related to the statistical measure of recall. In the case of business process management fitness measures how many of the observed traces are actually possible executions of the model.
+%	\item Precision (few false positives): Closely related to the statistical measure of precision, this metric measures how many false positives there are in relation to true positives. In the case of process models, this is the fraction of traces allowed by the model that are actually observed in the log.
+%	\item Simplicity: How "simple" a model is, generally a smaller model that describes a process equally well is preferred for reasons such as performance and comprehensibility.
+%	\item Generalization: Generalization is the model's ability to be applicable to possible future traces of a given process. 
+%	It would clearly be possible to create a model with perfect precision and recall, by simply encoding the traces themselves in the model. However, that would not be a model that generalizes well since it captures none of the dynamism of the underlying process. 
+%	This is the most difficult criterion since it is arguing about unknown possible future behavior.
+%\end{enumerate}
+%
+%Of these four quality criteria conformance checking is mainly concerned with precision and recall, but depending on the algorithms possibly some statements about generalization could be made as well. 
 
 \subsubsection{Token-based Replay}
 
@@ -208,8 +208,6 @@ The goal is then to construct an optimal alignment between a trace and the model
 It should be obvious that there are infinitely many such alignments, however, we can construct a trace-agnostic alignment, which consists of $n$ moves-on-log-only followed by the shortest path through the model as moves-on-model-only.
 This means there is an effective upper limit on the length of alignments that need to be considered, which in turn means that the problem is decidable. 
 However, the search space can quickly grow infeasibly large, so heuristics need to be employed to determine optimal alignments in a reasonable time frame.
-
-\todo{formula}
 
 Alignments overcome many of the problems encountered in token-based approaches: 
 They do not suffer from problems like token flooding, and they give transition-based diagnostics, which in the case of process mining is far more useful since transitions encode recorded or recordable activities. 
@@ -497,6 +495,20 @@ The results that were obtained however suggest that these methods could be a use
 
 It is of course also important to point out that the validation techniques should not be seen as perfect normative techniques, since both of these also significantly disagree for some models. 
 
+\subsection{Reproduction of Experiments}
+The authors published some \href{https://github.com/jaripeeperkorn/Conformance-checking-using-activity-and-trace-embeddings}{source code} accompanying the paper.
+To verify their results as well possibly perform some additional experiments it seemed appropriate to look at said code and try to reproduce their results as good as possible.
+After some initial technical difficulties, since very specific package versions were needed, their code was successfully run.
+They provide three separate Python scripts for their implementations of the  WMD,ICT and \emph{trace2vec} methods.
+
+Aside from that they also provide Jupyter notebooks for their experiments, however sadly these do not run the whole experiment, instead they only perform the experiment for one parameter combination.
+To reproduce their noise experiment it is thus necessary to manually run the corresponding notebook twelve times, once for each parameter combination, manually note down the results of each run and merge them manually at the end.
+This was deemed to be out of scope for this paper.
+Additionally, the discovery experiment only determined fitness and precision of the WMD, ICT and \emph{trace2vec} methods and not the reference methods, so it is unclear at this point how the fitness and precision values for the reference methods were determined.
+Overall it can be said that the results from the paper are at least partially reproducible, and the provided implementation gives good pointer into how the methods were set up in detail, but running the experiments and collecting the results requires more effort than should be necessary.
+
+Lastly, it was considered to design and run another experiment here to evaluate performance and scaling differences between the embedding based approaches and reference approaches like alignments, behavioral fitness and ETC precision, as this is one of the main selling point especially in the IoT and the authors sadly did not include an experiment to that effect.
+In light of the complications with the existing experiments and the fact that no evaluation of the reference metrics was included in their code this idea was deemed out of scope for this paper.
 \color{black}
 \section{Discussion}
 \label{sec:discussion}
