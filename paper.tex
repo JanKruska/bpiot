@@ -25,7 +25,7 @@
 
 \begin{document}
 	%
-	\title{Conformance Checking Using Embeddings and it's Applicability in the Internet of Things}
+	\title{Conformance Checking Using Embeddings and its Applicability in the Internet of Things}
 	%
 	\titlerunning{Conformance Checking Using Embeddings in the IoT}
 	% If the paper title is too long for the running head, you can set
@@ -62,12 +62,12 @@ Growing compute capabilities, as well as further digitalization now allow for th
 The increase in compute and storage capabilities, as well as the growing digitalization of many parts of our lives, has created the distinct field of data science, as an amalgamation of statistics, technical knowledge, and domain knowledge.
 
 One benefactor of this development has been the subfield of process science, which is concerned with the analysis of processes.
-The combination of process science and data science gave rise to techniques generally grouped under the term process mining
+The combination of process science and data science gave rise to techniques generally grouped under the term process mining.
 %\footnote{Please note that due to the relatively young age of the field, the fact that it lies at the intersection of two different fields and the fact that there is a marketing interest for these topics the terminology is not always settled and different authors and/or groups may differ in usage. The terminology used here is oriented around the definitions in \cite{Aals16}, as it seems to be the most polished overview of the field at the moment.}.
 Process mining  \cite{Aals16} is concerned with the automatic and algorithmic processing of event data. In its easiest form, an event is a piece of data, that consists of a timestamp, an identifier to group events belonging to the same execution, and a body containing further arbitrary values.
 In most cases, there is also an identifier for the event type, with the purpose of identifying similar events in different executions of the process, e.g. to be able to group all "Send invoice" events as the same type.
 
-Historically, most research in the topic of process mining has been on business processes. 
+Historically, most research on the topic of process mining has been on business processes. 
 There are a few reasons for that. 
 Namely, that there was already a well-established field of non-algorithmic process science for business processes, which could act as a stepping stone.
 Secondly, some of these processes were already highly digitized, many companies already had well-established ERP systems from which data could be gathered with reasonable ease.
@@ -104,7 +104,7 @@ The first two major differences are attributable to the structure of the Interne
 Firstly the Internet of Things is made up of numerous small devices all with limited compute capabilities.
 This limits the complexity of algorithms that can be performed on each of the devices and means that either a separate system with the role of performing analyses needs to be introduced or distributed algorithms need to be developed.
 Overall it should be noted that asynchronous decentralized networks are common for the Internet of Things, which needs to be taken into account when applying BPM.
-Secondly, the Internet of Things has both the potential and demand for a greater number of online analyses, i.e. in contrast to classical business processes it is much more important to evaluate a process during the execution, to give feedback, and to possibly even influence a process during its execution.
+Secondly, the Internet of Things has both the potential and demand for a greater number of online analyses, i.e. in contrast to classical business processes it is much more important to evaluate a process, give feedback, and possibly even influence a process during its execution.
 
 
 The following paper is structured as follows.
@@ -201,7 +201,7 @@ The second group of popular methods for conformance checking are alignment-based
 The goal here is to construct an execution on the model that is as "close" as possible to the observed execution of events in the trace/log.
 In the conformant case, all moves are so-called, synchronous moves, where both the log and the model performed the same event at each step.
 %However, if a trace is non-conformant, which is, of course, the case that is of interest, then a one-to-one mapping between model and trace is not possible.
-In the non-conformant case so-called non-synchronous moves are introduced, these describe the case that one of  the model or log performs an activity that does not happen in the other one.
+In the non-conformant case, so-called non-synchronous moves are introduced, these describe the case that one of  the model or log performs an activity that does not happen in the other one.
 This can be either a move-on-model-only, where the model takes some transition, which was not observed in the log, or it's dual, the move-on-log-only where an event is recorded in the log that is not possible according to the model.
 The weighted sum of misalignments can then be used as a cost metric for an alignment. 
 The goal is then to construct an optimal alignment between a trace and the model.
@@ -222,7 +222,7 @@ Besides approaches aiming to ameliorate certain disadvantages of such methods, t
 One such proposal is the application of techniques from the area of natural language processing for conformance checking as discussed in \cite{PBWe20}.
 
 \subsection{Embeddings}
-Embedding based methods are popular machine learning approaches that have been used for a variety of tasks with the most successful applications being in the fields of natural language processing and computer vision.
+Embedding-based methods are popular machine learning approaches that have been used for a variety of tasks with the most successful applications being in the fields of natural language processing and computer vision.
 The fundamental idea of embeddings is to train some form of embedding function that embeds complex objects, such as words or documents in the case of NLP or pictures and video sequences in the case of computer vision in a vectors space\footnote{To be more precise: a Hilbert space, since well-defined notions of distances and angles, are necessary and for that, a scalar product  is needed.}.
 Such an embedding function then enables a proper mathematical treatment of these non-vector objects as vectors, which allows for the application of a broad range of algorithms.
 Most importantly it makes it possible to define notions of distance and/or (dis-)similarity needed for machine learning and data analysis tasks.
@@ -265,7 +265,7 @@ As such the row minimum corresponds to a precision metric for the trace in the m
 The first two methods utilize \emph{act2vec} to train activity embeddings.
 These activity embeddings then allow for the comparison of two traces by comparing their individual activities in the embedding space.
 Every trace then constitutes a distribution over the embeddings of the activities contained in it, so given an appropriate distance metric for probability distributions such as the Earth Mover's Distance, it is possible to determine the distance (or conversely similarity) between two traces.
-Note that many NLP algorithms use a so called bag of words approach, where the order of words is disregarded.
+Note that many NLP algorithms use a so-called bag of words approach, where the order of words is disregarded.
 Both the WMD and ICT take the same approach as a bag of words and treat a trace as a bag of activities.
 
 \subsubsection{Word Mover's Distance}
@@ -287,8 +287,8 @@ Both the WMD and ICT take the same approach as a bag of words and treat a trace 
 	\end{algorithmic}
 \end{algorithm}
 The Word Mover's Distance \cite{KSKW15} is a variant of the Earth Mover's Distance \cite{RTGu98} adapted for natural language processing.
-This family of metrics has proved to be quite robust as well as accurate for a lot of embedding based NLP tasks.
-For this reason it was chosen as an initial candidate for the distance function of an embedding based conformance checking technique.
+This family of metrics has proved to be quite robust as well as accurate for a lot of embedding-based NLP tasks.
+For this reason, it was chosen as an initial candidate for the distance function of an embedding-based conformance checking technique.
 The Earth Mover's distance measures the distance between two probability distributions.
 The informal interpretation of this is that there are two distributions, represented by piles of earth.
 The distance between two distributions can be interpreted as the amount of work that needs to be done to transform one into the other.
@@ -357,8 +357,8 @@ This is much less computationally expensive than the previous two approaches whi
 
 \section{Experiments}
 \label{sec:results}
-To assess the performance of the three proposed embedding based techniques the authors designed and performed three experiments.
-These aimed to test and compare the scalability of the methods, whether noise deteriorates the results in an expected manner, and lastly to compare these techniques to established well researched conformance checking techniques.
+To assess the performance of the three proposed embedding-based techniques the authors designed and performed three experiments.
+These aimed to test and compare the scalability of the methods, whether noise deteriorates the results in an expected manner, and lastly to compare these techniques to established well-researched conformance checking techniques.
 
 \subsection{Experimental Setup}
 \begin{figure}
@@ -406,16 +406,16 @@ Then fitness and precision between the discovered model and the real log were ca
 \end{figure}
 The first performed experiment aimed to assess the performance  of the three proposed methods.
 The experiments were run on an Intel Core i7-9850h, a mid-range consumer CPU.
-Experiments were run for all three methods for different sized logs and different sized dictionaries, for embedding based conformance checking algorithms dictionary size is determined by the number of different activities in the log.
+Experiments were run for all three methods for different sized logs and different sized dictionaries, for embedding-based conformance checking algorithms dictionary size is determined by the number of different activities in the log.
 All experiments were performed in Python, however, the Word Mover's distance was calculated using pyemd, a Python wrapper to calculate the WMD/EMD with NumPy efficiency.
 As such, when comparing ICT and WMD times, the efficiency difference between Python and C should be taken into account.
 
 The resulting times are shown in \cref{fig:scalability}
 \footnote{Note that when two logs of size $n$ are compared, $n^2$ comparisons are needed. This is the reason why the needed time scales quadratically with log size}.
-Over all log sizes a similar pattern is observable, with WMD and ICT behaving similar and \emph{trace2vec} consistently outperforming the other two methods in all experiments.
+Over all log sizes, a similar pattern is observable, with WMD and ICT behaving similarly and \emph{trace2vec} consistently outperforming the other two methods in all experiments.
 For small dictionary sizes  (10) WMD does outperform ICT, however, that is likely due to the aforementioned efficiency differences between the implementations.
 It is notable that despite these efficiency differences ICT already starts to outperform WMD for dictionary sizes of 20.
-For dictionaries of size 30 this gap grows even larger.
+For dictionaries of size 30, this gap grows even larger.
 Here ICT is finished after roughly half the time needed by the WMD approach.
 These experiments seem to suggest that ICT scales much better with larger dictionary sizes.
 Especially when considering that the current implementation is still unoptimized ICT could very well serve as a more efficient alternative to WMD, especially when working with complex logs.
@@ -473,11 +473,11 @@ It should be noted that for both experiments the absolute values for WMD and ICT
 		\caption{Precision}
 		\label{fig:precision}
 	\end{subfigure}
-\caption{Fitness and Precision for different tree, discovery technique pairings for the three proposed techniques as well as the two verification techniques. 
-	Note that values are shown for WMD,ICT and \emph{trace2vec} are mirrored along x, since they are not proper metrics and larger values means worse fitness/precision. 
-	This way all results move in the same direction for better/worse values.
-Raw data can be found in \cite{PBWe20} Table 5.}
-\label{fig:discovery}
+	\caption{Fitness and Precision for different tree, discovery technique pairings for the three proposed techniques as well as the two verification techniques. 
+		Note that values are shown for WMD,ICT and \emph{trace2vec} are mirrored along x, since they are not proper metrics and larger values means worse fitness/precision. 
+		This way all results move in the same direction for better/worse values.
+		Raw data can be found in \cite{PBWe20} Table 5.}
+	\label{fig:discovery}
 \end{figure}
 
 The purpose of the last experiment was the comparison of the three proposed techniques to establish conformance checking algorithms.
@@ -497,18 +497,18 @@ It is of course also important to point out that the validation techniques shoul
 
 \subsection{Reproduction of Experiments}
 The authors published some \href{https://github.com/jaripeeperkorn/Conformance-checking-using-activity-and-trace-embeddings}{source code} accompanying the paper.
-To verify their results as well possibly perform some additional experiments it seemed appropriate to look at said code and try to reproduce their results as good as possible.
+To verify their results as well as possibly perform some additional experiments it seemed appropriate to look at said code and try to reproduce their results as well as possible.
 After some initial technical difficulties, since very specific package versions were needed, their code was successfully run.
-They provide three separate Python scripts for their implementations of the  WMD,ICT and \emph{trace2vec} methods.
+They provide three separate Python scripts for their implementations of the  WMD, ICT and \emph{trace2vec} methods.
 
-Aside from that they also provide Jupyter notebooks for their experiments, however sadly these do not run the whole experiment, instead they only perform the experiment for one parameter combination.
-To reproduce their noise experiment it is thus necessary to manually run the corresponding notebook twelve times, once for each parameter combination, manually note down the results of each run and merge them manually at the end.
+Aside from that they also provide Jupyter notebooks for their experiments, however sadly these do not run the whole experiment, instead, they only perform the experiment for one parameter combination.
+To reproduce their noise experiment it is thus necessary to manually run the corresponding notebook twelve times, once for each parameter combination, manually note down the results of each run, and merge them manually at the end.
 This was deemed to be out of scope for this paper.
-Additionally, the discovery experiment only determined fitness and precision of the WMD, ICT and \emph{trace2vec} methods and not the reference methods, so it is unclear at this point how the fitness and precision values for the reference methods were determined.
-Overall it can be said that the results from the paper are at least partially reproducible, and the provided implementation gives good pointer into how the methods were set up in detail, but running the experiments and collecting the results requires more effort than should be necessary.
+Additionally, the discovery experiment only determined the fitness and precision of the WMD, ICT, and \emph{trace2vec} methods and not the reference methods, so it is unclear at this point how the fitness and precision values for the reference methods were determined.
+Overall it can be said that the results from the paper are at least partially reproducible, and the provided implementation gives a good pointer into how the methods were set up in detail, but running the experiments and collecting the results requires more effort than should be necessary.
 
-Lastly, it was considered to design and run another experiment here to evaluate performance and scaling differences between the embedding based approaches and reference approaches like alignments, behavioral fitness and ETC precision, as this is one of the main selling point especially in the IoT and the authors sadly did not include an experiment to that effect.
-In light of the complications with the existing experiments and the fact that no evaluation of the reference metrics was included in their code this idea was deemed out of scope for this paper.
+Lastly, it was considered to design and run another experiment here to evaluate performance and scaling differences between the embedding based approaches and reference approaches like alignments, behavioral fitness, and ETC precision, as this is one of the main selling points especially in the IoT and the authors sadly did not include an experiment to that effect.
+In light of the complications with the existing experiments and the fact that no evaluation of the reference metrics was included in their code, this idea was deemed out of scope for this paper.
 
 \section{Discussion}
 \label{sec:discussion}
@@ -541,8 +541,8 @@ The authors especially mention $n$-grams, Embeddings from Language Models, Globa
 
 \subsection{Internet of Things}
 When analyzing such an approach in the context of the Internet of Things, there are three main facets that need to be considered.
-Due to the fact that the Internet of Things itself, as well as it's architectures, are very heterogeneous it will always be possible to find networks where one of the following limitations or requirements does not hold to some extent, however generally speaking the following should be the main considerations when trying to adapt a process management technique to the Internet of Things.
-First the Internet of Things generates a lot of data, and the amount of potential data that can be generated is enormous.
+Due to the fact that the Internet of Things itself, as well as its architectures, are very heterogeneous, it will always be possible to find networks where one of the following limitations or requirements does not hold to some extent, however generally speaking the following should be the main considerations when trying to adapt a process management technique to the Internet of Things.
+First, the Internet of Things generates a lot of data, and the amount of potential data that can be generated is enormous.
 This means high performance, for things like real-time analysis, is a major goal.
 The second consideration should be that the Internet of Things is very "online", in the sense that events are constantly produced and thus analysis, such as conformance checking, during process execution is a highly desired property of any technique. 
 
@@ -551,19 +551,19 @@ An important question that was not yet properly addressed is whether this method
 The first important thing to note in that regard is performance.
 Sadly the authors did not include a performance measure for the baseline methods but it should be noted that there was one case where alignments did not produce a result in a reasonable time frame. 
 However, it is well known that alignments are a rather inefficient technique due to the inherent non-determinism and complex search structures needed to find an optimal alignment.
-As such it should be pointed out that any performance efficient technique that rivals alignments in expressive power, is desired in normal process mining, while being doubly important in any environment where computing power is much more limited and where data needs to be processed in real time.
+As such it should be pointed out that any performance efficient technique that rivals alignments in expressive power, is desired in normal process mining, while being doubly important in any environment where computing power is much more limited and where data needs to be processed in real-time.
 Furthermore, embeddings provide a way to move computations out of the conformance calculation into preliminary calculations, namely determining the embedding function.
 While the embeddings were trained separately and independently for each tree in the focus paper, a good embedding function for a process's activities and/or traces could theoretically be shared in the Internet of Things.
 This is attractive since it further decreases the amount of work needed to evaluate a dissimilarity, and, as can be seen at the \emph{trace2vec} case, generally exhibits much better scaling properties.
-Separating the conformance checking algorithm into a (more) efficient and well scaling evaluation part and a less efficient but shareable training part, could make such algorithms much more desirable in use-cases with many activities, long traces and/or high performance requirements, such as real time evaluation.
+Separating the conformance checking algorithm into a (more) efficient and well-scaling evaluation part and a less efficient but shareable training part could make such algorithms much more desirable in use-cases with many activities, long traces, and/or high-performance requirements, such as real-time evaluation.
 \subsubsection{Online/Streaming algorithms}
 An online conformance checking technique based on alignments is presented in \cite{ZBK*19}.
 Online conformance checking generally has two problems. Not underestimating the conformance of running traces, as running traces are missing events necessary for completion, while not overestimating the conformance of terminated traces, without explicit knowledge of termination.
 
-A naïve way to perform conformance checking analysis of the prefixes using the techniques outline above, is to simply add all prefixes of traces in the model log  to the model log.
-This approach essentially replicates the prefix-conformance technique presented in \cite{ZBK*19} for any model-log to real-log technique.
+A naïve way to perform conformance checking analysis of the prefixes using the techniques outlined above is to simply add all prefixes of traces in the model log  to the model log.
+This approach essentially replicates the prefix-conformance technique presented \cite{ZBK*19} for any model-log to real-log technique.
 The basic approach there was to relax one of the restrictions, namely that the end marking of an alignment had to be a final marking, to consider all traces whose end marking can reach the final marking, i.e. that there exists some remainder execution that completes the trace.
-Given a large enough sampling this is equivalent to enumerating all prefixes of the replay.
+Given a large enough sampling, this is equivalent to enumerating all prefixes of the replay.
 While this approach would give decent estimations for any incomplete traces such an approach runs into several problems.
 The first is that the explosion of the model log greatly increases the number of (dis)similarities that need to be calculated, which degrades performance.
 Secondly, as for all online conformance checking algorithms that don't assume explicit knowledge of termination, this will greatly overestimate the conformance of many non-fitting traces, especially since the fitness of a trace is a minimum of all distances between itself and model traces, it is very sensitive to the sudden inclusion of a lot of new model traces.
@@ -572,15 +572,15 @@ Precision would be less affected by such a change since the percentage of incomp
 However, more complicated techniques are also imaginable.
 Both WMD and ICT seem rather problematic approaches, when it comes to online conformance checking as both require normalization over activities, so even a prefect prefix like $\langle a,b\rangle$ of $\langle a,b,c\rangle$ would be encoded as $(0.5,0.5,0)$ and $(0.33,0.33,0.33)$ respectively.
 This means that through the modeling approach prefix relationships are already substantially degraded.
-It is possible that there are subset-like variants of the WMD, however I am not aware of any.
+It is possible that there are subset-like variants of the WMD, however, I am not aware of any.
 
-The \emph{trace2vec} method could be more interesting, since it gives a framework to directly compare traces.
+The \emph{trace2vec} method could be more interesting since it gives a framework to directly compare traces.
 If we look at any trace we would assume that the longer a prefix we take and determine the embedding of the more similar it is to the trace itself, i.e. it convergence in some sense to the embedding of the complete trace.
 An improvement on the naïve method above could be to just check all prefixes of the $k$ nearest neighbors to any trace.
 
-Overall it should be noted that online conformance checking is a difficult problem, but that there are certainly possibilities for solutions using the proposed techniques, especially considering their novelty there has been less research how they could be adapted in an online setting, and how such adaptions perform in reality.
-But even beyond that there are many potential interesting use cases for embedding based methods in an online method.
-For example the use case of predicting the next activity, while outside the bounds of conformance checking, maps very cleanly to word prediction tasks, when using embeddings, so there are certainly very interesting topics in applying embeddings to not only conformance checking  but other process mining tasks as well.
+Overall it should be noted that online conformance checking is a difficult problem, but that there are certainly possibilities for solutions using the proposed techniques, especially considering their novelty there has been less research on how they could be adapted in an online setting, and how such adaptions perform in reality.
+But even beyond that, there are many potential interesting use cases for embedding-based methods in an online method.
+For example, the use case of predicting the next activity, while outside the bounds of conformance checking, maps very cleanly to word prediction tasks, when using embeddings, so there are certainly very interesting topics in applying embeddings to not only conformance checking  but other process mining tasks as well.
 
 %
 % ---- Bibliography ----
