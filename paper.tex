@@ -105,7 +105,7 @@ This limits the complexity of algorithms that can be performed on each of the de
 Overall it should be noted that asynchronous decentralized networks are common for the Internet of Things, which needs to be taken into account when applying BPM.
 Secondly, the Internet of Things has both the potential and demand for a greater number of online analyses, i.e. in contrast to classical business processes it is much more important to evaluate a process during the execution, to give feedback, and to possibly even influence a process during its execution.
 
-\color{red}
+
 The following paper is structured as follows.
 First, some background and important concepts for the rest of the paper are introduced n \cref{sec:background}.
 This includes a deeper look at the conformance checking problem, which is given in \cref{sub:conformance}, including a description of the two established families of techniques.
@@ -114,11 +114,11 @@ Then a brief overview of the required NLP techniques is given in \cref{sub:nlp}.
 Provided with the basic knowledge concerning both conformance checking and NLP, the novel embedding-based conformance checking approaches from \cite{PBWe20} are described in \cref{sec:method}.
 After the techniques have been outlined a discussion of the results from their experiments follows in \cref{sec:results}.
 \cref{sec:discussion} concludes the paper with a consideration of limitations in their approach and possible future work, as well as a discussion of the applicability of these techniques in the Internet of Things.
-\color{black}
+
 
 \section{Background}
 \label{sec:background}
-\color{red}
+
 Naturally, there are numerous subproblems to be solved in business process management.
 Often each problem can be viewed as a building block in a bigger system, and good solutions to one problem can enable more insightful further analyses in subsequent problems.
 For example, the first step in many business process management use cases will be the discovery of a process model.
@@ -127,7 +127,7 @@ One of these fields is conformance checking, which as a technique, closely follo
 There are currently two dominant branches of conformance checking, replay-based algorithms, and trace alignment algorithms.
 Peeperkorn et al. present a novel conformance checking technique that follows an alternate route \cite{PBWe20} to address the conformance checking problem, through techniques adapted from natural language processing.
 However, before this technique can be discussed in-depth it is paramount to understand some of the basic ideas underlying both conformance checking and natural language processing. 
-\color{black}
+
 
 \subsection{Conformance Checking}
 \label{sub:conformance}
@@ -174,9 +174,9 @@ In this case, a missing token is added to all input places, that did not contain
 Conversely, it might also happen, that a trace can be replayed, but that there are stray tokens left in the Petri net after the replay. 
 At the end of the replay, the sum of all leftover tokens makes up the $r$ counter.
 Both missing and remaining tokens signal deviation from the process model, but both of these numbers are dependent on the length of traces.
-The longer a trace is the more activities will be taken, the more tokens will be produced, and the more chances there are for tokens to be missing or remaining.
-Importantly a trace where half the produced tokens were never consumed, i.e. remained, should intuitively have lower fitness than one where only a quarter of produced tokens remained.
-Of course, the same relationship holds for the other two counters $m$ and $c$.
+%The longer a trace is the more activities will be taken, the more tokens will be produced, and the more chances there are for tokens to be missing or remaining.
+%Importantly a trace where half the produced tokens were never consumed, i.e. remained, should intuitively have lower fitness than one where only a quarter of produced tokens remained.
+%Of course, the same relationship holds for the other two counters $m$ and $c$.
 Then one very naturally arrives at a trace fitness defined as:
 \begin{equation}
 	fitness(\sigma,N) = \frac{1}{2}(1-\frac{m_{N,\sigma}}{c_{N,\sigma}})+\frac{1}{2}(1-\frac{r_{N,\sigma}}{p_{N,\sigma}})
@@ -186,7 +186,7 @@ Often one does not just want to determine the fitness of one trace but a complet
 \begin{equation}
 	fitness(L,N) = \frac{1}{2}(1-\frac{\sum_{\sigma\in L}m_{N,\sigma}}{\sum_{\sigma\in L}c_{N,\sigma}})+\frac{1}{2}(1-\frac{\sum_{\sigma\in L}r_{N,\sigma}}{\sum_{\sigma\in L}p_{N,\sigma}})
 \end{equation}
-Note that log-fitness is not mathematically equivalent to the mean trace fitness.
+%Note that log-fitness is not mathematically equivalent to the mean trace fitness.
 
 Token-based methods are generally easy to implement and efficient algorithms are known, however, they are not without problems.
 The first is the phenomenon known as "token flooding". Since token-based methods create missing tokens to enable observed transitions in the log and remaining tokens are not removed, as more missing tokens are added during the simulation of a trace the  amount of stray tokens in the net also grows.
@@ -198,16 +198,15 @@ Yet in conformance checking it is often the latter rather than the former questi
 
 The second group of popular methods for conformance checking are alignment-based methods.
 The goal here is to construct an execution on the model that is as "close" as possible to the observed execution of events in the trace/log.
-If a trace is conformant with the model, this is trivially easy, the "closest" execution possible in the model is exactly the observed trace.
 In the conformant case, all moves are so-called, synchronous moves, where both the log and the model performed the same event at each step.
-However, if a trace is non-conformant, which is, of course, the case that is of interest, then a one-to-one mapping between model and trace is not possible.
-To describe that so-called non-synchronous moves are introduced, these describe the case that one of  the model or log performs an activity that does not happen in the other one.
+%However, if a trace is non-conformant, which is, of course, the case that is of interest, then a one-to-one mapping between model and trace is not possible.
+In the non-conformant case so-called non-synchronous moves are introduced, these describe the case that one of  the model or log performs an activity that does not happen in the other one.
 This can be either a move-on-model-only, where the model takes some transition, which was not observed in the log, or it's dual, the move-on-log-only where an event is recorded in the log that is not possible according to the model.
 The weighted sum of misalignments can then be used as a cost metric for an alignment. 
 The goal is then to construct an optimal alignment between a trace and the model.
-It should be obvious that there are infinitely many such alignments, however, we can construct a trace-agnostic alignment, which consists of $n$ moves-on-log-only followed by the shortest path through the model as moves-on-model-only.
-This means there is an effective upper limit on the length of alignments that need to be considered, which in turn means that the problem is decidable. 
-However, the search space can quickly grow infeasibly large, so heuristics need to be employed to determine optimal alignments in a reasonable time frame.
+%It should be obvious that there are infinitely many such alignments, however, we can construct a trace-agnostic alignment, which consists of $n$ moves-on-log-only followed by the shortest path through the model as moves-on-model-only.
+%This means there is an effective upper limit on the length of alignments that need to be considered, which in turn means that the problem is decidable. 
+%However, the search space can quickly grow infeasibly large, so heuristics need to be employed to determine optimal alignments in a reasonable time frame.
 
 Alignments overcome many of the problems encountered in token-based approaches: 
 They do not suffer from problems like token flooding, and they give transition-based diagnostics, which in the case of process mining is far more useful since transitions encode recorded or recordable activities. 
@@ -242,7 +241,7 @@ This has the additional advantage that it is model-independent since no limitati
 	\label{fig:structure}
 \end{figure}
 
-\color{blue}
+
 Three different techniques were outlined in the focus paper \cite{PBWe20}, all following a similar structure outlined in \cref{fig:structure}.
 First, a model log is produced from the model by using appropriate replay semantics for the model.
 Then, given these two logs, one real and one produced by replaying the model, it is possible to train the \emph{act2vec} \cite{KBWe18} embedding.
@@ -252,7 +251,7 @@ The first two, the Word Mover's Distance \cite{KSKW15} and Iterative Constrained
 The last one, \emph{trace2vec}, further needs to train a trace embedding based on activity embeddings, and can then perform direct comparisons in the trace embedding space.
 All three methods however lead to a reasonable dissimilarity metric between traces.
 Using one of these metrics a dissimilarity matrix can be built up describing the pairwise dissimilarities between the real log and the model log.
-\color{black}
+
 From here on we will assume that each row corresponds to a trace from the model log and each column corresponds to a trace from the real log, i.e. $a_{ij}$ is the dissimilarity of the $i$-th trace from the model log with the $j$-th trace of the real log.
 As such, each column contains the dissimilarity of a trace in the real log with all traces from the model log, with the minimum of a column being the closest match in the model log.
 A trace that can be closely replayed by the model, i.e. one that has a close match to a trace produced from the model, is a well-fitting one.
@@ -270,7 +269,7 @@ Both the WMD and ICT take the same approach as a bag of words and treat a trace 
 
 \subsubsection{Word Mover's Distance}
 
-\color{blue}
+
 \begin{algorithm}
 	\caption{Word Mover's distance}\label{alg:wmd}
 	\begin{algorithmic}
@@ -343,7 +342,7 @@ ICT and ACT agree in the limit, however, if the number of occurring activities i
 Only if there are some activities that occur significantly more often than others it is necessary to perform more iterations.
 
 The ICT and ACT again provide a lower bound to the WMD, since it is not guaranteed that the inflow constraint is met, however, the ICT/ACT lower bound is higher than the RWMD lower bound due to the additional constraint that was introduced.
-\color{black}
+
 \subsection{trace2vec}
 In contrast to the two previous approaches, which used activity embeddings, it is also possible to train trace embeddings.
 The relationship between \emph{act2vec} and \emph{trace2vec} is analogous to the one between \emph{word2vec} and \emph{doc2vec}.
@@ -367,7 +366,7 @@ These aimed to test and compare the scalability of the methods, whether noise de
 	\label{fig:process-tree}
 \end{figure}
 %To evaluate the suitability of the method three sets of experiments were performed. 
-\color{blue}
+
 All experiments utilized (the same) randomly generated process trees, that were constructed using the algorithms in the \emph{pm4py} library.
 Three size configurations described by minimum number, the model, and the maximum number of visible activities were chosen: 5-10-15, 10-20-30, and 15-30-45.
 Furthermore, four operator configurations were chosen described by the probability for randomly choosing each available operator.
@@ -375,7 +374,7 @@ These were in no particular order: Sequence: $0.75$, Parallel $0.25$, secondly S
 Both of these configurations were combined to generate a grid of $12$ process trees, with the hope that these cover a sufficient range of different behavior.
 An example of such a random process tree is shown in \cref{fig:process-tree}
 \footnote{Note that this tree is not the one used by the authors since they did not share their trees or logs, but one generated with the same parameters.}.
-\color{black}
+
 
 The first set of experiments focused on the scalability of the approach, especially since more traditional approaches do not scale well. This aspect is doubly important when talking about the Internet of Things, where the granularity of events is much easier controllable, which makes it possible to produce large amounts of event data with comparatively little effort.
 Due to this scalability is an important factor for the IoT, since it is desired to process these large amounts of data.
@@ -383,13 +382,13 @@ Due to this scalability is an important factor for the IoT, since it is desired 
 The second set of experiments aimed to determine whether the method responded as expected when providing noisy logs.
 These experiments were designed to verify the soundness of the approach.
 This was done by generating logs from random process trees generated by pm4py, applying random noise on these logs, and determining the conformance between the noiseless and noisy logs.
-\color{blue}
+
 Three different types of noise were used: replacing a random activity with another, swapping two random activities, and removing a random activity.
 Then,  two noise experiments were performed.
 In the first experiment, the percentage of traces that noise was applied to was varied between $10\%$ and $50\%$, but each noise type was applied at most once to each trace.
 In the second experiment instead, the percentage of traces to which noise was applied was kept constant at $40\%$, but the number of activities to which noise was applied was varied.
 Furthermore, the second experiment only utilized the replacement noise function  omitting the other two.
-\color{black}
+
 The expectation is that any reasonable conformance metric should deteriorate the more noise is added to the log.
 
 The third and last set of experiments was designed to compare the performance of the proposed methods (WMD, ICT \& trace2vec) to existing established conformance metrics, namely alignments, behavioral fitness \cite{GMVB09} and ETC precision \cite{MuCa10}.
@@ -397,7 +396,7 @@ This was achieved by generating 1000 traces from a randomly generated process tr
 Then, a discovery algorithm was applied to this log to discover a model. Here, Alpha Miner, Inductive Miner infrequent (IMi) with noise levels 0 and 1, and the ILP Miner were selected as discovery algorithms.
 Then fitness and precision between the discovered model and the real log were calculated using the previously mentioned algorithms as well as the method described in the paper.
 
-\color{blue}
+
 \subsection{Scalability Experiment}
 \begin{figure}
 	\includegraphics[width=1\textwidth]{figures/scaling}
@@ -509,7 +508,7 @@ Overall it can be said that the results from the paper are at least partially re
 
 Lastly, it was considered to design and run another experiment here to evaluate performance and scaling differences between the embedding based approaches and reference approaches like alignments, behavioral fitness and ETC precision, as this is one of the main selling point especially in the IoT and the authors sadly did not include an experiment to that effect.
 In light of the complications with the existing experiments and the fact that no evaluation of the reference metrics was included in their code this idea was deemed out of scope for this paper.
-\color{black}
+
 \section{Discussion}
 \label{sec:discussion}
 \subsection{Future Work}
@@ -520,14 +519,14 @@ All used logs were completely synthetic, generated from random process trees.
 It is unclear how well the 12 trees used for this resemble real processes and whether these tree configurations are sufficiently representative for the variation exhibited in real life trees\footnote{12 tree configurations were used, 3 sizes and 4 different probability distributions for operations, how strong these vary should be investigated}.
 As such it should be a priority to test the proposed methods on real logs, possibly popular benchmark cases, and also to systematically broaden the parameters for random process tree generation to cover more different classes.
 
-\color{blue}
+
 It is also a  prerequisite for further research and possible usage of such methods to convert the distance metrics obtained into proper conformance metrics, especially by restricting values to the interval $[0,1]$.
 When that is done further quantitative comparisons between the updated methods and established conformance checking techniques should be performed.
 Furthermore, the algorithms used have several parameters which were set as seemingly reasonable standard values.
 A thorough investigation into the effect of these parameters should follow since it can not be known whether similar defaults should be used in conformance checking  as in classical NLP problems.
 Special attention should be placed on those cases for which the NLP techniques produced perfect values, whereas the others did not.
 The methods should be tested with completely perfect and completely imperfect models regarding fitness and precision, as well as nearly perfect and nearly imperfect models to verify that the methods are able to correctly classify both ends of the model spectrum and not misclassify nearly optimal models as perfect.
-\color{black}
+
 Apart from that two of the metrics proposed -- WMD and ICT -- do not take the order of words/activities into account.
 This is due to the fact that for a lot of NLP problems order is of lesser importance and tasks like document keyword detection can treat a document as an order-less bag of words.
 At least from an intuitive understanding of conformance checking, the order of activities is integrally important, and it should at least be investigated if there are significant differences between ordered and orderless approaches with regard to conformance checking.
@@ -538,13 +537,13 @@ The use of embeddings is often the easiest method in such approaches, but it is 
 As such further research into the applicability of a variety of other methods could be fruitful.
 The authors especially mention $n$-grams, Embeddings from Language Models, Global Vectors for Word Representation, and Recurrent Neural Networks.
 
-\color{red}
+
 \subsection{Internet of Things}
 When analyzing such an approach in the context of the Internet of Things, there are three main facets that need to be considered.
 Due to the fact that the Internet of Things itself, as well as it's architectures, are very heterogeneous it will always be possible to find networks where one of the following limitations or requirements does not hold to some extent, however generally speaking the following should be the main considerations when trying to adapt a process management technique to the Internet of Things.
-First the Internet of Things is made up of many less powerful machines that generate a lot of data, and while it is of course possible to integrate more powerful computers into the internet of things, high performance, especially on limited hardware, is a major goal.
-The second consideration should be that the Internet of Things is very "online", in the sense that Events are constantly produced and thus analysis, such as conformance checking, during process execution is a high desired property of any technique. 
-Lastly the Internet of Things is distributed, and as such certain features such as perfect connectivity, knowledge of all members of the network and others are much more relaxed.
+First the Internet of Things generates a lot of data, and the amount of potential data that can be generated is enormous.
+This means high performance, for things like real-time analysis, is a major goal.
+The second consideration should be that the Internet of Things is very "online", in the sense that events are constantly produced and thus analysis, such as conformance checking, during process execution is a highly desired property of any technique. 
 
 \subsubsection{Performance}
 An important question that was not yet properly addressed is whether this method offers benefits in the use case of the internet of things and how well it would be adaptable to such an environment.
@@ -579,10 +578,9 @@ If we look at any trace we would assume that the longer a prefix we take and det
 An improvement on the naïve method above could be to just check all prefixes of the $k$ nearest neighbors to any trace.
 
 Overall it should be noted that online conformance checking is a difficult problem, but that there are certainly possibilities for solutions using the proposed techniques, especially considering their novelty there has been less research how they could be adapted in an online setting, and how such adaptions perform in reality.
-There are definitely parallels like word prediction systems for example, where such an approach could prove fruitful in both an online or offline setting.
+But even beyond that there are many potential interesting use cases for embedding based methods in an online method.
+For example the use case of predicting the next activity, while outside the bounds of conformance checking, maps very cleanly to word prediction tasks, when using embeddings, so there are certainly very interesting topics in applying embeddings to not only conformance checking  but other process mining tasks as well.
 
-\subsubsection{Distributed}
-\color{black}
 %
 % ---- Bibliography ----
 %
