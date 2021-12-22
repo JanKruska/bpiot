@@ -371,7 +371,7 @@ These aimed to test and compare the scalability of the methods, whether noise de
 All experiments utilized (the same) randomly generated process trees, that were constructed using the algorithms in the \emph{pm4py} library.
 Three size configurations described by minimum number, the model, and the maximum number of visible activities were chosen: 5-10-15, 10-20-30, and 15-30-45.
 Furthermore, four operator configurations were chosen described by the probability for randomly choosing each available operator.
-These were in no particular order: Sequence: $0.75$, Parallel $0.25$, secondly Sequence: $0.75$, Choice $0.25$, thirdly 1. Sequence: $0.5$, Parallel $0.25$, Choice $0.25$ and lastly $0.25$ for all (Sequence, Parallel, Choice and Loop) operators.
+These were in no particular order: Sequence: $0.75$, Parallel $0.25$, secondly Sequence: $0.75$, Choice $0.25$, thirdly Sequence: $0.5$, Parallel $0.25$, Choice $0.25$ and lastly $0.25$ for all (Sequence, Parallel, Choice and Loop) operators.
 Both of these configurations were combined to generate a grid of $12$ process trees, with the hope that these cover a sufficient range of different behavior.
 An example of such a random process tree is shown in \cref{fig:process-tree}
 \footnote{Note that this tree is not the one used by the authors since they did not share their trees or logs, but one generated with the same parameters.}.
@@ -401,7 +401,7 @@ Then fitness and precision between the discovered model and the real log were ca
 \subsection{Scalability Experiment}
 \begin{figure}
 	\includegraphics[width=1\textwidth]{figures/scaling}
-	\caption{Runtimes for all three methods for varying sizes of logs and dictionaries. Data can be found in \cite{MuCa10} Table 2.}
+	\caption{Runtimes for all three methods for varying sizes of logs and dictionaries. Data can be found in \cite{PBWe20} Table 2.}
 	\label{fig:scalability}
 \end{figure}
 The first performed experiment aimed to assess the performance  of the three proposed methods.
