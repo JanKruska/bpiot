@@ -7,26 +7,50 @@
 \date{\today}
 
 \begin{document}
-	
+	\beamertemplatenavigationsymbolsempty
+	\addtobeamertemplate{navigation symbols}{}{%
+		\usebeamerfont{footline}%
+		\usebeamercolor[fg]{footline}%
+		\hspace{1em}%
+		\insertframenumber
+	}
 	\frame{\titlepage}
 	
 	\begin{frame}
 		\frametitle{Table of Contents}
 		\tableofcontents
 	\end{frame}
-	\section{Conformance Checking}
+	\section{Motivation}
 	\begin{frame}
-		\frametitle{Conformance Checking}
+		\frametitle{Motivation}
+		\begin{itemize}
+			\item We know that traditional approaches (replay and alignments) are able to measure conformance, but have some meaningful disadvantages as well.
+			\item At least conceptually NLP and BPM share some important characteristics. Both deal with sequences (sentences/traces) of words/activities and aim to define similarity measures between those.
+		\end{itemize}
+		\begin{block}{Research Question:}
+			Are adaptations of NLP techniques feasible solutions for problems in the BPM field, specifically for the problem of conformance checking.
+		\end{block}
+		\alert{Theoretical exploration in previous paper, here implementation and evaluation was the main concern}
 	\end{frame}
 	
-	\section{Embeddings}
+	\section{Structure}
 	\begin{frame}
-		\frametitle{Embeddings}
+		\frametitle{Structure}
+		\begin{figure}
+			\includegraphics[width=1\textwidth]{figures/structure}
+			\caption{The general structure of the approach}
+			\label{fig:structure}
+		\end{figure}
 	\end{frame}
 	
 	
 	\begin{frame}
-		\frametitle{\emph{act2vec} \& \emph{trace2vec}}
+		\frametitle{Used dissimilarity functions}
+		\begin{enumerate}
+			\item \textbf{Word Mover's distance} How much "work" is needed to transform one distribution of dirt on piles into another. Both distance between piles and amount of dirt on piles matter.
+			\item \textbf{Iterative Constraint Transfers} WMD has cubic complexity in the dictionary size, which makes it unattractive. ICT is a linear time approximation of WMD obtained by relaxing one of the constraints of the LP.
+			\item \textbf{\emph{trace2vec}} Analogously to \emph{doc2vec} train an embedding of bags of activities called \emph{trace2vec}. Use cosine similarity to directly compare traces in the trace embedding space.
+		\end{enumerate}
 	\end{frame}
 	
 	\section{Experiments}
