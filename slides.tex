@@ -51,9 +51,19 @@
 			\item \textbf{Iterative Constraint Transfers} WMD has cubic complexity in the dictionary size, which makes it unattractive. ICT is a linear time approximation of WMD obtained by relaxing one of the constraints of the LP.
 			\item \textbf{\emph{trace2vec}} Analogously to \emph{doc2vec} train an embedding of bags of activities called \emph{trace2vec}. Use cosine similarity to directly compare traces in the trace embedding space.
 		\end{enumerate}
+	\alert{The obtained metrics are not proper fitness metrics, i.e. they do not fall within the interval $[0,1]$. As such quantitative analyses is not really possible at this point.}
 	\end{frame}
 	
 	\section{Experiments}
+	\begin{frame}
+		\frametitle{Setup}
+		Three experiments were performed:
+		\begin{enumerate}
+			\item Noise: Applying noise to a varying amount of traces/ varying amount of noise applied to same amount of traces. Investigate how the methods react. Do they deteriorate smoothly?
+			\item Discovery: Discover model using different miners, determine fitness and precision using the three proposed methods as well as alignments, behavioural fitness and ETC precision.
+			\item Scaling: Vary log and dictionary sizes (number of activities). Compare runtimes \alert{Sadly no runtimes of traditional methods were included.}
+		\end{enumerate}
+	\end{frame}
 	\begin{frame}
 		\frametitle{Setup}
 		Random trees were generated using pm4py and the following configurations:
@@ -73,6 +83,9 @@
 		\end{tabular}
 		
 		Using these parameters $3\times4=12$ trees were generated.
+		Then from each of those the "real" logs of 1000 traces were gathered by play-out.
+		
+		The scaling experiment used different unspecified trees varying the amount of activities and the size of the played-out log.
 	\end{frame}
 	\begin{frame}
 		\frametitle{Example tree}
@@ -127,16 +140,18 @@
 	\end{frame}
 	
 	\begin{frame}
-		\frametitle{Discovery}
+		\frametitle{Results from Noise \& Discovery}
 		\begin{itemize}
-			\item Measures for proposed methods are not proper fitness metrics, so careful with quantitative analyses!
-			\item 
+			\item Overall, noise behaves as expected
+			\item Again quantitative analyses can not be made from this data!
+			\item Very often the NLP and reference methods agree on perfect fitness or precision
+			\item For imperfect values the methods also seem to move in a similar direction, though further research is probably needed.
 		\end{itemize}
 	\end{frame}
 	
 	
 	\begin{frame}
-		\frametitle{Scalability}
+		\frametitle{Scaling}
 		\begin{figure}
 			\includegraphics[width=1\textwidth]{figures/scaling}
 			\caption{Runtimes for all three methods for varying sizes of logs and dictionaries.}
@@ -144,19 +159,25 @@
 		\end{figure}
 	\end{frame}
 	
-	\section{Internet of Things}
+	
 	\begin{frame}
-		\frametitle{Challenges}
+		\frametitle{Scaling}
 		\begin{itemize}
+			\item unoptimized ICT already rivalling WMD, very likely attractive alternative.
+			\item ICT scales well, \emph{trace2vec} stays the same with dictionary size
+			\item All methods scale roughly quadratically with log-size, since the number of necessary comparisons grows quadratically
 			\item log-comparison method. Performance dependent on model complexity. How many traces are needed to describe the model sufficiently well.
 		\end{itemize}
 	\end{frame}
 	
+	\section{Internet of Things}
 	\begin{frame}
-		\frametitle{Benefits}
+		\frametitle{Internet of Things}
 		\begin{itemize}
 			\item Better performance, and especially better scaling w.r.t. number of activities and trace length.
+			\item Learned embeddings could be shared between devices, moving work out of the evaluation to a preceding training step.
 			\item Embeddings have other advantages, no more binary activity equality, could allow for more fine grained conformance.
+			\item Possibly much more complex tasks. E.g. an analogy to predictive text, i.e. predicting the next event given a sequence of observed events.
 		\end{itemize}
 	\end{frame}
 	
