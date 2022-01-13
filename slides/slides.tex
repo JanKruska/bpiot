@@ -3,11 +3,20 @@
 \usepackage{subcaption}
 
 \usetheme{rwth}
-\title{Conformance Checking Using Embeddings and its Applicability in the Internet of Things}
-\author{Jan Kruska}
-\date{\today}
+%\title{Conformance Checking Using Embeddings and its Applicability in the Internet of Things}
+%\author{Jan Kruska}
+%\date{\today}
 
 \newcommand{\figures}{../figures/}
+
+\newcommand{\pro}{\item[\color{green}\textbf{+}\color{black}]}
+\newcommand{\con}{\item[\color{red}\boldmath{$-$}\color{black}]}
+
+\logo{\includegraphics{figures/rwth_pads_en_rgb}}
+
+\input{config}
+\author[\firstname]{\firstname~\lastname~\email}
+\institute[RWTH]{RWTH Aachen University}
 
 \begin{document}
 	\beamertemplatenavigationsymbolsempty
@@ -17,8 +26,27 @@
 		\hspace{1em}%
 		\insertframenumber
 	}
-	\frame{\titlepage}
+% Title page with a 1/3rd size picture
+\setbeamercolor{title page bar}{fg=white}
+\setbeamertemplate{title page}[rwth][figures/title_small]{}
+\begin{frame}[plain]
+	\vspace{1cm}
+	\titlepage
 	
+	\vspace{-6em}
+	\parbox{0cm}{
+		\begin{tabbing}
+			\=\textbf{\firstname~\lastname}\=\\[0.4em]
+			\=Study Program: \studyProgram~~~\=Matr.-Nr.:\matrNo\\[0.4em]
+			\=Chair of Process and Data Science \=\\%[0.4em]
+%			\={Supervisors}:~~~\=\firstsupervisor\\
+%			\>                 \>\secondsupervisor\\[0.4em]
+%			\={Advisor}:       \>\firstadvisor\ifdefined\secondadvisor\\
+%			\>                 \>\secondadvisor\\[0.4em]
+%			\fi
+		\end{tabbing}
+	}
+\end{frame}
 	\begin{frame}
 		\frametitle{Table of Contents}
 		\tableofcontents
@@ -27,18 +55,30 @@
 	\begin{frame}
 		\frametitle{Motivation}
 		\begin{itemize}
-			\item We know that traditional approaches (replay and alignments) are able to measure conformance, but have some meaningful disadvantages as well.
-			\item At least conceptually NLP and BPM share some important characteristics. Both deal with sequences (sentences/traces) of words/activities and aim to define similarity measures between those.
+			\item Traditional approaches (replay and alignments) are able to measure conformance, but have some meaningful disadvantages (inaccurate diagnostics through phenomena like token flooding, high complexity) as well.
+			\item At least conceptually, Natural Language Processing and Business Process management share some important characteristics. Both deal with sequences (sentences/traces) of words/activities and aim to define similarity measures between those.
 		\end{itemize}
 		\begin{block}{Research Question:}
-			Are adaptations of NLP techniques feasible solutions for problems in the BPM field, specifically for the problem of conformance checking.
+			Are adaptations of NLP techniques feasible solutions for problems in the BPM field, specifically for the problem of conformance checking?
 		\end{block}
 		\alert{Theoretical exploration in previous paper, here implementation and evaluation was the main concern}
 	\end{frame}
+
+	\section{Structure of Embedding based conformance checking}
+\begin{frame}
+	\frametitle{Proposed approach}
+	\begin{enumerate}
+		\item Given a model play it out to obtain a so called model log
+		\item Train activity embeddings (\emph{act2vec}) based on real and model log
+		\item Any trace is a sequence of activities. Given an embedding (dis)similarity metrics can be defined
+		\item Using a (dis)similarity metric pairwise compare all traces in real and model log.
+		\item The best dissimilarity between a real trace and all model traces is a measure for fitness, the best similarity between a model trace and all real traces is a measure for precision.
+	\end{enumerate}
+\end{frame}
 	
-	\section{Structure}
+	
 	\begin{frame}
-		\frametitle{Structure}
+		\frametitle{Diagram}
 		\begin{figure}
 			\includegraphics[width=1\linewidth, height=0.6\paperheight, keepaspectratio]{\figures structure}
 			\caption{The general structure of the approach}
@@ -52,15 +92,15 @@
 		\begin{enumerate}
 			\item \textbf{Word Mover's distance} How much "work" is needed to transform one distribution of dirt on piles into another. Both distance between piles and amount of dirt on piles matter.
 			\item \textbf{Iterative Constraint Transfers} WMD has cubic complexity in the dictionary size, which makes it unattractive. ICT is a linear time approximation of WMD obtained by relaxing one of the constraints of the LP.
-			\item \textbf{\emph{trace2vec}} Analogously to \emph{doc2vec} train an embedding of bags of activities called \emph{trace2vec}. Use cosine similarity to directly compare traces in the trace embedding space.
+			\item \textbf{\emph{trace2vec}} Analogously to \emph{doc2vec}, train an embedding of bags of activities called \emph{trace2vec}. Use cosine similarity to directly compare traces in the trace embedding space.
 		\end{enumerate}
-	\alert{The obtained metrics are not proper fitness metrics, i.e. they do not fall within the interval $[0,1]$. As such quantitative analyses is not really possible at this point.}
+	\alert{The obtained metrics are not proper fitness metrics, i.e. they do not fall within the interval $[0,1]$. As such, quantitative analyses are not really possible at this point.}
 	\end{frame}
 	
 	\section{Experiments}
 	\begin{frame}
-		\frametitle{Setup}
-		Three experiments were performed:
+		\frametitle{Experimental Setup}
+		In the paper three experiments were performed:
 		\begin{enumerate}
 			\item Noise: Applying noise to a varying amount of traces/ varying amount of noise applied to same amount of traces. Investigate how the methods react. Do they deteriorate smoothly?
 			\item Discovery: Discover model using different miners, determine fitness and precision using the three proposed methods as well as alignments, behavioural fitness and ETC precision.
@@ -68,15 +108,17 @@
 		\end{enumerate}
 	\end{frame}
 	\begin{frame}
-		\frametitle{Setup}
+		\frametitle{Random Trees}
 		Random trees were generated using pm4py and the following configurations:
 		
+		\begin{center}
 		\begin{tabular}{lll}
 			Min & Mode & Max \\
 			5 & 10 & 15 \\
 			10 & 20 & 30 \\
 			15 & 30 & 45 \\
 		\end{tabular}
+	\hspace{40pt}
 		\begin{tabular}{llll}
 			Sequence & Parallel & Choice & Loop \\
 			0.75 & 0.25 & 0 & 0 \\
@@ -84,7 +126,8 @@
 			0.5 & 0.25 & 0.25 & 0 \\
 			0.25 & 0.25 & 0.25 & 0.25 \\
 		\end{tabular}
-		
+	\end{center}
+
 		Using these parameters $3\times4=12$ trees were generated.
 		Then from each of those the "real" logs of 1000 traces were gathered by play-out.
 		
@@ -146,9 +189,9 @@
 		\frametitle{Results from Noise \& Discovery}
 		\begin{itemize}
 			\item Overall, noise behaves as expected
-			\item Again quantitative analyses can not be made from this data!
-			\item Very often the NLP and reference methods agree on perfect fitness or precision
-			\item For imperfect values the methods also seem to move in a similar direction, though further research is probably needed.
+			\item Again, quantitative analyses can not be made from this data!
+			\item Very often, the NLP and reference methods agree on perfect fitness or precision
+			\item For imperfect values, the methods also seem to move in a similar direction, though further research is needed.
 		\end{itemize}
 	\end{frame}
 	
@@ -170,6 +213,18 @@
 			\item ICT scales well, \emph{trace2vec} stays the same with dictionary size
 			\item All methods scale roughly quadratically with log-size, since the number of necessary comparisons grows quadratically
 			\item log-comparison method. Performance dependent on model complexity. How many traces are needed to describe the model sufficiently well.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}
+		\frametitle{Replicability}
+		\begin{itemize}
+			 \pro<1-> Code  is available and well-organized
+			 \pro<2-> Implementation and experiments are seperated, should allow for relatively easy reuse of their embedding solution
+			 \con<3-> Experiment scripts only run experiment for one configuration. Reproducing their results requires manually entering all parameter combinations used (e.g. log and vocabulary size for the scalability experiment) and noting down results.
+			 \con<4-> Results outputted as plain text. This makes further processing of results tedious (and more error prone), since they need to be manually copied.
+			 \con<5-> No code included to create the figures displayed in the paper.
+			 \con<6-> As far as I can tell Alignment fitness and precision, Behavioural fitness and ECT precision were not calculated in the discovery experiment script.
 		\end{itemize}
 	\end{frame}
 	
