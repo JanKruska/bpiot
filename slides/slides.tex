@@ -1,3 +1,4 @@
+% !TeX spellcheck = en_US
 \documentclass{beamer}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -54,6 +55,8 @@
 	\section{Motivation}
 	\begin{frame}
 		\frametitle{Motivation}
+		%\begin{center}	
+		%\end{center}
 		\begin{itemize}
 			\item Traditional approaches (replay and alignments) are able to measure conformance, but have some meaningful disadvantages (inaccurate diagnostics through phenomena like token flooding, high complexity) as well.
 			\item At least conceptually, Natural Language Processing and Business Process management share some important characteristics. Both deal with sequences (sentences/traces) of words/activities and aim to define similarity measures between those.
@@ -61,7 +64,7 @@
 		\begin{block}{Research Question:}
 			Are adaptations of NLP techniques feasible solutions for problems in the BPM field, specifically for the problem of conformance checking?
 		\end{block}
-		\alert{Theoretical exploration in previous paper, here implementation and evaluation was the main concern}
+		\alert{Theoretical exploration in previous paper \cite{KBWe18}, here \cite{PBWe20} implementation and evaluation was the main concern}
 	\end{frame}
 
 	\section{Structure of Embedding based conformance checking}
@@ -90,9 +93,9 @@
 	\begin{frame}
 		\frametitle{Used dissimilarity functions}
 		\begin{enumerate}
-			\item \textbf{Word Mover's distance} How much "work" is needed to transform one distribution of dirt on piles into another. Both distance between piles and amount of dirt on piles matter.
-			\item \textbf{Iterative Constraint Transfers} WMD has cubic complexity in the dictionary size, which makes it unattractive. ICT is a linear time approximation of WMD obtained by relaxing one of the constraints of the LP.
-			\item \textbf{\emph{trace2vec}} Analogously to \emph{doc2vec}, train an embedding of bags of activities called \emph{trace2vec}. Use cosine similarity to directly compare traces in the trace embedding space.
+			\item \textbf{Word Mover's distance}\cite{KSKW15} How much "work" is needed to transform one distribution of dirt on piles into another. Both distance between piles and amount of dirt on piles matter.
+			\item \textbf{Iterative Constraint Transfers}\cite{AtMi18} WMD has cubic complexity in the dictionary size, which makes it unattractive. ICT is a linear time approximation of WMD obtained by relaxing one of the constraints of the LP.
+			\item \textbf{\emph{trace2vec}}\cite{KBWe18} Analogously to \emph{doc2vec}, train an embedding of bags of activities called \emph{trace2vec}. Use cosine similarity to directly compare traces in the trace embedding space.
 		\end{enumerate}
 	\alert{The obtained metrics are not proper fitness metrics, i.e. they do not fall within the interval $[0,1]$. As such, quantitative analyses are not really possible at this point.}
 	\end{frame}
@@ -103,7 +106,7 @@
 		In the paper three experiments were performed:
 		\begin{enumerate}
 			\item Noise: Applying noise to a varying amount of traces/ varying amount of noise applied to same amount of traces. Investigate how the methods react. Do they deteriorate smoothly?
-			\item Discovery: Discover model using different miners, determine fitness and precision using the three proposed methods as well as alignments, behavioural fitness and ETC precision.
+			\item Discovery: Discover model using different miners, determine fitness and precision using the three proposed methods as well as alignment fitness and precision \cite{Aals16}, behavioural fitness \cite{GMVB09} and ETC precision \cite{MuCa10}.
 			\item Scaling: Vary log and dictionary sizes (number of activities). Compare runtimes \alert{Sadly no runtimes of traditional methods were included.}
 		\end{enumerate}
 	\end{frame}
@@ -192,6 +195,7 @@
 			\item Again, quantitative analyses can not be made from this data!
 			\item Very often, the NLP and reference methods agree on perfect fitness or precision
 			\item For imperfect values, the methods also seem to move in a similar direction, though further research is needed.
+			\item Validation techniques should not be seen as normative, since both of these also significantly disagree for some models. 
 		\end{itemize}
 	\end{frame}
 	
@@ -209,7 +213,7 @@
 	\begin{frame}
 		\frametitle{Scaling}
 		\begin{itemize}
-			\item unoptimized ICT already rivalling WMD, very likely attractive alternative.
+			\item Note that WMD was calculated using a library with NumPy efficiency, whereas ICT was implemented in pure python. Yet unoptimized ICT already rivals WMD, very likely an attractive alternative.
 			\item ICT scales well, \emph{trace2vec} stays the same with dictionary size
 			\item All methods scale roughly quadratically with log-size, since the number of necessary comparisons grows quadratically
 			\item log-comparison method. Performance dependent on model complexity. How many traces are needed to describe the model sufficiently well.
@@ -220,23 +224,53 @@
 		\frametitle{Replicability}
 		\begin{itemize}
 			 \pro<1-> Code  is available and well-organized
-			 \pro<2-> Implementation and experiments are seperated, should allow for relatively easy reuse of their embedding solution
+			 \pro<2-> Implementation and experiments are separated, should allow for relatively easy reuse of their embedding solution
 			 \con<3-> Experiment scripts only run experiment for one configuration. Reproducing their results requires manually entering all parameter combinations used (e.g. log and vocabulary size for the scalability experiment) and noting down results.
 			 \con<4-> Results outputted as plain text. This makes further processing of results tedious (and more error prone), since they need to be manually copied.
 			 \con<5-> No code included to create the figures displayed in the paper.
 			 \con<6-> As far as I can tell Alignment fitness and precision, Behavioural fitness and ECT precision were not calculated in the discovery experiment script.
 		\end{itemize}
+	\alert<7->{I would have liked to perform a performance experiment comparing these embedding-based methods to the reference methods. Due to the incompleteness of the provided code this was not possible in a reasonable timeframe for the seminar.}
 	\end{frame}
 	
-	\section{Internet of Things}
+	\section{Application for Internet of Things}
 	\begin{frame}
 		\frametitle{Internet of Things}
 		\begin{itemize}
-			\item Better performance, and especially better scaling w.r.t. number of activities and trace length.
+			\item Good scaling w.r.t number of activities could be necessary in scenarios with real time requirements and large amounts of data.
 			\item Learned embeddings could be shared between devices, moving work out of the evaluation to a preceding training step.
-			\item Embeddings have other advantages, no more binary activity equality, could allow for more fine grained conformance.
+			\item Streaming capabilities are a bigger priority in an IoT context. Difficult to do without explicit end-of-trace knowledge, at least prefix-conformance approach from \cite{ZBK*19} should be easily replicable. Whether embeddings could lead to better approaches constitutes a whole work in itself.
 			\item Possibly much more complex tasks. E.g. an analogy to predictive text, i.e. predicting the next event given a sequence of observed events.
 		\end{itemize}
 	\end{frame}
+
+\begin{frame}
+	\frametitle{Embeddings for BPM}
+	The possibilities when moving from generic objects (traces) to vector space embeddings should not be understated.
+	
+	\begin{itemize}
+		\item Other methods essentially utilize binary activity equality and relatively simple models for trace comparison. Embeddings provide much more fine grained relationships between embedded objects.
+		\item This opens up a plethora of techniques that reach far beyond conformance checking.
+		\item Especially automatic grouping of similar activities, as is achieved by an embedding could be potentially very useful.
+	\end{itemize}
+	 
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conclusion \& Future Work}
+	\begin{itemize}
+		\item In general very interesting initial results were obtained that warrant further research
+		\item The performed experiment are not sufficient to reliably ascertain how well embedding-based methods perform in real world scenarios. Experiments with real logs should follow.
+		\item The metrics used at the moment are not proper fitness/precision metrics (Not in $[0,1]$).
+		\item WMD and ICT do not take activity order into account, \emph{trace2vec} only does so during training
+		\item Given the work it also seems feasible to move on to more complicated NLP techniques. The authors especially mention $n$-grams, Embeddings from Language Models, Global Vectors for Word Representation, and Recurrent Neural Networks.
+	\end{itemize}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{References}
+	\bibliographystyle{../template/splncs04}
+	\bibliography{../literature/bibliography}
+\end{frame}
+\end{frame}
 	
 \end{document}
