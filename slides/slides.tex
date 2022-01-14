@@ -30,6 +30,7 @@
 % Title page with a 1/3rd size picture
 \setbeamercolor{title page bar}{fg=white}
 \setbeamertemplate{title page}[rwth][figures/title_small]{}
+\setbeamertemplate{bibliography item}{\insertbiblabel}
 \begin{frame}[plain]
 	\vspace{1cm}
 	\titlepage
@@ -40,7 +41,7 @@
 			\=\textbf{\firstname~\lastname}\=\\[0.4em]
 			\=Study Program: \studyProgram~~~\=Matr.-Nr.:\matrNo\\[0.4em]
 			\=Chair of Process and Data Science \=\\%[0.4em]
-%			\={Supervisors}:~~~\=\firstsupervisor\\
+			\={Seminar:}~~~\=Business Processes and the Internet of Things\\
 %			\>                 \>\secondsupervisor\\[0.4em]
 %			\={Advisor}:       \>\firstadvisor\ifdefined\secondadvisor\\
 %			\>                 \>\secondadvisor\\[0.4em]
@@ -93,9 +94,9 @@
 	\begin{frame}
 		\frametitle{Used dissimilarity functions}
 		\begin{enumerate}
-			\item \textbf{Word Mover's distance}\cite{KSKW15} How much "work" is needed to transform one distribution of dirt on piles into another. Both distance between piles and amount of dirt on piles matter.
-			\item \textbf{Iterative Constraint Transfers}\cite{AtMi18} WMD has cubic complexity in the dictionary size, which makes it unattractive. ICT is a linear time approximation of WMD obtained by relaxing one of the constraints of the LP.
-			\item \textbf{\emph{trace2vec}}\cite{KBWe18} Analogously to \emph{doc2vec}, train an embedding of bags of activities called \emph{trace2vec}. Use cosine similarity to directly compare traces in the trace embedding space.
+			\item \textbf{Word Mover's distance} \cite{KSKW15} How much "work" is needed to transform one distribution of dirt on piles into another. Both distance between piles and amount of dirt on piles matter.
+			\item \textbf{Iterative Constraint Transfers} \cite{AtMi18} WMD has cubic complexity in the dictionary size, which makes it unattractive. ICT is a linear time approximation of WMD obtained by relaxing one of the constraints of the LP.
+			\item \textbf{\emph{trace2vec}} \cite{KBWe18} Analogously to \emph{doc2vec}, train an embedding of bags of activities called \emph{trace2vec}. Use cosine similarity to directly compare traces in the trace embedding space.
 		\end{enumerate}
 	\alert{The obtained metrics are not proper fitness metrics, i.e. they do not fall within the interval $[0,1]$. As such, quantitative analyses are not really possible at this point.}
 	\end{frame}
@@ -230,7 +231,7 @@
 			 \con<5-> No code included to create the figures displayed in the paper.
 			 \con<6-> As far as I can tell Alignment fitness and precision, Behavioural fitness and ECT precision were not calculated in the discovery experiment script.
 		\end{itemize}
-	\alert<7->{I would have liked to perform a performance experiment comparing these embedding-based methods to the reference methods. Due to the incompleteness of the provided code this was not possible in a reasonable timeframe for the seminar.}
+	\temporal<7->{}{\alert{I would have liked to perform a performance experiment comparing these embedding-based methods to the reference methods. Due to the incompleteness of the provided code this was not possible in a reasonable timeframe for the seminar.}}{}
 	\end{frame}
 	
 	\section{Application for Internet of Things}
@@ -265,12 +266,13 @@
 		\item WMD and ICT do not take activity order into account, \emph{trace2vec} only does so during training
 		\item Given the work it also seems feasible to move on to more complicated NLP techniques. The authors especially mention $n$-grams, Embeddings from Language Models, Global Vectors for Word Representation, and Recurrent Neural Networks.
 	\end{itemize}
+\end{frame}
 
+\section*{References}
 \begin{frame}[allowframebreaks]
-	\frametitle{References}
+%	\frametitle{References}
 	\bibliographystyle{../template/splncs04}
 	\bibliography{../literature/bibliography}
-\end{frame}
 \end{frame}
 	
 \end{document}
