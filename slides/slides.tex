@@ -2,8 +2,10 @@
 \documentclass{beamer}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage[autostyle]{csquotes}  
 
 \usetheme{rwth}
+\MakeOuterQuote{"}
 %\title{Conformance Checking Using Embeddings and its Applicability in the Internet of Things}
 %\author{Jan Kruska}
 %\date{\today}
@@ -12,6 +14,7 @@
 
 \newcommand{\pro}{\item[\color{green}\textbf{+}\color{black}]}
 \newcommand{\con}{\item[\color{red}\boldmath{$-$}\color{black}]}
+\newcommand{\green}{\color{green}#1\color{black}}
 
 \logo{\includegraphics{figures/rwth_pads_en_rgb}}
 
@@ -59,14 +62,29 @@
 		%\begin{center}	
 		%\end{center}
 		\begin{itemize}
-			\item Traditional approaches (replay and alignments) are able to measure conformance, but have some meaningful disadvantages (e.g. inaccurate diagnostics through phenomena like token flooding, high computational complexity).
-			\item Conceptually, Natural Language Processing and Business Process management share some important characteristics. Both deal with sequences (sentences/traces) of words/activities and aim to define similarity measures between those.
+			\item Traditional approaches (replay and alignments) are able to measure conformance, but have meaningful disadvantages:
+			\begin{itemize}
+				\item replay based approaches suffer form inaccurate diagnostics through phenomena like token flooding
+				\item alignments suffer from high computational complexity
+			\end{itemize}
+			\item[$\Rightarrow$] There is interest in finding alternatives to traditional approaches
+			\item<2-> Conceptually, Natural Language Processing and Business Process management share some important characteristics. Both deal with sequences (sentences/traces) of words/activities and aim to define similarity measures between those.
 		\end{itemize}
-		\begin{block}{Research Question:}
+		\begin{block}<2->{Research Question:}
 			Are adaptations of NLP techniques feasible solutions for problems in the BPM field, specifically for the problem of conformance checking?
 		\end{block}
-		\alert{Theoretical exploration in previous paper \cite{KBWe18}, here \cite{PBWe20} implementation and evaluation was the main concern}
+		\temporal<3->{}{\alert{Theoretical exploration in previous paper \cite{KBWe18}, here \cite{PBWe20} implementation and evaluation was the main concern}}{}
 	\end{frame}
+
+\begin{frame}
+	\frametitle{Embeddings Introduced in \cite{KBWe18}}
+	\begin{itemize}
+		\item \emph{act2vec}: Analogous to \emph{word2vec} (Does not use activity attributes currently)\temporal<2->{}{\green{Base building block, simple, robust}}{}
+		\item \emph{trace2vec}: Utilizes \emph{act2vec} and adds a paragraph vector, analogous to \emph{doc2vec} \temporal<2->{}{\green{Useful for direct trace comparison}}{}
+		\item<-3> \emph{log2vec}: Extends \emph{trace2vec} by including an averaging operation, to create an embedding for the whole log \temporal<2->{}{\alert{Too coarse}}{}
+		\item<-3> \emph{model2vec}: Embedding of the graph structure of a model by performing random walks \temporal<2->{}{\alert{Complex, not very robust, not useful for log/model comparisons}}{}
+	\end{itemize}
+\end{frame}
 
 	\section{Structure of Embedding based Conformance Checking}
 \begin{frame}
@@ -74,9 +92,8 @@
 	\begin{enumerate}
 		\item Given a model play it out to obtain a so called model log
 		\item Train activity embeddings (\emph{act2vec}) based on real and model log
-		\item Any trace is a sequence of activities. Given an embedding (dis)similarity metrics can be defined
+		%\item Any trace is a sequence of activities. Given an embedding (dis)similarity metrics can be defined
 		\item Using a (dis)similarity metric pairwise compare all traces in real and model log.
-		\item As a result obtain a dissimilarity matrix
 	\end{enumerate}
 \begin{block}{Definition of Fitness and Precision}
 	A trace that is fit should be replayable in the model. If the model log contains a trace with perfect similarity, then the trace is replayable.
@@ -90,14 +107,14 @@
 		\frametitle{Graphical Representation of Approach}
 		\begin{figure}
 			\includegraphics[width=1\linewidth, height=0.6\paperheight, keepaspectratio]{\figures structure}
-			\caption{The general structure of the approach}
+			\caption{The General Structure of the Approach}
 			\label{fig:structure}
 		\end{figure}
 	\end{frame}
 	
 	
 	\begin{frame}
-		\frametitle{Used dissimilarity functions}
+		\frametitle{Used Dissimilarity Functions}
 		\begin{enumerate}
 			\item \textbf{Word Mover's distance} \cite{KSKW15} How much "work" is needed to transform one distribution of dirt on piles into another. Both distance between piles and amount of dirt on piles matter.
 			\item \textbf{Iterative Constraint Transfers} \cite{AtMi18} WMD has cubic complexity in the dictionary size, which makes it unattractive. ICT is a linear time approximation of WMD obtained by relaxing one of the constraints of the LP.
@@ -116,6 +133,14 @@
 			\item Scaling: Vary log and dictionary sizes (number of activities). Compare runtimes \alert{No runtimes of traditional methods were included.}
 		\end{enumerate}
 	\end{frame}
+\begin{frame}
+	\frametitle{How to get the Logs?}
+	\begin{figure}
+		\includegraphics[width=1\textwidth]{\figures process-tree}
+		\caption{A process tree generated by pm4py using parameters: Min 15, Mode 30, Max 45, sequence 0.75, parallel 0.25. }
+		\label{fig:process-tree}
+	\end{figure}
+\end{frame}
 	\begin{frame}
 		\frametitle{Random Trees}
 		Random trees were generated using pm4py and the following configurations:
@@ -142,17 +167,11 @@
 		
 		The scaling experiment used different unspecified trees varying the amount of activities and the size of the played-out log.
 	\end{frame}
-	\begin{frame}
-		\frametitle{Example tree}
-		\begin{figure}
-			\includegraphics[width=1\textwidth]{\figures process-tree}
-			\caption{A process tree generated by pm4py using parameters: Min 15, Mode 30, Max 45, sequence 0.75, parallel 0.25. }
-			\label{fig:process-tree}
-		\end{figure}
-	\end{frame}
+	
 	
 	\begin{frame}
 		\frametitle{Noise Experiment}
+		The goal of the noise experiments was to investigate whether the methods are well-behaved and conform to the expectations.
 		\begin{figure}
 			\centering
 			\begin{subfigure}[b]{0.49\textwidth}
@@ -174,6 +193,7 @@
 	
 	\begin{frame}
 		\frametitle{Discovery Experiment}
+		In the Discovery experiment the embedding-based methods are evaluated against reference methods using different trees and discovery algorithms.
 		\begin{figure}
 			\centering
 			\begin{subfigure}[b]{0.49\textwidth}
@@ -208,6 +228,7 @@
 	
 	\begin{frame}
 		\frametitle{Scaling Experiment}
+		The goal of the scaling experiment was to determine how the methods scale regarding vocabulary and log size
 		\begin{figure}
 			\includegraphics[width=1\linewidth, height=0.6\paperheight, keepaspectratio]{\figures scaling}
 			\caption{Runtimes for all three methods for varying sizes of logs and dictionaries.}
@@ -235,11 +256,19 @@
 %			 \pro<1-> Code for experiments  is available and well-organized
 			 \pro<2-> Implementation and experiments are separated, should allow for relatively easy reuse of their embedding solution
 			 \con<3-> Experiment scripts only run experiment for one configuration. Reproducing their results requires manually entering all parameter combinations used (e.g. log and vocabulary size for the scalability experiment) and noting down results.
-			 \con<4-> Results outputted as plain text in Jupyter Notebook. This makes further processing of results tedious (and more error prone), since they need to be manually copied.
+			 \con<4-> Output format
+			 \begin{itemize}
+			 	\item<4-> Results outputted as plain text in Jupyter Notebook, that needs to be manually copied
+			 	\item<4-> This makes further processing of results tedious and more error prone
+			 	\item<4-> Suggestion: Instead collect results in dataframe and save as csv
+			 \end{itemize}
 			 \con<5-> No code included to create the figures displayed in the paper.
 			 \con<6-> Alignment fitness and precision, Behavioral fitness and ECT precision are not calculated in the discovery experiment script.
 		\end{itemize}
-	\temporal<7->{}{\alert{Another performance experiment comparing these embedding-based methods to the reference methods would be desirable. Since Alignment, Behavioral fitness and ECT calculations were not present in the discovery script, this was not possible to do in a reasonable time frame for the seminar.}}{}
+	\begin{alertblock}<7->{block title}<action specification>
+		Another performance experiment comparing these embedding-based methods to the reference methods would be desirable. Since Alignment, Behavioral fitness and ECT calculations were not present in the discovery script, this was not possible to do in a reasonable time frame for the seminar.
+	\end{alertblock}
+%	\temporal<7->{}{\alert{Another performance experiment comparing these embedding-based methods to the reference methods would be desirable. Since Alignment, Behavioral fitness and ECT calculations were not present in the discovery script, this was not possible to do in a reasonable time frame for the seminar.}}{}
 	\end{frame}
 	
 	\section{Application in the Internet of Things}
@@ -300,6 +329,13 @@
 %	\frametitle{References}
 	\bibliographystyle{../template/splncs04}
 	\bibliography{../literature/bibliography}
+\end{frame}
+
+\begin{frame}{}
+	\centering \Large
+	\emph{Thank you for your attention}
+	
+	\emph{Questions?}
 \end{frame}
 	
 \end{document}
