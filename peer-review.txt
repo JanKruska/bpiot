@@ -26,7 +26,7 @@ yes
 Please give a brief summary of the work in your own words.
 
 Is the work primarily theoretical or practical? 
-practical
+more theoretical, though developping the embeddings and evaluating them does constitute a not insignificant practical part
 
 Are the formal parts sound? 
 yes
@@ -44,6 +44,14 @@ To improve the quality of the paper further I have the following comments:
 
 [ii] Eqs.1 & 2: Meaning of "n" is never explained in the text
 
-[iii] Sections 5 and 6 provide various use cases, that could benefit from the usage of embeddings, yet challenges and areas where further work is encessary (bag of words instead of sequence, similarity between model and log embeddings, Could other models/parameters also be or potentially more useful, more attributes for act2vec) are only ever briefly mentioned by themselves.
-Including a distinct section about Future work would be helpful to point researchers towards interesting future research questions.
+[iii] At several points in the paper limitations/or particularities are mentioned like
+1. Utilization of more attributes in act2vec(Briefly mentioned in Conclusion)
+2. similarity between model and log embeddings
+3. bag of words instead of sequence
+4. vector length
+etc.
+Yet these are seemingly abandoned after being mentioned.
+In my opinion tying all these strands together in the end, by including a dedicated section to limitations and future work, would make it easier for reader to gain a clearer perspective of what could be done would be worth to look into further, while also rounding out the end of the paper.
+
+[iv] section 5.4 start out with stating that conformance checking is concerned with relating logs and process models, then directly jumps too calculating dissimilarities between log and model traces. Where do model traces come from?
 
