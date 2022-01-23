@@ -40,18 +40,18 @@ yes
 This paper gives a good overview of the thory behing embeddings, the implementation of embeddings in Business Process Management and potential use cases for it's application.
 To improve the quality of the paper further I have the following comments:
 
-[i] Consider including the hyperref packge for easier navigation to sources and figures, unless technical reason prohibit it's usage
+[i] Consider including the hyperref package for easier navigation to sources and figures, unless technical reason prohibit its usage
 
 [ii] Eqs.1 & 2: Meaning of "n" is never explained in the text
 
-[iii] At several points in the paper limitations/or particularities are mentioned like
+[iii] At several points in the paper limitations/or particularities of the current approach are mentioned like
 1. Utilization of more attributes in act2vec(Briefly mentioned in Conclusion)
 2. similarity between model and log embeddings
 3. bag of words instead of sequence
 4. vector length
 etc.
 Yet these are seemingly abandoned after being mentioned.
-In my opinion tying all these strands together in the end, by including a dedicated section to limitations and future work, would make it easier for reader to gain a clearer perspective of what could be done would be worth to look into further, while also rounding out the end of the paper.
+In my opinion tying all these strands together in the end, by including a dedicated section to limitations and future work, would make it easier for reader to gain a clearer perspective of what could be done and/or would be worth to look into further, while also rounding out the end of the paper.
 
 [iv] section 5.4 start out with stating that conformance checking is concerned with relating logs and process models, then directly jumps too calculating dissimilarities between log and model traces. Where do model traces come from?
 
