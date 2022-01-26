@@ -64,7 +64,7 @@ The increase in compute and storage capabilities, as well as the growing digital
 One benefactor of this development has been the subfield of process science, which is concerned with the analysis of processes.
 The combination of process science and data science gave rise to techniques generally grouped under the term process mining.
 %\footnote{Please note that due to the relatively young age of the field, the fact that it lies at the intersection of two different fields and the fact that there is a marketing interest for these topics the terminology is not always settled and different authors and/or groups may differ in usage. The terminology used here is oriented around the definitions in \cite{Aals16}, as it seems to be the most polished overview of the field at the moment.}.
-Process mining  \cite{Aals16} is concerned with the automatic and algorithmic processing of event data. In its easiest form, an event is a piece of data, that consists of a timestamp, an identifier to group events belonging to the same execution, and a body containing further arbitrary values.
+Process Mining  \cite{Aals16} is concerned with the automatic and algorithmic processing of event data. In its easiest form, an event is a piece of data, that consists of a timestamp, an identifier to group events belonging to the same execution, and a body containing further arbitrary values.
 In most cases, there is also an identifier for the event type, with the purpose of identifying similar events in different executions of the process, e.g. to be able to group all "Send invoice" events as the same type.
 
 Historically, most research on the topic of process mining has been on business processes. 
@@ -226,6 +226,20 @@ Embedding-based methods are popular machine learning approaches that have been u
 The fundamental idea of embeddings is to train some form of embedding function that embeds complex objects, such as words or documents in the case of NLP or pictures and video sequences in the case of computer vision in a vectors space\footnote{To be more precise: a Hilbert space, since well-defined notions of distances and angles, are necessary and for that, a scalar product  is needed.}.
 Such an embedding function then enables a proper mathematical treatment of these non-vector objects as vectors, which allows for the application of a broad range of algorithms.
 Most importantly it makes it possible to define notions of distance and/or (dis-)similarity needed for machine learning and data analysis tasks.
+
+There are many different approaches to obtaining embeddings, most notably are the Continuous bag of Word and Skip-gram models which can in some sense be viewed as dual to each other.
+Both of these use neural networks in their modern conception.
+The goal of the CBOW architecture is to predict a possible word from a context.
+To this end a shifting window is applied on training text, to produce bags of words.
+Then one word is removed from this bag and the network is trained to produce said word from the others.
+
+The goal of the skip-gram approach is the opposite: Here the context should be predicted from a single word.
+As such the training is also reversed in an appropriate manner.
+
+Once the training is complete a neural network has been obtained, that is able to predict word from context or vice versa.
+The trick now lies in not actually using the whole network and instead utilize the weights trained for the hidden layer.
+this hidden layer is much smaller than either the input and output layers, whose sizes are determined by the vocabulary size, and serves as a dense representation of words.
+In that sense embeddings are very similar to autoencoders, with similar goals, the main difference is that words are not trained against themselves but against the surrounding context.
 
 \section{Embedding Based Conformance Checking}
 \label{sec:method}
@@ -441,11 +455,17 @@ The \emph{trace2vec} method has the additional benefit of not being dependent on
 		\caption{Average of second noise experiment (Varying amount of noise applied to trace)}
 		\label{fig:noise-second}
 	\end{subfigure}
+\caption{Results from noise experiment (from \cite{PBWe20} Fig. 4 \& 5)}
+\label{fig:noise}
 \end{figure}
 The second experiment aimed to determine how the algorithms behaved when different amounts of noise were introduced on the logs.
 The expectation is that higher levels of noise further deteriorate fitness and precision. 
 However since the defined similarity notion is not very intuitive it is important to verify, whether the algorithms are well-behaved, i.e. if their results match up with the intuitive expectation we have for conformance.
 %However since the used methods are somewhat involved and since it can be hard to exactly tell what a system is doing for a lot of learning-based methods, whether the algorithms are well-behaved or not should be verified.
+
+Fo all noise experiment three random tree using the configurations mentioned above were created, from which the "noiseless" logs were produced.
+Then two different kind of noise were applied to these logs, and the average distance between traces in the "noiseless" and "noisy" variant was compared.
+These results can be found in \cref{fig:noise}.
 
 The first noise experiment in which the number of noisy traces was varied seems to confirm the expectation.
 In all the trees, the distance smoothly increased with larger amounts of noise added, there were neither cases where the dissimilarity would go down again with more noise nor any significant unexpected patterns like jumps or plateauing around certain points.
