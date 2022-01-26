@@ -1,0 +1,57 @@
+RWTH Aachen University - Business Processes and the Internet of Things Seminar 2021/22
+REVIEW FORM
+
+Paper Title: Applying Representation Learning Techniques to Business Process Intelligence
+Author: Leon Müller
+Reviewer: Jan Kruska
+
+Answers to all questions will be sent to authors.
+
+1) Presentation
+---------------
+Is the paper in the expected style? 
+no
+
+[i] The running title displayed in the header on odd numbered pages is not properly formatted. Using the LNCS template a running title can be added with the \titlerunning command.
+
+Are the references comprehensive and appropriate? 
+yes
+
+Relative to the subject material, is the paper understandable without requiring too much effort on the part of the reader? 
+yes
+ 
+2) Content
+----------
+
+Please give a brief summary of the work in your own words.
+
+Is the work primarily theoretical or practical? 
+more theoretical, though developping the embeddings and evaluating them does constitute a not insignificant practical part
+
+Are the formal parts sound? 
+yes
+
+Is the content technically sound? 
+yes
+
+3) Public comments for the authors
+----------------------------------
+
+This paper gives a good overview of the thory behing embeddings, the implementation of embeddings in Business Process Management and potential use cases for it's application.
+To improve the quality of the paper further I have the following comments:
+
+[i] Consider including the hyperref package for easier navigation to sources and figures, unless technical reason prohibit its usage
+
+[ii] Eqs.1 & 2: Meaning of "n" is never explained in the text
+
+[iii] At several points in the paper limitations/or particularities of the current approach are mentioned like
+1. Utilization of more attributes in act2vec(Briefly mentioned in Conclusion)
+2. similarity between model and log embeddings
+3. bag of words instead of sequence
+4. vector length
+etc.
+Yet these are seemingly abandoned after being mentioned.
+In my opinion tying all these strands together in the end, by including a dedicated section to limitations and future work, would make it easier for reader to gain a clearer perspective of what could be done and/or would be worth to look into further, while also rounding out the end of the paper.
+
+[iv] section 5.4 start out with stating that conformance checking is concerned with relating logs and process models, then directly jumps too calculating dissimilarities between log and model traces. Where do model traces come from?
+

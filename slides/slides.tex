@@ -3,6 +3,13 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage[autostyle]{csquotes}  
+%\usepackage[
+%backend=biber,
+%style=authoryear,
+%citestyle=authoryear 
+%]{biblatex}
+%
+%\addbibresource{../literature/bibliography.bib}
 
 \usetheme{rwth}
 \MakeOuterQuote{"}
@@ -14,7 +21,7 @@
 
 \newcommand{\pro}{\item[\color{green}\textbf{+}\color{black}]}
 \newcommand{\con}{\item[\color{red}\boldmath{$-$}\color{black}]}
-\newcommand{\green}{\color{green}#1\color{black}}
+\newcommand{\green}[1]{\color{green}\textbf{#1}\color{black}}
 
 \logo{\includegraphics{figures/rwth_pads_en_rgb}}
 
@@ -79,48 +86,52 @@
 \begin{frame}
 	\frametitle{Embeddings Introduced in \cite{KBWe18}}
 	\begin{itemize}
-		\item \emph{act2vec}: Analogous to \emph{word2vec} (Does not use activity attributes currently)\temporal<2->{}{\green{Base building block, simple, robust}}{}
-		\item \emph{trace2vec}: Utilizes \emph{act2vec} and adds a paragraph vector, analogous to \emph{doc2vec} \temporal<2->{}{\green{Useful for direct trace comparison}}{}
-		\item<-3> \emph{log2vec}: Extends \emph{trace2vec} by including an averaging operation, to create an embedding for the whole log \temporal<2->{}{\alert{Too coarse}}{}
-		\item<-3> \emph{model2vec}: Embedding of the graph structure of a model by performing random walks \temporal<2->{}{\alert{Complex, not very robust, not useful for log/model comparisons}}{}
+		\item<-3> \emph{act2vec}:  \temporal<2->{Analogous to \emph{word2vec} (Does not use activity attributes currently)}{\green{Base building block, simple, robust}}{}
+		\item<-3> \emph{trace2vec}:  \temporal<2->{Utilizes \emph{act2vec} and adds a paragraph vector, analogous to \emph{doc2vec}}{\green{Useful for direct trace comparison}}{}
+		\item<-2> \emph{log2vec}:  \temporal<2->{Extends \emph{trace2vec} by including an averaging operation, to create an embedding for the whole log}{\alert{Too coarse}}{}
+		\item<-2> \emph{model2vec}:  \temporal<2->{Embedding of the graph structure of a model by performing random walks}{\alert{Complex, not very robust, not useful for log/model comparisons}}{}
 	\end{itemize}
 \end{frame}
 
 	\section{Structure of Embedding based Conformance Checking}
-\begin{frame}
-	\frametitle{Conformance Checking using Activity and Trace Embeddings}
-	\begin{enumerate}
-		\item Given a model play it out to obtain a so called model log
-		\item Train activity embeddings (\emph{act2vec}) based on real and model log
-		%\item Any trace is a sequence of activities. Given an embedding (dis)similarity metrics can be defined
-		\item Using a (dis)similarity metric pairwise compare all traces in real and model log.
-	\end{enumerate}
-\begin{block}{Definition of Fitness and Precision}
-	A trace that is fit should be replayable in the model. If the model log contains a trace with perfect similarity, then the trace is replayable.
-	
-	Thus, the best similarity between a real trace and all model traces is a measure for fitness. Conversely, the best similarity between a model trace and all real traces is a measure for precision.
-\end{block}
-\end{frame}
-	
-	
 	\begin{frame}
-		\frametitle{Graphical Representation of Approach}
+		\frametitle{Conformance Checking using Activity and Trace Embeddings}
+		\begin{columns}
+			\column{0.5\textwidth}
+			\begin{enumerate}
+				\item Given a model play it out to obtain a so called model log
+				\item Train activity embeddings (\emph{act2vec}) based on real and model logs
+				%\item Any trace is a sequence of activities. Given an embedding (dis)similarity metrics can be defined
+				\item Using a (dis)similarity metric pairwise compare all traces in real and model log.
+			\end{enumerate}
+			\begin{block}{Definition of Fitness and Precision}
+				Then the best similarity between a real trace and all model traces is a measure for fitness. Conversely, the best similarity between a model trace and all real traces is a measure for precision.
+			\end{block}
+		\column{0.4\textwidth}
 		\begin{figure}
 			\includegraphics[width=1\linewidth, height=0.6\paperheight, keepaspectratio]{\figures structure}
 			\caption{The General Structure of the Approach}
 			\label{fig:structure}
 		\end{figure}
+	\end{columns}
 	\end{frame}
 	
 	
 	\begin{frame}
 		\frametitle{Used Dissimilarity Functions}
+\begin{columns}[t]
+	\column{.7\textwidth}
 		\begin{enumerate}
 			\item \textbf{Word Mover's distance} \cite{KSKW15} How much "work" is needed to transform one distribution of dirt on piles into another. Both distance between piles and amount of dirt on piles matter.
 			\item \textbf{Iterative Constraint Transfers} \cite{AtMi18} WMD has cubic complexity in the dictionary size, which makes it unattractive. ICT is a linear time approximation of WMD obtained by relaxing one of the constraints of the LP.
 			\item \textbf{\emph{trace2vec}} \cite{KBWe18} Analogously to \emph{doc2vec}, train an embedding of bags of activities called \emph{trace2vec}. Use cosine similarity to directly compare traces in the trace embedding space.
 		\end{enumerate}
 	\alert{The obtained metrics are not proper fitness metrics, i.e. they do not fall within the interval $[0,1]$. As such, quantitative analyses are not really possible at this point.}
+		\column{.3\textwidth}
+	\begin{figure}
+		\includegraphics[width=1\linewidth, keepaspectratio]{figures/emd}
+	\end{figure}
+\end{columns}
 	\end{frame}
 	
 	\section{Experiments}
@@ -132,6 +143,7 @@
 			\item Discovery: Discover model using different miners, determine fitness and precision using the three proposed methods as well as alignment fitness and precision \cite{Aals16}, behavioural fitness \cite{GMVB09} and ETC precision \cite{MuCa10}.
 			\item Scaling: Vary log and dictionary sizes (number of activities). Compare runtimes \alert{No runtimes of traditional methods were included.}
 		\end{enumerate}
+
 	\end{frame}
 \begin{frame}
 	\frametitle{How to get the Logs?}
@@ -174,14 +186,14 @@
 		The goal of the noise experiments was to investigate whether the methods are well-behaved and conform to the expectations.
 		\begin{figure}
 			\centering
-			\begin{subfigure}[b]{0.49\textwidth}
+			\begin{subfigure}[b]{0.45\textwidth}
 				\centering
 				\includegraphics[width=\textwidth]{\figures noise-first}
 				\caption{Average of first noise experiment (Varying trace percentage).}
 				\label{fig:noise-first}
 			\end{subfigure}
 			\hfill
-			\begin{subfigure}[b]{0.49\textwidth}
+			\begin{subfigure}[b]{0.45\textwidth}
 				\centering
 				\includegraphics[width=\textwidth]{\figures noise-second}
 				\caption{Average of second noise experiment (Varying amount of noise applied to trace).}
@@ -230,7 +242,7 @@
 		\frametitle{Scaling Experiment}
 		The goal of the scaling experiment was to determine how the methods scale regarding vocabulary and log size
 		\begin{figure}
-			\includegraphics[width=1\linewidth, height=0.6\paperheight, keepaspectratio]{\figures scaling}
+			\includegraphics[width=1\linewidth, height=0.55\paperheight, keepaspectratio]{\figures scaling}
 			\caption{Runtimes for all three methods for varying sizes of logs and dictionaries.}
 			\label{fig:scalability}
 		\end{figure}
@@ -264,6 +276,7 @@
 			 \end{itemize}
 			 \con<5-> No code included to create the figures displayed in the paper.
 			 \con<6-> Alignment fitness and precision, Behavioral fitness and ECT precision are not calculated in the discovery experiment script.
+			 \item<7->\color{red}Another performance experiment comparing these embedding-based methods to the reference methods would be desirable. Since Alignment, Behavioral fitness and ECT calculations were not present in the discovery script, this was not possible to do in a reasonable time frame for the seminar.\color{black}
 		\end{itemize}
 	\begin{alertblock}<7->{block title}<action specification>
 		Another performance experiment comparing these embedding-based methods to the reference methods would be desirable. Since Alignment, Behavioral fitness and ECT calculations were not present in the discovery script, this was not possible to do in a reasonable time frame for the seminar.
@@ -295,14 +308,18 @@
 \end{block}
 	\end{frame}
 
+\section{Conclusion and Outlook}
 \begin{frame}
 	\frametitle{Embeddings for BPM}
-	The possibilities when moving from generic objects (traces) to vector space embeddings should not be understated.
+	\begin{exampleblock}{Do not lose sight of the more general benefits!}
+		While this paper dealt mostly with embeddings for conformance checking the possibilities when moving from generic objects (traces) to vector space embeddings should not be understated and are emphatically not limited to conformance checking. 
+	\end{exampleblock}
+	
 	
 	\begin{itemize}
 		\item Other methods essentially utilize binary activity equality and relatively simple models for trace comparison. Embeddings provide much more fine grained relationships between embedded objects.
 		\item This opens up a plethora of techniques that reach far beyond conformance checking.
-		\item Especially automatic grouping of similar activities, as is achieved by an embedding could be potentially very useful.
+		\item Especially automatic clustering of similar activities, as is achieved by an embedding could be potentially very useful.
 	\end{itemize}
 	 
 \end{frame}
@@ -327,13 +344,15 @@
 \section*{References}
 \begin{frame}[allowframebreaks]
 %	\frametitle{References}
-	\bibliographystyle{../template/splncs04}
+	\bibliographystyle{apalike}
+%	\bibliographystyle{authoryear}
 	\bibliography{../literature/bibliography}
+%	\printbibliography
 \end{frame}
 
 \begin{frame}{}
-	\centering \Large
-	\emph{Thank you for your attention}
+	\centering \Huge
+	\emph{Thank you for your attention!}
 	
 	\emph{Questions?}
 \end{frame}
