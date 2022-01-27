@@ -330,7 +330,7 @@ It should also be noted that the WMD does not take word order into account, whic
 		\For{$i=1...h_p$}
 		\State $s \gets \arg \min_k(c(i,[1,...,h_q]))$ \Comment{Find $k$ activities with the smallest cost}
 		\While{$l < k$}
-		\State $r \gets \min(p_i,q_{s(l)}))$ \Comment{Edge constraint, move as much as possible but no more than allowed}
+		\State $r \gets \min(p_i,q_{s(l)}))$ \Comment{Edge constraint}
 		\State $p_i \gets p_i - r$ \Comment{Move weight}
 		\State $t \gets t + rc(i,j)$ \Comment{Update cost}
 		\State $l \gets l+1$
