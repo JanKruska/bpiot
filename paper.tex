@@ -137,17 +137,17 @@ Our intuitive expectation would be that a model that allows for exactly those tr
 The aim of conformance checking is the formalization of this imprecise intuitive understanding of fitting together and the development of methods and algorithms that can accurately quantify precisely this intuition.
 \subsubsection{Uses}
 The uses of such an approach can generally be divided into two relatively distinct subcategories, depending on whether the event log or the process model are seen as normative.
-If the process model is considered normative, conformance checking allows for the detection of deviations, i.e. observed traces that are not possible according to the model.
-From such information a number of useful analyses can follow, e.g. where do deviations happen, which resources are involved in deviations, and how exactly these traces deviate from the model.
-It should be pointed out that the word "deviation" is negatively connotated in English, however, for the purpose of process intelligence it should be viewed as a neutral category. 
+If the process model is considered normative, conformance checking allows for the detection of deviations.
+From such information a number of useful analyses can follow, e.g. where, how and when deviations happen.
+%It should be pointed out that the word "deviation" is negatively connotated in English, however, for the purpose of process intelligence it should be viewed as a neutral category. 
 For example, an analysis may reveal that people often skip a step in the process, which actually improves the overall performance of the process, based on which refinements to the process model could be made.
 An example of negative conclusions may be the detection of deviations that do not follow proper legal or procedural requirements of the process, such as requiring two different persons to review an important document before signing off on it. In such a case knowledge of these deviations is required to ensure proper execution of the process.
 
-In the second case, the log is seen as normative and the model is considered either imperfect or unknown.
-The most important representative application of this perspective is process discovery, or more specifically the evaluation of discovery algorithms.
-In the case of process discovery, a process model has to be constructed from an event log.
-Obviously, not all process models are able to describe a process equally well.
-So when developing or using a process discovery algorithm the question of how well the discovered process models describe the log often arises.
+%In the second case, the log is seen as normative and the model is considered either imperfect or unknown.
+%The most important representative application of this perspective is process discovery, or more specifically the evaluation of discovery algorithms.
+%In the case of process discovery, a process model has to be constructed from an event log.
+%Obviously, not all process models are able to describe a process equally well.
+%So when developing or using a process discovery algorithm the question of how well the discovered process models describe the log often arises.
 
 %\subsubsection{Quality criteria}
 %It is important to note that model quality is not a single-dimensional criterion, instead, it exists in a multi-dimensional space where the different axes represent different quality criteria.
@@ -251,7 +251,8 @@ Such a reformulation of the problem is possible since all (reasonably defined) m
 Then the key part is determining similarities between objects of the same type, for which a broad range of techniques already exist.
 This has the additional advantage that it is model-independent since no limitations apart from the ability to generate traces are put on the type of model.
 \begin{figure}
-	\includegraphics[width=1\textwidth]{figures/structure}
+	\centering
+	\includegraphics[width=.8\textwidth]{figures/structure}
 	\caption{The general structure of the approach}
 	\label{fig:structure}
 \end{figure}
@@ -330,7 +331,7 @@ It should also be noted that the WMD does not take word order into account, whic
 		\For{$i=1...h_p$}
 		\State $s \gets \arg \min_k(c(i,[1,...,h_q]))$ \Comment{Find $k$ activities with the smallest cost}
 		\While{$l < k$}
-		\State $r \gets \min(p_i,q_{s(l)}))$ \Comment{Edge constraint, move as much as possible but no more than allowed}
+		\State $r \gets \min(p_i,q_{s(l)}))$ \Comment{Edge constraint}
 		\State $p_i \gets p_i - r$ \Comment{Move weight}
 		\State $t \gets t + rc(i,j)$ \Comment{Update cost}
 		\State $l \gets l+1$
@@ -446,7 +447,7 @@ The \emph{trace2vec} method has the additional benefit of not being dependent on
 	\begin{subfigure}[b]{0.49\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/noise-first}
-		\caption{Average of first noise experiment (Varying trace percentage) Raw data can be found in \cite{PBWe20} Table 4}
+		\caption{Average of first noise experiment (Varying trace percentage) }
 		\label{fig:noise-first}
 	\end{subfigure}
 	\hfill
@@ -456,7 +457,7 @@ The \emph{trace2vec} method has the additional benefit of not being dependent on
 		\caption{Average of second noise experiment (Varying amount of noise applied to trace)}
 		\label{fig:noise-second}
 	\end{subfigure}
-\caption{Results from noise experiment (from \cite{PBWe20} Fig. 4 \& 5)}
+\caption{Results from noise experiment (from \cite{PBWe20} Fig. 4 \& 5). Raw data can be found in \cite{PBWe20} Table 4}
 \label{fig:noise}
 \end{figure}
 The second experiment aimed to determine how the algorithms behaved when different amounts of noise were introduced on the logs.
