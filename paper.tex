@@ -247,8 +247,8 @@ Many conformance checking algorithms, notably the classical ones outlined above,
 While this is the fundamental question to be answered, this comparison between two different types of objects greatly complicates the task.
 However, by re-framing the problem it  can be greatly simplified.
 Instead of formulating the problem in terms of model-to-log comparison, one can formulate it as a comparison problem of a real log to a model log.
-Such a reformulation of the problem is possible since all (reasonably defined) models are able to generate sample traces, and can therefore produce a model log.
-Then the whole problem is re-framed as log-to-log comparisons, i.e. determining similarities between objects of the same type, for which a broad range of techniques already exist.
+Such a reformulation of the problem is possible since all (reasonably defined) models are able to generate sample traces.
+Then the key part is determining similarities between objects of the same type, for which a broad range of techniques already exist.
 This has the additional advantage that it is model-independent since no limitations apart from the ability to generate traces are put on the type of model.
 \begin{figure}
 	\includegraphics[width=1\textwidth]{figures/structure}
@@ -259,12 +259,12 @@ This has the additional advantage that it is model-independent since no limitati
 
 Three different techniques were outlined in the focus paper \cite{PBWe20}, all following a similar structure outlined in \cref{fig:structure}.
 First, a model log is produced from the model by using appropriate replay semantics for the model.
-Then, given these two logs, one real and one produced by replaying the model, it is possible to train the \emph{act2vec} \cite{KBWe18} embedding.
-Based on these embeddings a dissimilarity function needs to be defined to compare different traces, however, the \emph{act2vec} embedding only yields distance measurements between activities and not between traces.
+Then, given these two logs, it is possible to train the \emph{act2vec} \cite{KBWe18} embedding\footnote{Note that only the activity labels were used to train the embedding here. It is possible to include further attributes, but this is more complicated}.
+Then a dissimilarity function needs to be defined, to compare to bags of \emph{act2vec} embeddings to each other.
+%Based on these embeddings a dissimilarity function needs to be defined to compare different traces, however, the \emph{act2vec} embedding only yields distance measurements between activities and not between traces.
 Here the differences between the three techniques come into play.
 The first two, the Word Mover's Distance \cite{KSKW15} and Iterative Constrained Transfers, can directly utilize the distances between activities to determine a distance between two collections of activities.
 The last one, \emph{trace2vec}, further needs to train a trace embedding based on activity embeddings, and can then perform direct comparisons in the trace embedding space.
-All three methods however lead to a reasonable dissimilarity metric between traces.
 Using one of these metrics a dissimilarity matrix can be built up describing the pairwise dissimilarities between the real log and the model log.
 
 From here on we will assume that each row corresponds to a trace from the model log and each column corresponds to a trace from the real log, i.e. $a_{ij}$ is the dissimilarity of the $i$-th trace from the model log with the $j$-th trace of the real log.
@@ -278,6 +278,7 @@ As such the row minimum corresponds to a precision metric for the trace in the m
 \subsection{act2vec}
 The first two methods utilize \emph{act2vec} to train activity embeddings.
 These activity embeddings then allow for the comparison of two traces by comparing their individual activities in the embedding space.
+Both the \emph{act2vec} and \emph{trace2vec} approaches utilized a relatively small vector size of 16, to train the embeddings.
 Every trace then constitutes a distribution over the embeddings of the activities contained in it, so given an appropriate distance metric for probability distributions such as the Earth Mover's Distance, it is possible to determine the distance (or conversely similarity) between two traces.
 Note that many NLP algorithms use a so-called bag of words approach, where the order of words is disregarded.
 Both the WMD and ICT take the same approach as a bag of words and treat a trace as a bag of activities.
