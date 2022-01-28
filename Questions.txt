@@ -1,1 +1,0 @@
-1. You mentioned another embedding called case2vec, what are the differences to trace2vec and what were the benefits of it.
